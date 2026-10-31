@@ -40,21 +40,22 @@ interface MenuItem {
   id: Exclude<MenuActionId, null>;
   labelVI: string;
   labelEN: string;
+  disabled?: boolean;
 }
 
 const MENU_ITEMS: MenuItem[] = [
-  { id: 'home', labelVI: 'HỒ SƠ', labelEN: 'PROFILE' },
-  { id: 'combat', labelVI: 'CHIẾN ĐẤU', labelEN: 'BATTLE' },
-  { id: 'story', labelVI: 'CỐT TRUYỆN', labelEN: 'STORYLINE' },
-  { id: 'dating', labelVI: 'HẸN HÒ', labelEN: 'DATING' },
-  { id: 'gallery', labelVI: 'TRIỂN LÃM', labelEN: 'GALLERY' },
+  { id: 'home', labelVI: 'HỒ SƠ', labelEN: 'PROFILE', disabled: true },
+  { id: 'combat', labelVI: 'CHIẾN ĐẤU', labelEN: 'BATTLE', disabled: true },
+  { id: 'story', labelVI: 'CỐT TRUYỆN', labelEN: 'STORYLINE', disabled: true },
+  { id: 'dating', labelVI: 'HẸN HÒ', labelEN: 'DATING', disabled: false },
+  { id: 'gallery', labelVI: 'TRIỂN LÃM', labelEN: 'GALLERY', disabled: true },
 ];
 
 const SUB_MENU_ITEMS: MenuItem[] = [
-  { id: 'events', labelVI: 'SỰ KIỆN', labelEN: 'EVENTS' },
-  { id: 'contact', labelVI: 'LIÊN LẠC', labelEN: 'COMMS' },
-  { id: 'interact', labelVI: 'TƯƠNG TÁC', labelEN: 'INTERACTION' },
-  { id: 'about', labelVI: 'GIỚI THIỆU', labelEN: 'ABOUT' },
+  { id: 'events', labelVI: 'SỰ KIỆN', labelEN: 'EVENTS', disabled: false },
+  { id: 'contact', labelVI: 'LIÊN LẠC', labelEN: 'COMMS', disabled: true },
+  { id: 'interact', labelVI: 'TƯƠNG TÁC', labelEN: 'INTERACTION', disabled: true },
+  { id: 'about', labelVI: 'GIỚI THIỆU', labelEN: 'ABOUT', disabled: true },
 ];
 
 export default function App() {
@@ -164,7 +165,7 @@ export default function App() {
 
   const handleTriggerMenu = useCallback((index: number) => {
     const item = MENU_ITEMS[index];
-    if (!item) return;
+    if (!item || item.disabled) return;
     setClickedIndex(index);
     setClickedSubIndex(null);
     soundFx.playSelect();
@@ -179,6 +180,7 @@ export default function App() {
   }, []);
 
   const handleTriggerSubMenu = useCallback((item: MenuItem, index: number) => {
+    if (item.disabled) return;
     setClickedSubIndex(index);
     setClickedIndex(null);
     soundFx.playSelect();
@@ -226,18 +228,8 @@ export default function App() {
         return;
       }
 
-      if (e.key === 'ArrowDown' || e.key === 's' || e.key === 'S') {
-        e.preventDefault();
-        soundFx.playHover();
-        setHoveredIndex((prev) => (prev === null ? 0 : (prev + 1) % MENU_ITEMS.length));
-      } else if (e.key === 'ArrowUp' || e.key === 'w' || e.key === 'W') {
-        e.preventDefault();
-        soundFx.playHover();
-        setHoveredIndex((prev) =>
-          prev === null ? MENU_ITEMS.length - 1 : (prev - 1 + MENU_ITEMS.length) % MENU_ITEMS.length
-        );
-      } else if (e.key === 'Enter' || e.key === ' ') {
-        if (hoveredIndex !== null) {
+      if (e.key === 'Enter' || e.key === ' ') {
+        if (hoveredIndex !== null && !MENU_ITEMS[hoveredIndex]?.disabled) {
           e.preventDefault();
           handleTriggerMenu(hoveredIndex);
         }
@@ -433,28 +425,32 @@ export default function App() {
               >
                 {MENU_ITEMS.map((item, idx) => {
                   const isActive =
-                    hoveredIndex === idx ||
-                    (hoveredIndex === null && clickedIndex === idx && activeModal !== null);
+                    !item.disabled &&
+                    (hoveredIndex === idx ||
+                      (hoveredIndex === null && clickedIndex === idx && activeModal !== null));
 
                   return (
                     <button
                       key={item.id}
                       type="button"
+                      disabled={item.disabled}
                       onMouseEnter={() => {
+                        if (item.disabled) {
+                          setHoveredIndex(null);
+                          return;
+                        }
                         if (hoveredIndex !== idx) {
                           soundFx.playHover();
                           setHoveredIndex(idx);
                         }
                         if (item.id === 'dating') {
                           loadDatingPage();
-                        } else {
-                          loadGameModals();
                         }
                       }}
                       onClick={() => handleTriggerMenu(idx)}
                       className={`game-menu-btn h-7 sm:h-9 w-full px-2 sm:px-3.5 text-left text-[11px] sm:text-[13px] tracking-[0.14em] sm:tracking-[0.24em] font-semibold uppercase whitespace-nowrap focus:outline-none ${
-                        isActive ? 'game-menu-btn-active' : 'game-menu-btn-idle'
-                      }`}
+                        item.disabled ? 'cursor-default' : 'cursor-pointer'
+                      } ${isActive ? 'game-menu-btn-active' : 'game-menu-btn-idle'}`}
                     >
                       <span className="relative z-10">
                         {lang === 'VI' ? item.labelVI : item.labelEN}
@@ -472,7 +468,6 @@ export default function App() {
                   onMouseEnter={() => {
                     soundFx.playHover();
                     loadEventsPage();
-                    loadGameModals();
                   }}
                   onClick={() => {
                     soundFx.playSelect();
@@ -536,16 +531,22 @@ export default function App() {
                   >
                     {SUB_MENU_ITEMS.map((subItem, idx) => {
                       const isSubActive =
-                        hoveredSubIndex === idx ||
-                        (hoveredSubIndex === null &&
-                          clickedSubIndex === idx &&
-                          activeModal !== null);
+                        !subItem.disabled &&
+                        (hoveredSubIndex === idx ||
+                          (hoveredSubIndex === null &&
+                            clickedSubIndex === idx &&
+                            activeModal !== null));
 
                       return (
                         <button
                           key={subItem.id}
                           type="button"
+                          disabled={subItem.disabled}
                           onMouseEnter={() => {
+                            if (subItem.disabled) {
+                              setHoveredSubIndex(null);
+                              return;
+                            }
                             if (hoveredSubIndex !== idx) {
                               soundFx.playHover();
                               setHoveredSubIndex(idx);
@@ -556,14 +557,12 @@ export default function App() {
                                 '/assets/aistudio/tracebackii_6e3cf5cf.webp',
                                 '/assets/aistudio/cloud1_77474636.webp',
                               ]);
-                            } else {
-                              loadGameModals();
                             }
                           }}
                           onClick={() => handleTriggerSubMenu(subItem, idx)}
                           className={`game-menu-btn h-7 sm:h-9 w-full px-2 sm:px-3.5 text-right text-[11px] sm:text-[13px] tracking-[0.14em] sm:tracking-[0.24em] font-semibold uppercase whitespace-nowrap focus:outline-none ${
-                            isSubActive ? 'game-menu-btn-active' : 'game-menu-btn-idle'
-                          }`}
+                            subItem.disabled ? 'cursor-default' : 'cursor-pointer'
+                          } ${isSubActive ? 'game-menu-btn-active' : 'game-menu-btn-idle'}`}
                         >
                           <span className="relative z-10">
                             {lang === 'VI' ? subItem.labelVI : subItem.labelEN}
