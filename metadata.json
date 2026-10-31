@@ -1,0 +1,6 @@
+{
+  "name": "Trăng Soi Dặm Trường",
+  "description": "Giao diện màn hình chính phong cách game PC sci-fi với video nền lặp vô tận và hiệu ứng mưa sao băng từ phải sang trái.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

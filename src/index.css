@@ -1,0 +1,404 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --font-display: 'Chakra Petch', 'Exo 2', sans-serif;
+    --font-ui: 'Chakra Petch', sans-serif;
+  }
+
+  body {
+    font-family: var(--font-ui);
+    background-color: #090414;
+    color: #ffffff;
+    overflow: hidden;
+  }
+}
+
+/* Slender, Sleek Metallic Silver Sci-Fi Title matching reference "GAME OVER" */
+.cyber-title-wrapper {
+  position: relative;
+  display: inline-block;
+  filter:
+    drop-shadow(0 1px 0px rgba(32, 48, 64, 0.9))
+    drop-shadow(0 4px 10px rgba(0, 0, 0, 0.75))
+    drop-shadow(0 0 14px rgba(175, 235, 255, 0.32));
+}
+
+.cyber-title-line {
+  position: relative;
+  display: block;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-style: italic;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  line-height: 1.18;
+  transform: skewX(-6deg) scaleX(1.14);
+  transform-origin: left center;
+  /* Crisp, airy metallic chrome-silver gradient with icy cyan-white specular sheen */
+  background-image: linear-gradient(
+    180deg,
+    #ffffff 0%,
+    #eaf3fa 22%,
+    #9eb2c4 47%,
+    #788da1 53%,
+    #e6f2fa 60%,
+    #bfd0de 80%,
+    #f2fbff 95%,
+    #a8cbe0 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-stroke: 0.45px rgba(240, 250, 255, 0.85);
+}
+
+/* Razor-thin chiseled 3D metallic edge */
+.cyber-title-line::before {
+  content: attr(data-text);
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  color: transparent;
+  -webkit-text-stroke: 1.2px rgba(45, 64, 82, 0.78);
+  transform: translate(1px, 1.5px);
+  pointer-events: none;
+}
+
+/* Delicate icy bottom rim reflection */
+.cyber-title-line::after {
+  content: attr(data-text);
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  color: transparent;
+  -webkit-text-stroke: 0.75px rgba(165, 238, 255, 0.48);
+  transform: translate(-0.5px, 2px);
+  filter: blur(0.6px);
+  pointer-events: none;
+}
+
+/* Holographic PC Game Menu Buttons */
+.game-menu-btn {
+  position: relative;
+  font-family: var(--font-ui);
+  letter-spacing: 0.24em;
+  transition:
+    color 160ms cubic-bezier(0.16, 1, 0.3, 1),
+    text-shadow 160ms cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 160ms cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 160ms cubic-bezier(0.16, 1, 0.3, 1),
+    background 160ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Idle state: ONLY text, no box or border */
+.game-menu-btn-idle {
+  background: transparent;
+  border: 1.5px solid transparent;
+  box-shadow: none;
+  color: rgba(243, 232, 255, 0.88);
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.75);
+}
+
+/* Hover or Clicked state: Glowing purple frame surrounding the item (like CODEX in reference) */
+.game-menu-btn-active {
+  background: linear-gradient(
+    90deg,
+    rgba(46, 14, 84, 0.58) 0%,
+    rgba(88, 28, 135, 0.28) 55%,
+    rgba(30, 10, 60, 0.45) 100%
+  );
+  border: 1.5px solid #e879f9;
+  box-shadow:
+    0 0 12px rgba(217, 70, 239, 0.85),
+    0 0 26px rgba(168, 85, 247, 0.45),
+    inset 0 0 12px rgba(217, 70, 239, 0.45);
+  color: #ffffff;
+  text-shadow:
+    0 0 8px #ffffff,
+    0 0 16px #e879f9,
+    0 0 28px #a855f7;
+}
+
+/* Inner double-frame outline visible only when active/hovered */
+.game-menu-btn-active::before {
+  content: '';
+  position: absolute;
+  inset: 2px;
+  border: 1px solid rgba(245, 208, 254, 0.48);
+  pointer-events: none;
+}
+
+/* Right-side Cyberpunk Arrow `<` & Top-Right Eye Trigger */
+.cyber-arrow-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #f5d0fe;
+  filter:
+    drop-shadow(0 0 6px rgba(232, 121, 249, 0.95))
+    drop-shadow(0 0 14px rgba(168, 85, 247, 0.75));
+  transition:
+    transform 200ms cubic-bezier(0.16, 1, 0.3, 1),
+    filter 200ms cubic-bezier(0.16, 1, 0.3, 1),
+    color 200ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.cyber-arrow-btn:hover {
+  color: #ffffff;
+  filter:
+    drop-shadow(0 0 8px #ffffff)
+    drop-shadow(0 0 16px #e879f9)
+    drop-shadow(0 0 28px #a855f7);
+  transform: scale(1.12);
+}
+
+/* Subtle Cyberpunk Background Glitch Effect for Dating Page */
+@keyframes cyberVideoGlitch {
+  0%, 91%, 100% {
+    transform: translate3d(0, 0, 0) scale(1);
+    filter: hue-rotate(0deg) saturate(1.05);
+  }
+  92% {
+    transform: translate3d(-3px, 1px, 0) scale(1.006);
+    filter: hue-rotate(-14deg) saturate(1.35) contrast(1.08);
+  }
+  93.5% {
+    transform: translate3d(3px, -1px, 0) scale(1.004);
+    filter: hue-rotate(16deg) saturate(1.4);
+  }
+  95% {
+    transform: translate3d(-1.5px, 0, 0) scale(1.002);
+    filter: hue-rotate(-6deg) saturate(1.15);
+  }
+  96.5% {
+    transform: translate3d(0, 0, 0) scale(1);
+    filter: hue-rotate(0deg) saturate(1.05);
+  }
+}
+
+@keyframes cyberSliceGlitch1 {
+  0%, 86%, 100% {
+    opacity: 0;
+    transform: translateY(0) translateX(0);
+  }
+  87% {
+    opacity: 0.75;
+    transform: translateY(18vh) translateX(-8px);
+  }
+  88.5% {
+    opacity: 0.35;
+    transform: translateY(62vh) translateX(10px);
+  }
+  90% {
+    opacity: 0.8;
+    transform: translateY(34vh) translateX(-5px);
+  }
+  91.5% {
+    opacity: 0;
+    transform: translateY(0) translateX(0);
+  }
+}
+
+@keyframes cyberSliceGlitch2 {
+  0%, 42%, 48%, 100% {
+    opacity: 0;
+    transform: translateY(0) translateX(0);
+  }
+  43% {
+    opacity: 0.65;
+    transform: translateY(74vh) translateX(7px);
+  }
+  44.5% {
+    opacity: 0.45;
+    transform: translateY(27vh) translateX(-9px);
+  }
+  46% {
+    opacity: 0.7;
+    transform: translateY(51vh) translateX(4px);
+  }
+}
+
+.cyber-bg-video-glitch {
+  animation: cyberVideoGlitch 5.5s infinite ease-in-out;
+}
+
+.cyber-dating-glitch-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  overflow: hidden;
+  /* Delicate cyberpunk CRT scanlines + faint neon grid */
+  background-image:
+    repeating-linear-gradient(
+      0deg,
+      rgba(232, 121, 249, 0.035) 0px,
+      rgba(232, 121, 249, 0.035) 1px,
+      transparent 1px,
+      transparent 3px
+    ),
+    radial-gradient(
+      circle at 50% 25%,
+      rgba(192, 38, 211, 0.12) 0%,
+      rgba(9, 3, 21, 0.45) 75%
+    );
+}
+
+.cyber-dating-glitch-overlay::before,
+.cyber-dating-glitch-overlay::after {
+  content: '';
+  position: absolute;
+  left: -5%;
+  width: 110%;
+  pointer-events: none;
+}
+
+/* Cyan-Magenta horizontal glitch slice 1 */
+.cyber-dating-glitch-overlay::before {
+  top: 0;
+  height: 26px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(103, 232, 249, 0.16) 20%,
+    rgba(232, 121, 249, 0.22) 55%,
+    rgba(103, 232, 249, 0.14) 85%,
+    transparent 100%
+  );
+  border-top: 1px solid rgba(103, 232, 249, 0.32);
+  border-bottom: 1px solid rgba(232, 121, 249, 0.28);
+  mix-blend-mode: screen;
+  animation: cyberSliceGlitch1 5.5s infinite steps(1, end);
+}
+
+/* Secondary thin neon interference slice 2 */
+.cyber-dating-glitch-overlay::after {
+  top: 0;
+  height: 12px;
+  background: linear-gradient(
+    90deg,
+    transparent 5%,
+    rgba(232, 121, 249, 0.2) 35%,
+    rgba(103, 232, 249, 0.22) 70%,
+    transparent 95%
+  );
+  border-top: 1px solid rgba(232, 121, 249, 0.35);
+  mix-blend-mode: screen;
+  animation: cyberSliceGlitch2 7s infinite steps(1, end);
+}
+
+/* Traceback II Spaceship Gentle Levitation (Floating up & down in place) */
+@keyframes tracebackLevitate {
+  0%, 100% {
+    transform: translate3d(0, -14px, 0) rotate(-1.2deg);
+  }
+  50% {
+    transform: translate3d(0, 16px, 0) rotate(1.2deg);
+  }
+}
+
+.traceback-ship-float {
+  animation: tracebackLevitate 5.2s ease-in-out infinite;
+  will-change: transform;
+}
+
+/* Slow atmospheric cloud drift animations using `translate` so inline `transform` (rotate/scale/flip) is preserved */
+@keyframes cyberCloudDriftSlow {
+  0%, 100% {
+    translate: 0px 0px;
+  }
+  50% {
+    translate: -22px -8px;
+  }
+}
+
+@keyframes cyberCloudDriftReverse {
+  0%, 100% {
+    translate: 0px 0px;
+  }
+  50% {
+    translate: 24px 7px;
+  }
+}
+
+.cyber-cloud-slow {
+  animation: cyberCloudDriftSlow 12s ease-in-out infinite;
+  will-change: translate;
+}
+
+.cyber-cloud-reverse {
+  animation: cyberCloudDriftReverse 14s ease-in-out infinite;
+  will-change: translate;
+}
+
+/* Blade Runner 2049 / Sci-Fi Holographic HUD Laser Scan & Flicker */
+@keyframes cyberHudScan {
+  0% {
+    top: -12%;
+    opacity: 0;
+  }
+  15% {
+    opacity: 0.75;
+  }
+  85% {
+    opacity: 0.75;
+  }
+  100% {
+    top: 108%;
+    opacity: 0;
+  }
+}
+
+@keyframes cyberHudPulse {
+  0%, 100% {
+    opacity: 0.92;
+  }
+  48% {
+    opacity: 0.98;
+  }
+  50% {
+    opacity: 0.78;
+  }
+  52% {
+    opacity: 0.96;
+  }
+}
+
+.cyber-hud-scanline {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(34, 211, 238, 0.85) 25%,
+    rgba(251, 146, 60, 0.9) 55%,
+    rgba(232, 121, 249, 0.85) 80%,
+    transparent 100%
+  );
+  box-shadow: 0 0 12px rgba(34, 211, 238, 0.75);
+  animation: cyberHudScan 4.8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  pointer-events: none;
+}
+
+.cyber-hud-holo {
+  animation: cyberHudPulse 6s infinite ease-in-out;
+}
+
+/* Custom sleek cyberpunk scrollbar for Events page */
+.cyber-events-scroll::-webkit-scrollbar {
+  width: 5px;
+}
+
+.cyber-events-scroll::-webkit-scrollbar-track {
+  background: rgba(9, 4, 20, 0.75);
+}
+
+.cyber-events-scroll::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #22d3ee, #e879f9);
+  border-radius: 9999px;
+}
+
+
