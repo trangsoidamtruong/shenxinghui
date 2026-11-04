@@ -11,6 +11,10 @@ class SoundEffectsManager {
     // Sound effect disabled
   }
 
+  playClick() {
+    // Sound effect disabled
+  }
+
   playBack() {
     // Sound effect disabled
   }

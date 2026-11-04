@@ -2,19 +2,40 @@ import React, { useState, useRef, useCallback, useEffect } from 'react';
 import {
   ChevronLeft,
   ChevronRight,
-  Clock,
   ExternalLink,
   X,
 } from 'lucide-react';
 import { soundFx } from '../utils/soundFx';
 
+// ═══ TIMING CONSTANTS (Hằng số thời gian hiệu ứng) ═══
+const TYPEWRITER_CHAR_DELAY_MS = 32;
+const CARD_REVEAL_DURATION_MS = 300;
+const YEAR_CARD_STAGGER_MS = 90;
+const EVENT_CARD_STAGGER_MS = 80;
+
+const GLITCH_STAGGER_MS = 90;
+const GLITCH_DURATION_MS = 350;
+const GLITCH_PHASE_END_MS = 700;
+const LOCK_COORD_DURATION_MS = 800;
+const TIMELINE_REVEAL_MS = 1500; // GLITCH_PHASE_END_MS (700) + LOCK_COORD_DURATION_MS (800)
+
+// Hằng số thời gian khi bật prefers-reduced-motion
+const REDUCED_FADE_DURATION_MS = 150;
+const REDUCED_LOCK_DURATION_MS = 400;
+const REDUCED_TIMELINE_REVEAL_MS = 550; // 150 + 400
+
+// Chỉ gõ dòng "> Adjust your radar..." đúng MỘT lần mỗi lần tải trang
+let hasRadarTypedOnPageLoad = false;
+
 interface EventsPageProps {
   lang: 'VI' | 'EN';
   isPhone: boolean;
+  onToggleLang?: () => void;
   onBackHome: () => void;
 }
 
 type EventYear = '2024' | '2025' | '2026';
+type YearTransitionPhase = 'idle' | 'glitching' | 'locking' | 'timeline';
 
 interface YearEventItem {
   id: string;
@@ -28,6 +49,7 @@ interface YearEventItem {
   bannerImg: string;
   accentColor: 'cyan' | 'fuchsia' | 'amber';
   linkUrl?: string;
+  isClickable?: boolean;
 }
 
 interface YearArchiveData {
@@ -259,68 +281,54 @@ const YEAR_ARCHIVES: YearArchiveData[] = [
       'Hành trình lật mở những mảnh ghép quá khứ và đắm chìm vào vũ trụ song song',
     descEN:
       'A journey uncovering fragments of the past and immersing in parallel universes.',
-    coverImg: '/assets/aistudio/fallingforyou2_359eb888.webp',
-    badgeTextVI: '04 SỰ KIỆN',
-    badgeTextEN: '04 EVENTS',
+    coverImg: '/assets/aistudio/2025-0_059a465e.webp',
+    badgeTextVI: '03 SỰ KIỆN',
+    badgeTextEN: '03 EVENTS',
     glowClass: 'from-fuchsia-500/35 via-purple-900/45 to-[#090414]/95',
     borderClass: 'border-fuchsia-400/60 hover:border-pink-300',
     accentHex: '#e879f9',
     events: [
       {
-        id: '2025-01',
-        date: '2025.02',
-        typeVI: 'ƯỚC HẸN MÙA XUÂN',
-        typeEN: 'VALENTINE CHRONICLE',
-        titleVI: 'Lời Thì Thầm Nơi Vườn Tinh Vân',
-        titleEN: 'Whispers in the Nebula Garden',
+        id: '2025-0',
+        date: '31/12/2024 - 19/1/2025',
+        typeVI: 'ƯỚC NGUYỆN GIỚI HẠN',
+        typeEN: 'LIMITED WISH POOL',
+        titleVI: 'Nightly Rendezvous — Điểm Hẹn Đêm Khuya',
+        titleEN: 'Nightly Rendezvous',
         summaryVI:
-          'Hành trình khám phá nhà kính thực vật phát sáng trong đêm Cyberpunk cùng bộ sưu tập trang phục đôi giới hạn.',
+          'Đại sự kiện Ước Nguyện Giới Hạn mở màn kỷ niệm 1 năm ra mắt với chuỗi ký ức 5 sao nồng nhiệt và quyến rũ, bao gồm ký ức giới hạn Xavier: Misty Silhouette.',
         summaryEN:
-          'Exploring a bioluminescent botanical conservatory in the Cyberpunk night with limited couple outfits.',
-        bannerImg: '/assets/aistudio/fallingforyou2_359eb888.webp',
+          '1st Anniversary Limited Wish Pool showcasing passionate 5-Star Memories, featuring the limited Memory Xavier: Misty Silhouette.',
+        bannerImg: '/assets/aistudio/2025-0_059a465e.webp',
         accentColor: 'fuchsia',
       },
       {
-        id: '2025-02',
-        date: '2025.06',
-        typeVI: 'NHIỆM VỤ KHÔNG GIAN',
-        typeEN: 'DEEPSPACE EXPEDITION',
-        titleVI: 'Mật Mã Tàu Traceback II',
-        titleEN: 'Traceback II Core Cipher',
+        id: '2025-1',
+        date: '31/12/2024 - 19/1/2025',
+        typeVI: 'SỰ KIỆN KỶ NIỆM',
+        typeEN: 'ANNIVERSARY EVENT',
+        titleVI: 'Touring In Love — Hành Trình Yêu Thương',
+        titleEN: 'Touring In Love',
         summaryVI:
-          'Giải mã hộp đen điều hướng của con tàu cổ đại đang trôi dạt giữa biển mây tím ngoài rìa thiên hà.',
+          'Sự kiện lễ hội kỷ niệm đặc biệt Touring In Love với hành trình du ngoạn Chibi, cốt truyện kỷ niệm ngọt ngào và cửa hàng phúc lợi đổi miễn phí ký ức 4 sao cùng nhiều vật phẩm giới hạn.',
         summaryEN:
-          'Decrypting the navigation blackbox of the ancient vessel drifting amidst violet clouds at the galaxy edge.',
-        bannerImg: '/assets/aistudio/anec3_e3831a87.webp',
-        accentColor: 'cyan',
-      },
-      {
-        id: '2025-03',
-        date: '2025.10.16',
-        typeVI: 'SINH NHẬT XAVIER',
-        typeEN: 'BIRTHDAY SPECIAL',
-        titleVI: 'Ánh Trăng Chạm Ngõ Giấc Mơ',
-        titleEN: 'Moonlight Across Your Dreams',
-        summaryVI:
-          'Chuyến du hành bằng tàu bay qua biển mây phát sáng và nghi thức ước nguyện dưới chòm sao hộ mệnh.',
-        summaryEN:
-          'An airship voyage across luminous cloud seas and a wishing ritual beneath the guardian constellation.',
-        bannerImg: '/assets/aistudio/photo3_b824d30d.webp',
+          'Special Anniversary festival event Touring In Love featuring Chibi travel adventures, commemorative stories, and an event shop with free 4-Star Memories and limited rewards.',
+        bannerImg: '/assets/aistudio/2025-1_553abbad.webp',
         accentColor: 'amber',
       },
       {
-        id: '2025-04',
-        date: '2025.12',
-        typeVI: 'KỶ NIỆM NIÊN ĐẠI',
-        typeEN: 'ANNIVERSARY GALA',
-        titleVI: 'Giao Thừa Giữa Vạn Vì Sao',
-        titleEN: 'New Year Eve Among Myriad Stars',
+        id: '2025-2',
+        date: '31/12/2024 - 19/1/2025',
+        typeVI: 'SỰ KIỆN PHÚC LỢI',
+        typeEN: 'WELFARE EVENT',
+        titleVI: 'Xavier: Love Syndrome — Hội Chứng Tương Tư',
+        titleEN: 'Xavier: Love Syndrome',
         summaryVI:
-          'Sự kiện tổng kết hành trình năm 2025 với bộ ảnh Photo Studio đặc biệt và kỷ vật hoa Uluru vĩnh cửu.',
+          'Ký ức 4 sao phúc lợi Xavier: Love Syndrome nhận miễn phí trong sự kiện kỷ niệm Touring In Love — khoảnh khắc bình yên khi cùng anh tựa đầu chìm vào giấc ngủ ấm áp.',
         summaryEN:
-          '2025 finale event featuring special Photo Studio templates and eternal Uluru flower keepsakes.',
-        bannerImg: '/assets/aistudio/journal2_bbfb2f85.webp',
-        accentColor: 'fuchsia',
+          'Free welfare 4-Star Memory Xavier: Love Syndrome obtainable during the Touring In Love event — a tender, cozy moment dozing off together side by side.',
+        bannerImg: '/assets/aistudio/2025-2_df0a0e0f.webp',
+        accentColor: 'cyan',
       },
     ],
   },
@@ -606,6 +614,7 @@ const YEAR_ARCHIVES: YearArchiveData[] = [
           'Blockbuster crossover collaboration between Love and Deepspace and the sci-fi masterpiece Blade Runner 2049 — "Love is real. All for you." bathed in neon cyberpunk light.',
         bannerImg: '/assets/aistudio/2026-18_613eacc6.webp',
         accentColor: 'cyan',
+        isClickable: true,
       },
     ],
   },
@@ -614,10 +623,12 @@ const YEAR_ARCHIVES: YearArchiveData[] = [
 export const EventsPage: React.FC<EventsPageProps> = ({
   lang,
   isPhone,
+  onToggleLang,
   onBackHome,
 }) => {
   const scrollContainerRef = useRef<HTMLDivElement | null>(null);
   const yearSectionRef = useRef<HTMLElement | null>(null);
+  const timelineHeadingRef = useRef<HTMLHeadingElement | null>(null);
   const hudContainerRef = useRef<HTMLDivElement | null>(null);
   const heroShipRef = useRef<HTMLDivElement | null>(null);
   const bgCloudsRef = useRef<HTMLDivElement | null>(null);
@@ -625,14 +636,51 @@ export const EventsPage: React.FC<EventsPageProps> = ({
   const orbitTrackRef = useRef<HTMLDivElement | null>(null);
   const orbitShipRef = useRef<HTMLDivElement | null>(null);
   const orbitWakeRef = useRef<HTMLDivElement | null>(null);
+  const orbitAltLabelRef = useRef<HTMLSpanElement | null>(null);
   const orbitShipYRef = useRef<number>(0);
   const orbitShipAppearedRef = useRef<boolean>(false);
   const eventRowRefs = useRef<(HTMLDivElement | null)[]>([]);
   const enterTimerRef = useRef<number | null>(null);
   const scrollRafRef = useRef<number | null>(null);
+  const measureRafRef = useRef<number | null>(null);
+
+  // Smooth inertial scroll tracking for Section 1 Ship & Clouds + Timeline Orbit
+  const targetScrollTopRef = useRef<number>(0);
+  const smoothScrollTopRef = useRef<number>(0);
+  const cloudsPausedRef = useRef<boolean>(false);
+
+  // Cached Timeline DOM geometry so scrolling performs 0 layout reads per frame
+  const orbitMetricsRef = useRef<{
+    viewportH: number;
+    scrollHeight: number;
+    sectionTop: number;
+    trackTopInScroll: number;
+    trackHeight: number;
+    rowTriggerYs: number[];
+  } | null>(null);
+
+  // Refs quản lý bộ đếm thời gian & khoá tương tác cho hiệu ứng A và B
+  const isTransitioningRef = useRef<boolean>(false);
+  const typewriterIntervalRef = useRef<number | null>(null);
+  const cardRevealSettleTimerRef = useRef<number | null>(null);
+  const glitchPhaseTimerRef = useRef<number | null>(null);
+  const revealTimelineTimerRef = useRef<number | null>(null);
+  const eventStaggerDoneTimerRef = useRef<number | null>(null);
+
+  const isReducedMotionPreferred = useCallback(() => {
+    return (
+      typeof window !== 'undefined' &&
+      Boolean(
+        window.matchMedia &&
+          window.matchMedia('(prefers-reduced-motion: reduce)').matches
+      )
+    );
+  }, []);
 
   // Selected year ('2024' | '2025' | '2026' | null) when user clicks one of the 3 year cards
   const [selectedYear, setSelectedYear] = useState<EventYear | null>(null);
+  // Chuỗi trạng thái chuyển cảnh: 'idle' -> 'glitching' -> 'locking' -> 'timeline'
+  const [transitionPhase, setTransitionPhase] = useState<YearTransitionPhase>('idle');
   // Selected event index inside activeYearData.events for the Event Dossier Modal
   const [selectedEventIndex, setSelectedEventIndex] = useState<number | null>(null);
   // Controls the "appear from top bar down to current position" animation of Traceback II
@@ -640,6 +688,164 @@ export const EventsPage: React.FC<EventsPageProps> = ({
   const [orbitShipEntering, setOrbitShipEntering] = useState<boolean>(false);
   // Tracks which event rows Traceback II has reached along the vertical axis
   const [reachedEventMap, setReachedEventMap] = useState<Record<number, boolean>>({});
+  // Bật hiệu ứng trượt lên lần lượt cho các thẻ sự kiện đang trong khung nhìn khi timeline vừa mở
+  const [timelineEventsStaggering, setTimelineEventsStaggering] = useState<boolean>(false);
+
+  // Trạng thái gõ máy cho dòng "> Adjust your radar..." (Mục A)
+  const radarBodyText =
+    lang === 'VI'
+      ? 'Hãy điều chỉnh radar và chọn tọa độ để đáp xuống.'
+      : 'Adjust your radar and select a coordinate for landing.';
+  const radarBodyTextRef = useRef<string>(radarBodyText);
+  radarBodyTextRef.current = radarBodyText;
+
+  const [typedCharCount, setTypedCharCount] = useState<number>(() =>
+    hasRadarTypedOnPageLoad ? radarBodyText.length : 0
+  );
+  const [isRadarTypedDone, setIsRadarTypedDone] = useState<boolean>(
+    () => hasRadarTypedOnPageLoad
+  );
+  const [yearCardsRevealStage, setYearCardsRevealStage] = useState<
+    'hidden' | 'revealing' | 'settled'
+  >(() => (hasRadarTypedOnPageLoad ? 'settled' : 'hidden'));
+
+  const lockPageScroll = useCallback(() => {
+    if (typeof document !== 'undefined') {
+      document.body.style.overflow = 'hidden';
+    }
+    if (scrollContainerRef.current) {
+      scrollContainerRef.current.style.overflowY = 'hidden';
+    }
+  }, []);
+
+  const unlockPageScroll = useCallback(() => {
+    if (typeof document !== 'undefined') {
+      document.body.style.overflow = '';
+    }
+    if (scrollContainerRef.current) {
+      scrollContainerRef.current.style.overflowY = '';
+    }
+  }, []);
+
+  const clearAllTransitionTimers = useCallback(() => {
+    if (glitchPhaseTimerRef.current !== null) {
+      window.clearTimeout(glitchPhaseTimerRef.current);
+      glitchPhaseTimerRef.current = null;
+    }
+    if (revealTimelineTimerRef.current !== null) {
+      window.clearTimeout(revealTimelineTimerRef.current);
+      revealTimelineTimerRef.current = null;
+    }
+    if (eventStaggerDoneTimerRef.current !== null) {
+      window.clearTimeout(eventStaggerDoneTimerRef.current);
+      eventStaggerDoneTimerRef.current = null;
+    }
+    if (enterTimerRef.current !== null) {
+      window.clearTimeout(enterTimerRef.current);
+      enterTimerRef.current = null;
+    }
+  }, []);
+
+  const clearTypewriterTimers = useCallback(() => {
+    if (typewriterIntervalRef.current !== null) {
+      window.clearInterval(typewriterIntervalRef.current);
+      typewriterIntervalRef.current = null;
+    }
+    if (cardRevealSettleTimerRef.current !== null) {
+      window.clearTimeout(cardRevealSettleTimerRef.current);
+      cardRevealSettleTimerRef.current = null;
+    }
+  }, []);
+
+  // Dọn toàn bộ timers & mở khóa cuộn khi rời trang (unmount)
+  useEffect(() => {
+    return () => {
+      clearAllTransitionTimers();
+      clearTypewriterTimers();
+      if (scrollRafRef.current !== null) {
+        window.cancelAnimationFrame(scrollRafRef.current);
+        scrollRafRef.current = null;
+      }
+      if (measureRafRef.current !== null) {
+        window.cancelAnimationFrame(measureRafRef.current);
+        measureRafRef.current = null;
+      }
+      unlockPageScroll();
+      isTransitioningRef.current = false;
+    };
+  }, [clearAllTransitionTimers, clearTypewriterTimers, unlockPageScroll]);
+
+  // Nếu người dùng đổi ngôn ngữ sau khi đã gõ xong thì cập nhật độ dài chữ đầy đủ ngay
+  useEffect(() => {
+    if (isRadarTypedDone || hasRadarTypedOnPageLoad) {
+      setTypedCharCount(radarBodyText.length);
+    }
+  }, [lang, radarBodyText.length, isRadarTypedDone]);
+
+  // Mục A: IntersectionObserver (threshold 0.25) kích hoạt gõ chữ đúng MỘT lần mỗi lần tải trang
+  useEffect(() => {
+    const sectionEl = yearSectionRef.current;
+    if (!sectionEl) return;
+
+    if (hasRadarTypedOnPageLoad || isReducedMotionPreferred()) {
+      hasRadarTypedOnPageLoad = true;
+      setTypedCharCount(radarBodyTextRef.current.length);
+      setIsRadarTypedDone(true);
+      setYearCardsRevealStage('settled');
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const entry = entries[0];
+        if (!entry || !entry.isIntersecting) return;
+
+        observer.disconnect();
+
+        if (hasRadarTypedOnPageLoad || isReducedMotionPreferred()) {
+          hasRadarTypedOnPageLoad = true;
+          setTypedCharCount(radarBodyTextRef.current.length);
+          setIsRadarTypedDone(true);
+          setYearCardsRevealStage('settled');
+          return;
+        }
+
+        hasRadarTypedOnPageLoad = true;
+        let currentIdx = 0;
+        setTypedCharCount(0);
+
+        typewriterIntervalRef.current = window.setInterval(() => {
+          currentIdx += 1;
+          const totalLen = radarBodyTextRef.current.length;
+          setTypedCharCount(currentIdx);
+
+          if (currentIdx >= totalLen) {
+            if (typewriterIntervalRef.current !== null) {
+              window.clearInterval(typewriterIntervalRef.current);
+              typewriterIntervalRef.current = null;
+            }
+            setIsRadarTypedDone(true);
+            setYearCardsRevealStage('revealing');
+
+            cardRevealSettleTimerRef.current = window.setTimeout(() => {
+              setYearCardsRevealStage('settled');
+              cardRevealSettleTimerRef.current = null;
+            }, CARD_REVEAL_DURATION_MS + YEAR_ARCHIVES.length * YEAR_CARD_STAGGER_MS + 40);
+          }
+        }, TYPEWRITER_CHAR_DELAY_MS);
+      },
+      {
+        root: scrollContainerRef.current,
+        threshold: 0.25,
+      }
+    );
+
+    observer.observe(sectionEl);
+
+    return () => {
+      observer.disconnect();
+    };
+  }, [isReducedMotionPreferred]);
 
   const syncSection1DomNodes = useCallback(
     (scrollTopPx: number, scrollProgress: number) => {
@@ -665,15 +871,36 @@ export const EventsPage: React.FC<EventsPageProps> = ({
       }
 
       const cloudsVisible = scrollProgress < 0.99;
-      if (bgCloudsRef.current) {
-        bgCloudsRef.current.style.visibility = cloudsVisible ? 'visible' : 'hidden';
-      }
-      if (fgCloudsRef.current) {
-        fgCloudsRef.current.style.visibility = cloudsVisible ? 'visible' : 'hidden';
+      const shouldPauseClouds = !cloudsVisible || document.hidden;
+      if (cloudsPausedRef.current !== shouldPauseClouds) {
+        cloudsPausedRef.current = shouldPauseClouds;
+        if (bgCloudsRef.current) {
+          bgCloudsRef.current.style.visibility = cloudsVisible ? 'visible' : 'hidden';
+          bgCloudsRef.current.classList.toggle('events-clouds-paused', shouldPauseClouds);
+        }
+        if (fgCloudsRef.current) {
+          fgCloudsRef.current.style.visibility = cloudsVisible ? 'visible' : 'hidden';
+          fgCloudsRef.current.classList.toggle('events-clouds-paused', shouldPauseClouds);
+        }
+        if (heroShipRef.current) {
+          heroShipRef.current.classList.toggle('events-clouds-paused', shouldPauseClouds);
+        }
       }
     },
     [isPhone]
   );
+
+  // Pause cloud & ship CSS animations when the browser tab is hidden
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      const pause = document.hidden || cloudsPausedRef.current;
+      bgCloudsRef.current?.classList.toggle('events-clouds-paused', pause);
+      fgCloudsRef.current?.classList.toggle('events-clouds-paused', pause);
+      heroShipRef.current?.classList.toggle('events-clouds-paused', pause);
+    };
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
+  }, []);
 
   const syncOrbitDomNodes = useCallback(
     (y: number, appeared: boolean) => {
@@ -688,20 +915,65 @@ export const EventsPage: React.FC<EventsPageProps> = ({
         orbitWakeRef.current.style.height = `${wakeH.toFixed(1)}px`;
         orbitWakeRef.current.style.opacity = appeared ? '1' : '0';
       }
+      if (orbitAltLabelRef.current) {
+        const altVal = Math.max(0, y / 42).toFixed(1).padStart(4, '0');
+        orbitAltLabelRef.current.textContent = `ALT ${altVal}`;
+      }
     },
     [isPhone]
   );
 
+  // Measure and cache Timeline DOM geometry once on open / resize / image load (never during scroll)
+  const measureTimelineMetrics = useCallback(() => {
+    const el = scrollContainerRef.current;
+    const trackEl = orbitTrackRef.current;
+    if (!el || !trackEl) {
+      orbitMetricsRef.current = null;
+      return;
+    }
+
+    const viewportH = el.clientHeight || window.innerHeight || 800;
+    const scrollHeight = el.scrollHeight;
+    const scrollTop = el.scrollTop;
+    const trackRect = trackEl.getBoundingClientRect();
+    const containerRect = el.getBoundingClientRect();
+    const trackTopInScroll = trackRect.top - containerRect.top + scrollTop;
+    const trackHeight = trackRect.height;
+    const sectionTop = yearSectionRef.current ? yearSectionRef.current.offsetTop : 0;
+
+    const rowTriggerYs: number[] = [];
+    eventRowRefs.current.forEach((rowEl, idx) => {
+      if (!rowEl) return;
+      const parentOffsetTop = (rowEl.offsetParent as HTMLElement)?.offsetTop || 0;
+      const rowTopInTrack = parentOffsetTop + rowEl.offsetTop;
+      rowTriggerYs[idx] =
+        rowTopInTrack + Math.min(rowEl.offsetHeight * 0.18, isPhone ? 32 : 52);
+    });
+
+    orbitMetricsRef.current = {
+      viewportH,
+      scrollHeight,
+      sectionTop,
+      trackTopInScroll,
+      trackHeight,
+      rowTriggerYs,
+    };
+  }, [isPhone]);
+
   const computeAndSyncOrbit = useCallback(
-    (el: HTMLDivElement) => {
+    (el: HTMLDivElement, currentScrollTop?: number) => {
       if (!orbitTrackRef.current) return;
-      // 1. READ ALL DOM GEOMETRY FIRST (Avoid Forced Synchronous Layout / Thrashing)
-      const viewportH = el.clientHeight || window.innerHeight || 800;
-      const scrollTop = el.scrollTop;
-      const scrollHeight = el.scrollHeight;
-      const trackRect = orbitTrackRef.current.getBoundingClientRect();
-      const containerRect = el.getBoundingClientRect();
-      const trackTopInContainer = trackRect.top - containerRect.top;
+      if (!orbitMetricsRef.current) {
+        measureTimelineMetrics();
+      }
+      const metrics = orbitMetricsRef.current;
+      if (!metrics) return;
+
+      const scrollTop = currentScrollTop ?? el.scrollTop;
+      const { viewportH, scrollHeight, sectionTop, trackTopInScroll, trackHeight, rowTriggerYs } =
+        metrics;
+      const trackTopInContainer = trackTopInScroll - scrollTop;
+      const trackBottomInContainer = trackTopInContainer + trackHeight;
 
       const shipH = isPhone ? 96 : 165;
       const maxScroll = Math.max(1, scrollHeight - viewportH);
@@ -712,25 +984,29 @@ export const EventsPage: React.FC<EventsPageProps> = ({
       );
       const anchorY = viewportH * (0.48 + nearBottomRatio * 0.34);
       const rawOrbitY = anchorY - trackTopInContainer;
-      const maxOrbitY = Math.max(0, trackRect.height - shipH);
-      const clampedOrbitY = Math.max(0, Math.min(maxOrbitY, rawOrbitY));
+      const maxOrbitY = Math.max(0, trackHeight - shipH);
 
-      // Read event row positions before mutating any styles
+      // Khởi động ở đỉnh trục (y = 0, "ALT 00.0") khi ở đầu khu timeline, sau đó bám theo scroll
+      const timelineScrollDelta = Math.max(0, scrollTop - sectionTop);
+      const rampRatio = Math.min(1, timelineScrollDelta / Math.max(1, viewportH * 0.25));
+      const clampedOrbitY = Math.max(0, Math.min(maxOrbitY, rawOrbitY * rampRatio));
+
+      // Pure math comparison against cached rowTriggerYs (0 DOM reads)
       const shipFrontY = clampedOrbitY + (isPhone ? 68 : 112);
+      const viewportReachY = Math.max(
+        shipFrontY + (isPhone ? 45 : 85),
+        viewportH - trackTopInContainer - 40
+      );
       const nextReached: Record<number, boolean> = {};
-      eventRowRefs.current.forEach((rowEl, idx) => {
-        if (!rowEl) return;
-        const parentOffsetTop = (rowEl.offsetParent as HTMLElement)?.offsetTop || 0;
-        const rowTopInTrack = parentOffsetTop + rowEl.offsetTop;
-        const rowTriggerY = rowTopInTrack + Math.min(rowEl.offsetHeight * 0.18, isPhone ? 32 : 52);
-        if (idx === 0 || shipFrontY + (isPhone ? 45 : 85) >= rowTriggerY) {
+      for (let idx = 0; idx < rowTriggerYs.length; idx++) {
+        const triggerY = rowTriggerYs[idx];
+        if (triggerY !== undefined && (idx === 0 || viewportReachY >= triggerY)) {
           nextReached[idx] = true;
         }
-      });
+      }
 
-      // 2. WRITE DOM STYLES & STATE AFTER ALL READS COMPLETE
       const isTrackVisible =
-        trackTopInContainer < viewportH * 0.92 && trackRect.bottom > containerRect.top + 20;
+        trackTopInContainer < viewportH * 0.92 && trackBottomInContainer > 20;
       let appearedNow = orbitShipAppearedRef.current;
       if (isTrackVisible && !appearedNow) {
         appearedNow = true;
@@ -758,88 +1034,315 @@ export const EventsPage: React.FC<EventsPageProps> = ({
         return nextReached;
       });
     },
-    [isPhone, syncOrbitDomNodes]
+    [isPhone, measureTimelineMetrics, syncOrbitDomNodes]
   );
 
-  // When selectedYear changes, reset and play the "appear from top bar down to current position" animation
-  useEffect(() => {
-    if (enterTimerRef.current) {
-      window.clearTimeout(enterTimerRef.current);
-      enterTimerRef.current = null;
-    }
-    eventRowRefs.current = [];
-    setReachedEventMap({});
-    setSelectedEventIndex(null);
-    orbitShipAppearedRef.current = false;
-    orbitShipYRef.current = 0;
-    setOrbitShipAppeared(false);
-    setOrbitShipEntering(false);
+  const scheduleMeasureAndSyncOrbit = useCallback(() => {
+    if (measureRafRef.current !== null) return;
+    measureRafRef.current = window.requestAnimationFrame(() => {
+      measureRafRef.current = null;
+      measureTimelineMetrics();
+      if (scrollContainerRef.current) {
+        computeAndSyncOrbit(scrollContainerRef.current);
+      }
+    });
+  }, [computeAndSyncOrbit, measureTimelineMetrics]);
 
-    if (!selectedYear) {
+  // Keep cached timeline metrics automatically updated on container or track resize
+  useEffect(() => {
+    if (transitionPhase !== 'timeline') {
+      orbitMetricsRef.current = null;
       return;
     }
 
-    let raf1 = 0;
-    let raf2 = 0;
-    raf1 = window.requestAnimationFrame(() => {
-      raf2 = window.requestAnimationFrame(() => {
-        if (scrollContainerRef.current) {
-          computeAndSyncOrbit(scrollContainerRef.current);
-        }
-      });
+    scheduleMeasureAndSyncOrbit();
+    if (typeof ResizeObserver === 'undefined') return;
+
+    const ro = new ResizeObserver(() => {
+      scheduleMeasureAndSyncOrbit();
     });
 
+    if (orbitTrackRef.current) ro.observe(orbitTrackRef.current);
+    if (scrollContainerRef.current) ro.observe(scrollContainerRef.current);
+
     return () => {
-      window.cancelAnimationFrame(raf1);
-      window.cancelAnimationFrame(raf2);
+      ro.disconnect();
     };
-  }, [selectedYear]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [transitionPhase, selectedYear, scheduleMeasureAndSyncOrbit]);
 
   const handleScroll = useCallback(
     (e: React.UIEvent<HTMLDivElement>) => {
       const el = e.currentTarget;
+      targetScrollTopRef.current = el.scrollTop;
+
       if (scrollRafRef.current !== null) return;
-      scrollRafRef.current = window.requestAnimationFrame(() => {
-        scrollRafRef.current = null;
-        const viewportH = el.clientHeight || window.innerHeight || 800;
-        const top = el.scrollTop;
+
+      const stepSmoothScroll = () => {
+        const container = scrollContainerRef.current;
+        if (!container) {
+          scrollRafRef.current = null;
+          return;
+        }
+
+        const targetTop = targetScrollTopRef.current;
+        const currentSmooth = smoothScrollTopRef.current;
+        const diff = targetTop - currentSmooth;
+        const reduced = isReducedMotionPreferred();
+
+        // Snap immediately on reduced motion, tiny sub-pixel delta, or large programmatic jump
+        let nextTop: number;
+        let shouldContinue = false;
+        if (reduced || Math.abs(diff) < 0.25 || Math.abs(diff) > 650) {
+          nextTop = targetTop;
+        } else {
+          nextTop = currentSmooth + diff * 0.26;
+          shouldContinue = true;
+        }
+        smoothScrollTopRef.current = nextTop;
+
+        const viewportH =
+          orbitMetricsRef.current?.viewportH ||
+          container.clientHeight ||
+          window.innerHeight ||
+          800;
         const maxSection1Scroll = viewportH * 1.15;
-        const clampedTop = Math.min(top, maxSection1Scroll);
-        const rawProgress = top / (viewportH * 1.05);
+        const clampedTop = Math.min(nextTop, maxSection1Scroll);
+        const rawProgress = nextTop / (viewportH * 1.05);
         const clampedProgress = Math.max(0, Math.min(1, rawProgress));
 
         // Direct DOM update for Section 1 (0 React re-renders during scroll)
         syncSection1DomNodes(clampedTop, clampedProgress);
 
         // Update Traceback II vertical orbit position & progressive event reveal along the central axis
-        computeAndSyncOrbit(el);
-      });
+        computeAndSyncOrbit(container, nextTop);
+
+        if (shouldContinue) {
+          scrollRafRef.current = window.requestAnimationFrame(stepSmoothScroll);
+        } else {
+          scrollRafRef.current = null;
+        }
+      };
+
+      scrollRafRef.current = window.requestAnimationFrame(stepSmoothScroll);
     },
-    [computeAndSyncOrbit, syncSection1DomNodes]
+    [computeAndSyncOrbit, isReducedMotionPreferred, syncSection1DomNodes]
   );
 
+  // Mục C: Quay lại màn chọn năm (nút "[ ▲ ORBIT ]") hoặc huỷ giữa chừng
   const scrollToTopSection = useCallback(() => {
     soundFx.playSelect();
+    clearAllTransitionTimers();
+    clearTypewriterTimers();
+    unlockPageScroll();
+    isTransitioningRef.current = false;
+
+    // Đảm bảo dòng "> Adjust your radar..." hiện đủ chữ ngay, KHÔNG gõ lại
+    hasRadarTypedOnPageLoad = true;
+    setTypedCharCount(radarBodyTextRef.current.length);
+    setIsRadarTypedDone(true);
+    setYearCardsRevealStage('settled');
+    setTimelineEventsStaggering(false);
+
+    // Ẩn timeline, gỡ class glitch, ẩn dòng "Locking coordinate", hiện lại 3 thẻ năm
+    setTransitionPhase('idle');
     setSelectedYear(null);
+    setSelectedEventIndex(null);
+    eventRowRefs.current = [];
     orbitShipAppearedRef.current = false;
     orbitShipYRef.current = 0;
     setOrbitShipAppeared(false);
+    setOrbitShipEntering(false);
     setReachedEventMap({});
+
     if (scrollContainerRef.current) {
       scrollContainerRef.current.scrollTo({ top: 0, behavior: 'smooth' });
     }
-  }, []);
+  }, [clearAllTransitionTimers, clearTypewriterTimers, unlockPageScroll]);
+
+  // Mục B: Chuỗi chuyển cảnh 3 bước sau khi bấm một thẻ năm (0 -> 700ms -> 1500ms)
+  const handleSelectYearCard = useCallback(
+    (yr: EventYear) => {
+      // Ngay khi bấm (t = 0): Khoá mọi tương tác, bỏ qua bấm thêm
+      if (isTransitioningRef.current || transitionPhase !== 'idle') {
+        return;
+      }
+
+      soundFx.playSelect();
+      isTransitioningRef.current = true;
+      clearAllTransitionTimers();
+      clearTypewriterTimers();
+
+      // Hoàn tất ngay dòng radar nếu người dùng bấm thẻ trước khi gõ xong
+      hasRadarTypedOnPageLoad = true;
+      setTypedCharCount(radarBodyTextRef.current.length);
+      setIsRadarTypedDone(true);
+      setYearCardsRevealStage('settled');
+
+      // Lưu năm đã chọn vào selectedYear & khoá cuộn trang
+      setSelectedYear(yr);
+      setSelectedEventIndex(null);
+      eventRowRefs.current = [];
+      setReachedEventMap({});
+      orbitShipAppearedRef.current = false;
+      orbitShipYRef.current = 0;
+      setOrbitShipAppeared(false);
+      setOrbitShipEntering(false);
+      lockPageScroll();
+
+      const reduced = isReducedMotionPreferred();
+      const glitchPhaseEnd = reduced ? REDUCED_FADE_DURATION_MS : GLITCH_PHASE_END_MS;
+      const timelineRevealAt = reduced ? REDUCED_TIMELINE_REVEAL_MS : TIMELINE_REVEAL_MS;
+
+      // Bước 1 (t = 0 -> 700ms): Cả 3 thẻ tan bằng glitch (hoặc mờ dần 150ms khi reduced motion)
+      setTransitionPhase('glitching');
+
+      // Bước 2 (t = 700ms -> 1500ms): Ẩn hẳn lưới thẻ (display:none), hiện dòng "> Locking coordinate // YYYY ..."
+      glitchPhaseTimerRef.current = window.setTimeout(() => {
+        glitchPhaseTimerRef.current = null;
+        setTransitionPhase('locking');
+      }, glitchPhaseEnd);
+
+      // Bước 3 (t = 1500ms): Hiện khu timeline, cuộn tức thì tới đầu khu nội dung, mở khoá cuộn & focus tiêu đề
+      revealTimelineTimerRef.current = window.setTimeout(() => {
+        revealTimelineTimerRef.current = null;
+        unlockPageScroll();
+        isTransitioningRef.current = false;
+
+        orbitShipAppearedRef.current = true;
+        orbitShipYRef.current = 0;
+        setOrbitShipAppeared(true);
+        setOrbitShipEntering(!reduced);
+        setTimelineEventsStaggering(!reduced);
+        setTransitionPhase('timeline');
+
+        if (!reduced) {
+          enterTimerRef.current = window.setTimeout(() => {
+            setOrbitShipEntering(false);
+            enterTimerRef.current = null;
+          }, 680);
+
+          eventStaggerDoneTimerRef.current = window.setTimeout(() => {
+            setTimelineEventsStaggering(false);
+            eventStaggerDoneTimerRef.current = null;
+          }, CARD_REVEAL_DURATION_MS + 4 * EVENT_CARD_STAGGER_MS + 80);
+        }
+
+        window.requestAnimationFrame(() => {
+          if (scrollContainerRef.current && yearSectionRef.current) {
+            const targetY = yearSectionRef.current.offsetTop;
+            targetScrollTopRef.current = targetY;
+            smoothScrollTopRef.current = targetY;
+            scrollContainerRef.current.scrollTo({
+              top: targetY,
+              behavior: 'auto',
+            });
+            measureTimelineMetrics();
+            computeAndSyncOrbit(scrollContainerRef.current, targetY);
+          }
+          timelineHeadingRef.current?.focus({ preventScroll: true });
+        });
+      }, timelineRevealAt);
+    },
+    [
+      clearAllTransitionTimers,
+      clearTypewriterTimers,
+      computeAndSyncOrbit,
+      isReducedMotionPreferred,
+      lockPageScroll,
+      measureTimelineMetrics,
+      transitionPhase,
+      unlockPageScroll,
+    ]
+  );
+
+  // Chuyển nhanh năm hoặc quay về màn chọn năm từ thanh sub-tab bên trong Timeline
+  const handleSelectYearTab = useCallback(
+    (yr: EventYear | null) => {
+      soundFx.playSelect();
+      clearAllTransitionTimers();
+      unlockPageScroll();
+      isTransitioningRef.current = false;
+
+      if (yr === null) {
+        hasRadarTypedOnPageLoad = true;
+        setTypedCharCount(radarBodyTextRef.current.length);
+        setIsRadarTypedDone(true);
+        setYearCardsRevealStage('settled');
+        setTimelineEventsStaggering(false);
+        setTransitionPhase('idle');
+        setSelectedYear(null);
+        setSelectedEventIndex(null);
+        eventRowRefs.current = [];
+        orbitShipAppearedRef.current = false;
+        orbitShipYRef.current = 0;
+        setOrbitShipAppeared(false);
+        setReachedEventMap({});
+        return;
+      }
+
+      const reduced = isReducedMotionPreferred();
+      setSelectedYear(yr);
+      setSelectedEventIndex(null);
+      eventRowRefs.current = [];
+      setReachedEventMap({});
+      orbitShipAppearedRef.current = true;
+      orbitShipYRef.current = 0;
+      setOrbitShipAppeared(true);
+      setOrbitShipEntering(!reduced);
+      setTimelineEventsStaggering(!reduced);
+      setTransitionPhase('timeline');
+
+      if (!reduced) {
+        eventStaggerDoneTimerRef.current = window.setTimeout(() => {
+          setTimelineEventsStaggering(false);
+          eventStaggerDoneTimerRef.current = null;
+        }, CARD_REVEAL_DURATION_MS + 4 * EVENT_CARD_STAGGER_MS + 80);
+      }
+
+      window.requestAnimationFrame(() => {
+        if (scrollContainerRef.current && yearSectionRef.current) {
+          const targetY = yearSectionRef.current.offsetTop;
+          targetScrollTopRef.current = targetY;
+          smoothScrollTopRef.current = targetY;
+          scrollContainerRef.current.scrollTo({
+            top: targetY,
+            behavior: 'auto',
+          });
+          measureTimelineMetrics();
+          computeAndSyncOrbit(scrollContainerRef.current, targetY);
+        }
+        timelineHeadingRef.current?.focus({ preventScroll: true });
+      });
+    },
+    [
+      clearAllTransitionTimers,
+      computeAndSyncOrbit,
+      isReducedMotionPreferred,
+      measureTimelineMetrics,
+      unlockPageScroll,
+    ]
+  );
 
   const CLOUD3_SRC = '/assets/aistudio/cloud3_ca9fa321.webp';
   const TRACEBACK_SRC = '/assets/aistudio/tracebackii_6e3cf5cf.webp';
 
   const activeYearData = YEAR_ARCHIVES.find((y) => y.year === selectedYear) ?? null;
+  const isTimelineVisible = transitionPhase === 'timeline' && activeYearData !== null;
+
+  const clickableEventIndices = activeYearData
+    ? activeYearData.events.reduce<number[]>((acc, ev, idx) => {
+        if (ev.isClickable) acc.push(idx);
+        return acc;
+      }, [])
+    : [];
   const activeModalEvent =
-    activeYearData && selectedEventIndex !== null
+    activeYearData &&
+    selectedEventIndex !== null &&
+    activeYearData.events[selectedEventIndex]?.isClickable
       ? activeYearData.events[selectedEventIndex] ?? null
       : null;
 
-  // Keyboard support for Event Dossier Modal (Escape to close modal first, Left/Right arrows to switch event)
+  // Keyboard support for Event Dossier Modal (Escape to close modal first, Left/Right arrows to switch among clickable events)
   useEffect(() => {
     if (selectedEventIndex === null || !activeYearData) return;
 
@@ -849,55 +1352,94 @@ export const EventsPage: React.FC<EventsPageProps> = ({
         e.preventDefault();
         soundFx.playBack();
         setSelectedEventIndex(null);
-      } else if (e.key === 'ArrowLeft') {
+      } else if (e.key === 'ArrowLeft' && clickableEventIndices.length > 1) {
         e.stopPropagation();
         e.preventDefault();
         soundFx.playHover();
-        setSelectedEventIndex((prev) =>
-          prev === null
-            ? 0
-            : (prev - 1 + activeYearData.events.length) % activeYearData.events.length
-        );
-      } else if (e.key === 'ArrowRight') {
+        setSelectedEventIndex((prev) => {
+          if (prev === null) return clickableEventIndices[0];
+          const curPos = clickableEventIndices.indexOf(prev);
+          const nextPos =
+            (curPos - 1 + clickableEventIndices.length) % clickableEventIndices.length;
+          return clickableEventIndices[nextPos];
+        });
+      } else if (e.key === 'ArrowRight' && clickableEventIndices.length > 1) {
         e.stopPropagation();
         e.preventDefault();
         soundFx.playHover();
-        setSelectedEventIndex((prev) =>
-          prev === null ? 0 : (prev + 1) % activeYearData.events.length
-        );
+        setSelectedEventIndex((prev) => {
+          if (prev === null) return clickableEventIndices[0];
+          const curPos = clickableEventIndices.indexOf(prev);
+          const nextPos = (curPos + 1) % clickableEventIndices.length;
+          return clickableEventIndices[nextPos];
+        });
       }
     };
 
     window.addEventListener('keydown', handleModalKeyDown, { capture: true });
     return () => window.removeEventListener('keydown', handleModalKeyDown, { capture: true });
-  }, [selectedEventIndex, activeYearData]);
+  }, [selectedEventIndex, activeYearData, clickableEventIndices]);
+
+  // Nội dung câu đầy đủ cho aria-label & khung giữ chỗ (không nhảy bố cục)
+  const fullRadarPromptText = `> ${radarBodyText}`;
+  const visibleRadarBodySlice = isRadarTypedDone
+    ? radarBodyText
+    : radarBodyText.slice(0, typedCharCount);
+
+  const decodedFilesSubtitle = activeYearData
+    ? lang === 'VI'
+      ? `> ${String(activeYearData.events.length).padStart(2, '0')} tệp đã giải mã.`
+      : `> ${String(activeYearData.events.length).padStart(2, '0')} files decoded.`
+    : '';
+
+  const reducedMotionActive = isReducedMotionPreferred();
 
   return (
-    <div className="relative z-20 flex h-full w-full flex-col overflow-hidden bg-[#090315]">
-      {/* MAIN SCROLLABLE CONTAINER (No scroll-smooth class so mouse wheel & trackpad on laptop scroll natively at 60-120fps without lag) */}
+    <div className="relative z-20 flex h-full w-full flex-col overflow-hidden bg-[var(--void)] text-[var(--text-1)]">
+      {/* SVG Duotone Color-Grading Filters for Spaceship & Volumetric Clouds:
+          Interpolates shadows (0.04, 0.02, 0.07) to violet highlights (0.85, 0.70, 1.0 -> hue ~270°) */}
+      <svg
+        width="0"
+        height="0"
+        className="pointer-events-none absolute h-0 w-0 overflow-hidden"
+        aria-hidden="true"
+      >
+        <defs>
+          <filter id="traceback-purple-grade" colorInterpolationFilters="sRGB">
+            <feColorMatrix type="saturate" values="0" />
+            <feComponentTransfer>
+              <feFuncR type="table" tableValues="0.04 0.85" />
+              <feFuncG type="table" tableValues="0.02 0.70" />
+              <feFuncB type="table" tableValues="0.07 1" />
+            </feComponentTransfer>
+          </filter>
+
+          <filter id="cloud-purple-grade" colorInterpolationFilters="sRGB">
+            <feColorMatrix type="saturate" values="0" />
+            <feComponentTransfer>
+              <feFuncR type="table" tableValues="0.04 0.85" />
+              <feFuncG type="table" tableValues="0.02 0.70" />
+              <feFuncB type="table" tableValues="0.07 1" />
+            </feComponentTransfer>
+          </filter>
+        </defs>
+      </svg>
+
+      {/* MAIN SCROLLABLE CONTAINER */}
       <div
         ref={scrollContainerRef}
         onScroll={handleScroll}
-        className="cyber-events-scroll relative z-10 flex-1 overflow-y-auto overflow-x-hidden"
+        className="cyber-events-scroll relative z-10 flex-1 overflow-y-auto overflow-x-hidden bg-[var(--void)]"
       >
         {/* =====================================================================
-            SECTION 1: TRACEBACK II, LEFT SCI-FI FLIGHT HUD & NATURAL CLOUD SEA
-            Ends at the bottom of the cloud bed in pure white (#ffffff) matching
-            the reference screenshots, without excessive blank white tail.
+            HEADER (Matches Reference Image & DatingPage)
+             stays at the top of the page so the EN button does not follow scroll.
            ===================================================================== */}
-        <section
-          aria-label="Traceback II Cloud Orbit"
-          className="relative h-[94dvh] sm:h-[98dvh] w-full overflow-hidden"
-          style={{
-            background:
-              'linear-gradient(180deg, #1b1534 0%, #35335c 38%, #5e6d98 68%, #96add0 86%, #ffffff 100%)',
-          }}
-        >
-          {/* TOP TRANSPARENT BREADCRUMB NAVIGATION BAR (Does NOT follow scroll) */}
-          <header className="absolute inset-x-0 top-0 z-40 px-3.5 pt-3.5 pb-2 sm:px-7 sm:pt-4 md:px-9 md:pt-5 lg:px-12 lg:pt-7">
-            <div className="mr-16 sm:mr-24 flex flex-wrap items-center justify-between gap-2 border-b border-fuchsia-300/25 bg-transparent px-1 py-1.5 sm:px-2 sm:py-2">
-              <div className="flex flex-wrap items-center gap-1.5 sm:gap-2.5">
-                {/* Breadcrumb 1: TRĂNG SOI DẶM TRƯỜNG / MOONSTRIDE (Click to return Home) */}
+        <header className="relative z-50 w-full bg-[var(--void)]/85 backdrop-blur-xs">
+          {/* Breadcrumb on Left + Flat Rectangular EN/VI Button on Right */}
+          <div className="border-b border-[var(--line)]">
+            <div className="mx-auto flex w-full max-w-[1306px] items-center justify-between gap-2.5 px-4 py-2.5 sm:px-8 sm:py-3.5 md:px-12">
+              <div className="flex items-center gap-2.5 min-w-0">
                 <button
                   type="button"
                   onMouseEnter={() => soundFx.playHover()}
@@ -905,156 +1447,159 @@ export const EventsPage: React.FC<EventsPageProps> = ({
                     soundFx.playBack();
                     onBackHome();
                   }}
-                  className="cursor-pointer text-[11px] sm:text-xs md:text-[13px] lg:text-sm font-semibold tracking-[0.08em] sm:tracking-[0.14em] text-purple-200/85 uppercase transition-all duration-150 hover:text-white hover:drop-shadow-[0_0_10px_#e879f9] focus:outline-none"
+                  className="cursor-pointer font-[var(--font-mono)] text-[10px] sm:text-[12px] font-medium uppercase tracking-[0.2em] text-[var(--text-2)] transition-colors duration-150 hover:text-[var(--text-1)] focus:outline-none"
                 >
                   {lang === 'VI' ? 'TRĂNG SOI DẶM TRƯỜNG' : 'MOONSTRIDE'}
                 </button>
 
-                {/* Cyberpunk `>` Separator */}
-                <ChevronRight
-                  className="h-3 w-3 sm:h-3.5 sm:w-3.5 md:h-4 md:w-4 shrink-0 text-fuchsia-400 drop-shadow-[0_0_6px_#e879f9]"
+                <span
+                  className="font-[var(--font-mono)] text-[10px] sm:text-[12px] text-[var(--violet)]"
                   aria-hidden="true"
-                />
+                >
+                  &gt;
+                </span>
 
-                {/* Breadcrumb 2: SỰ KIỆN / EVENTS */}
                 <button
                   type="button"
                   onMouseEnter={() => soundFx.playHover()}
                   onClick={scrollToTopSection}
-                  className="cursor-pointer text-[11px] sm:text-xs md:text-[13px] lg:text-sm font-bold tracking-[0.1em] sm:tracking-[0.15em] text-white uppercase drop-shadow-[0_0_8px_rgba(232,121,249,0.75)] transition-colors focus:outline-none"
+                  className="cursor-pointer font-[var(--font-mono)] text-[10px] sm:text-[12px] font-bold uppercase tracking-[0.2em] text-[var(--text-1)] transition-colors duration-150 hover:text-[var(--lilac)] focus:outline-none"
                 >
                   {lang === 'VI' ? 'SỰ KIỆN' : 'EVENTS'}
                 </button>
               </div>
-            </div>
-          </header>
 
-          {/* =================================================================
-              1. BACKGROUND CLOUD3 CLUSTERS (Behind Traceback II, z-10)
-              Culled automatically via ref when scrolled completely past Section 1
-             ================================================================= */}
+              {onToggleLang && (
+                <div className="flex shrink-0 items-stretch border border-[var(--line)] bg-[var(--deep)]/90">
+                  <button
+                    type="button"
+                    onMouseEnter={() => soundFx.playHover()}
+                    onClick={() => {
+                      soundFx.playSelect();
+                      onToggleLang();
+                    }}
+                    title={lang === 'VI' ? 'Switch to English' : 'Chuyển sang Tiếng Việt'}
+                    aria-label={lang === 'VI' ? 'Switch to English' : 'Chuyển sang Tiếng Việt'}
+                    className="font-[var(--font-mono)] flex h-6 sm:h-8 min-w-[36px] sm:min-w-[44px] items-center justify-center px-2.5 sm:px-3.5 text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.16em] cursor-pointer rounded-none text-[var(--text-2)] transition-colors duration-150 hover:bg-[var(--violet-d)]/35 hover:text-[var(--text-1)] focus:outline-none"
+                  >
+                    {lang}
+                  </button>
+                </div>
+              )}
+            </div>
+          </div>
+        </header>
+
+        {/* =====================================================================
+            SECTION 1: TRACEBACK II, LEFT FLIGHT LOG HUD CARD & PURPLE CLOUD SEA
+            Preserves all scroll transforms, ship rotation/descent, and cloud layers.
+           ===================================================================== */}
+        <section
+          aria-label="Traceback II Cloud Orbit"
+          className="relative h-[88dvh] sm:h-[90dvh] w-full overflow-hidden"
+          style={{
+            background:
+              'linear-gradient(180deg, var(--void) 0%, var(--deep) 35%, #1a1233 72%, var(--void) 100%)',
+          }}
+        >
+          {/* Subtle atmospheric horizon glow behind the cloud bed */}
+          <div
+            className="pointer-events-none absolute inset-0 z-1"
+            style={{
+              background:
+                'radial-gradient(ellipse 90% 55% at 55% 78%, rgba(58, 47, 107, 0.28) 0%, rgba(26, 18, 51, 0.18) 52%, rgba(7, 6, 15, 0) 80%)',
+            }}
+            aria-hidden="true"
+          />
+
+          {/* 1. BACKGROUND CLOUD3 CLUSTERS (Behind Traceback II, z-10)
+              Group filter on container instead of 5 separate image filters */}
           <div
             ref={bgCloudsRef}
-            className="pointer-events-none absolute inset-0 z-10 select-none"
+            className="events-cloud-layer-filter pointer-events-none absolute inset-0 z-10 select-none"
             aria-hidden="true"
           >
-            {/* Upper-Right Deep Violet Nebula Cloud Wisp */}
             <img
               src={CLOUD3_SRC}
               alt=""
               decoding="async"
-              className="cyber-cloud-slow absolute top-[5dvh] right-[-4%] w-[52vw] max-w-[520px] sm:w-[34rem] opacity-30 object-contain"
+              className="cyber-cloud-slow events-cloud-img absolute top-[4dvh] right-[-4%] w-[52vw] max-w-[520px] sm:w-[34rem] opacity-35 object-contain"
               style={{
                 transform: 'scale(1.32, 0.76) rotate(-7deg)',
               }}
             />
 
-            {/* Distant Left-Center Soft Violet Mist Layer */}
             <img
               src={CLOUD3_SRC}
               alt=""
               decoding="async"
-              className="cyber-cloud-reverse absolute top-[38dvh] left-[-12%] w-[64vw] max-w-[620px] sm:w-[40rem] opacity-25 object-contain"
+              className="cyber-cloud-reverse events-cloud-img absolute top-[18dvh] left-[-10%] w-[64vw] max-w-[620px] sm:w-[40rem] opacity-55 object-contain"
               style={{
-                transform: 'scale(-1.45, 0.68) rotate(6deg)',
+                transform: 'scale(-1.45, 0.78) rotate(6deg)',
               }}
             />
 
-            {/* Right-Side Towering Lavender-Blue Cumulus Plume */}
             <img
               src={CLOUD3_SRC}
               alt=""
               decoding="async"
-              className="cyber-cloud-reverse absolute top-[22dvh] right-[-18%] w-[72vw] max-w-[720px] sm:w-[46rem] opacity-65 object-contain"
+              className="cyber-cloud-reverse events-cloud-img absolute top-[20dvh] right-[-18%] w-[72vw] max-w-[720px] sm:w-[46rem] opacity-45 object-contain"
               style={{
                 transform: 'scale(-1.18, 1.24) rotate(-19deg)',
               }}
             />
 
-            {/* Mid-Right Soft Ice-Blue Billow (behind the right wing of Traceback II) */}
             <img
               src={CLOUD3_SRC}
               alt=""
               decoding="async"
-              className="cyber-cloud-slow absolute top-[40dvh] right-[-8%] w-[76vw] max-w-[740px] sm:w-[48rem] opacity-85 object-contain"
+              className="cyber-cloud-slow events-cloud-img absolute top-[38dvh] right-[-8%] w-[76vw] max-w-[740px] sm:w-[48rem] opacity-65 object-contain"
               style={{
                 transform: 'scale(1.28, -0.92) rotate(11deg)',
               }}
             />
 
-            {/* Lower-Right Soft Atmospheric Cushion */}
             <img
               src={CLOUD3_SRC}
               alt=""
               decoding="async"
-              className="cyber-cloud-reverse absolute top-[50dvh] right-[10%] w-[70vw] max-w-[680px] sm:w-[44rem] opacity-85 object-contain"
+              className="cyber-cloud-reverse events-cloud-img absolute top-[42dvh] left-[28%] w-[56vw] max-w-[520px] sm:w-[33rem] opacity-60 object-contain"
               style={{
-                transform: 'scale(-1.35, 0.85) rotate(-5deg)',
+                transform: 'scale(-1.22, 0.88) rotate(-4deg)',
               }}
             />
           </div>
 
-          {/* =================================================================
-              2. LEFT-SIDE CYBERPUNK FLIGHT JOURNAL HUD (z-25)
-             ================================================================= */}
+          {/* 2. LEFT-SIDE FLIGHT LOG HUD CARD (z-35) — Matches reference image */}
           <div
             ref={hudContainerRef}
-            className={`pointer-events-none absolute z-25 will-change-transform ${
+            className={`pointer-events-none absolute z-35 will-change-transform ${
               isPhone
-                ? 'inset-x-0 mx-auto top-[11.5dvh] w-[86vw] max-w-[335px]'
-                : 'inset-x-0 mx-auto top-[11.5dvh] w-[84vw] max-w-[335px] sm:inset-x-auto sm:mx-0 sm:left-[3.5vw] md:left-[4vw] lg:left-[4.5vw] sm:top-[15dvh] md:top-[17dvh] lg:top-[19dvh] sm:w-[39vw] md:w-[38vw] lg:w-[38vw] xl:w-[37vw] sm:max-w-[700px]'
+                ? 'inset-x-0 mx-auto top-[3dvh] w-[88vw] max-w-[345px]'
+                : 'inset-x-0 mx-auto top-[3.5dvh] w-[86vw] max-w-[360px] sm:inset-x-auto sm:mx-0 sm:left-[4vw] md:left-[5vw] lg:left-[max(4.5vw,calc((100vw-1306px)/2+3rem))] sm:top-[7dvh] md:top-[8.5dvh] lg:top-[10dvh] sm:w-[42vw] md:w-[40vw] lg:w-[450px]'
             }`}
             style={{
               transform: 'translate3d(0, 0px, 0)',
               opacity: 1,
             }}
           >
-            <div className="relative flex flex-col justify-between overflow-hidden border border-cyan-400/40 bg-[#120624]/55 px-4.5 py-3.5 sm:p-4 md:p-5 lg:p-[1.6vw] shadow-[0_8px_30px_rgba(12,4,28,0.35),0_0_24px_rgba(232,121,249,0.2)]">
-              {/* Semi-transparent Blade Runner Gradient Overlay matching Year Event Cards */}
-              <div
-                className="pointer-events-none absolute inset-0 z-0 bg-gradient-to-t from-purple-900/35 via-purple-950/15 to-transparent"
-                aria-hidden="true"
-              />
-
-              {/* Top-Left & Bottom-Right Cyberpunk Corner Brackets matching Year Event Cards */}
-              <span
-                className="pointer-events-none absolute top-2 left-2 z-10 h-3 w-3 lg:h-3.5 lg:w-3.5 border-t-2 border-l-2 border-cyan-300/80"
-                aria-hidden="true"
-              />
-              <span
-                className="pointer-events-none absolute bottom-2 right-2 z-10 h-3 w-3 lg:h-3.5 lg:w-3.5 border-b-2 border-r-2 border-fuchsia-400/80"
-                aria-hidden="true"
-              />
-
-              {/* Card Top Row: Telemetry Index matching Year Cards */}
-              <div className="relative z-10 mb-1.5 sm:mb-2 lg:mb-[0.55vw] flex w-full items-center justify-between gap-2">
-                <span className="font-mono text-[9px] sm:text-[10px] lg:text-xs tracking-[0.22em] text-cyan-300/90 uppercase">
+            <div className="relay-card flex flex-col justify-between bg-[var(--deep)]/90 px-5 py-4 sm:px-7 sm:py-6">
+              {/* Top Mono Label */}
+              <div className="mb-3 flex w-full items-center justify-between gap-2">
+                <span className="font-[var(--font-mono)] text-[10px] sm:text-[12px] uppercase tracking-[0.22em] text-[var(--lilac)]">
                   FLIGHT LOG // TB-II
                 </span>
               </div>
 
-              {/* Single-Line Coordinates Confirmed Title (Never wraps on any view) */}
-              <div className="relative z-10 flex flex-col">
-                <h1
-                  className="whitespace-nowrap text-[clamp(8.8px,2.5vw,11.5px)] sm:text-[clamp(9.5px,1.15vw,21px)] font-bold tracking-[0.03em] sm:tracking-[0.06em] uppercase leading-tight text-white"
-                  style={{
-                    textShadow:
-                      '0 0 14px rgba(34, 211, 238, 0.55), 0 0 28px rgba(232, 121, 249, 0.45)',
-                  }}
-                >
+              {/* Card Title & Description */}
+              <div className="flex flex-col">
+                <h2 className="font-[var(--font-sans)] text-[18px] sm:text-[22px] md:text-[24px] font-bold leading-[1.28] text-[var(--text-1)]">
                   {lang === 'VI'
                     ? 'Traceback II: Đã xác nhận tọa độ'
                     : 'Traceback II: Coordinates Confirmed'}
-                </h1>
+                </h2>
 
-                {/* Cyan-to-Fuchsia Gradient Divider Line matching Year Event Cards */}
-                <div
-                  className="mt-2 mb-2 sm:mt-2.5 sm:mb-2.5 lg:mt-[0.65vw] lg:mb-[0.65vw] h-[1px] w-full bg-gradient-to-r from-cyan-400/70 via-fuchsia-400/50 to-transparent"
-                  aria-hidden="true"
-                />
-
-                {/* Flight Journal Description matching Year Event Cards */}
-                <p className="text-[11px] sm:text-xs md:text-[13px] lg:text-[clamp(0.85rem,1.02vw,1.15rem)] leading-relaxed text-purple-100/90 drop-shadow-[0_1px_6px_rgba(0,0,0,0.65)]">
+                <p className="mt-3 sm:mt-3.5 font-[var(--font-sans)] text-xs sm:text-[14px] leading-relaxed text-[var(--text-2)]">
                   {lang === 'VI'
                     ? 'Mọi sự kiện và cột mốc gắn liền với Thẩm Tinh Hồi đều đã được lưu vào nhật ký phi hành.'
                     : 'Every event and milestone shared with Xavier has been logged into the flight journal.'}
@@ -1063,52 +1608,52 @@ export const EventsPage: React.FC<EventsPageProps> = ({
             </div>
           </div>
 
-          {/* =================================================================
-              3. THE TRACEBACK II SPACESHIP (z-20 — Between Background & Foreground Clouds)
-             ================================================================= */}
+          {/* 3. THE TRACEBACK II SPACESHIP (z-25 — Between Background & Foreground Clouds) */}
           <div
             ref={heroShipRef}
-            className="pointer-events-none absolute inset-x-0 mx-auto top-[31.5dvh] sm:mx-0 sm:top-[9dvh] md:top-[7.5dvh] lg:top-[6dvh] sm:left-[45.5vw] md:left-[45vw] lg:left-[45.5vw] sm:right-[2vw] md:right-[3vw] lg:right-[3.5vw] z-20 flex items-center justify-center will-change-transform"
+            className="pointer-events-none absolute inset-x-0 mx-auto top-[24dvh] sm:mx-0 sm:top-[1dvh] md:top-[0dvh] lg:top-[-1dvh] sm:left-[44vw] md:left-[43vw] lg:left-[43.5vw] sm:right-[2vw] md:right-[3vw] lg:right-[3.5vw] z-25 flex items-center justify-center will-change-transform"
             style={{
               transform: 'translate3d(0px, 0px, 0) rotate(0deg) scale(1)',
               transformOrigin: '50% 52%',
               opacity: 1,
             }}
           >
-            {/* Floating Traceback II Vessel Image (No shadow) */}
             <div className="traceback-ship-float relative flex items-center justify-center">
               <img
                 src={TRACEBACK_SRC}
                 alt="Tàu Traceback II"
                 decoding="async"
-                className="w-[78vw] max-w-[310px] max-h-[38dvh] sm:w-[45vw] sm:max-w-[380px] sm:max-h-[44dvh] md:w-[46vw] md:max-w-[480px] md:max-h-[52dvh] lg:w-[48vw] lg:max-w-[780px] lg:max-h-[64dvh] xl:w-[48vw] xl:max-w-[900px] xl:max-h-[68dvh] h-auto object-contain select-none"
+                fetchPriority="high"
+                className="events-ship-img w-[78vw] max-w-[310px] max-h-[38dvh] sm:w-[46vw] sm:max-w-[400px] sm:max-h-[46dvh] md:w-[48vw] md:max-w-[520px] md:max-h-[56dvh] lg:w-[50vw] lg:max-w-[820px] lg:max-h-[68dvh] xl:w-[50vw] xl:max-w-[920px] xl:max-h-[72dvh] h-auto object-contain select-none"
               />
             </div>
           </div>
 
-          {/* =================================================================
-              4. FOREGROUND WHITE CLOUD3 SEA (z-30 — In Front of Traceback II)
-             ================================================================= */}
+          {/* 4. FOREGROUND VOLUMETRIC CLOUD3 SEA (z-30 — In Front of Traceback II)
+              Group filter on fgCloudsRef instead of 11 separate image filters */}
           <div
-            className="pointer-events-none absolute inset-x-0 bottom-0 top-[50dvh] sm:top-[52dvh] z-30 select-none"
+            className="pointer-events-none absolute inset-x-0 bottom-0 top-[44dvh] sm:top-[46dvh] z-30 select-none"
             aria-hidden="true"
           >
-            {/* White Cloud Base behind the lower cloud puffs */}
+            {/* Dark indigo atmospheric base behind lower clouds */}
             <div
-              className="absolute inset-x-0 top-[14dvh] bottom-0 z-0"
+              className="absolute inset-x-0 top-[12dvh] bottom-0 z-0"
               style={{
                 background:
-                  'linear-gradient(180deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.78) 45%, #ffffff 85%, #ffffff 100%)',
+                  'linear-gradient(180deg, rgba(14, 11, 28, 0) 0%, rgba(26, 18, 51, 0.65) 45%, var(--deep) 88%, var(--void) 100%)',
               }}
             />
 
-            <div ref={fgCloudsRef} className="absolute inset-0 z-10">
-              {/* Layer A: Soft Semi-Transparent Crown Wisps along the top ridge */}
+            <div
+              ref={fgCloudsRef}
+              className="events-cloud-layer-filter absolute inset-0 z-10"
+            >
+              {/* Layer A: Crown Wisps */}
               <img
                 src={CLOUD3_SRC}
                 alt=""
                 decoding="async"
-                className="cyber-cloud-slow absolute right-[-14%] top-[-2dvh] z-10 w-[66vw] max-w-[650px] sm:w-[43rem] opacity-75 object-contain"
+                className="cyber-cloud-slow events-cloud-img absolute right-[-14%] top-[-2dvh] z-10 w-[66vw] max-w-[650px] sm:w-[43rem] opacity-75 object-contain"
                 style={{
                   transform: 'scale(-1.28, -0.86) rotate(-15deg)',
                 }}
@@ -1117,7 +1662,7 @@ export const EventsPage: React.FC<EventsPageProps> = ({
                 src={CLOUD3_SRC}
                 alt=""
                 decoding="async"
-                className="cyber-cloud-reverse absolute left-[-15%] top-[9dvh] z-10 w-[68vw] max-w-[660px] sm:w-[44rem] opacity-72 object-contain"
+                className="cyber-cloud-reverse events-cloud-img absolute left-[-15%] top-[6dvh] z-10 w-[68vw] max-w-[660px] sm:w-[44rem] opacity-70 object-contain"
                 style={{
                   transform: 'scale(1.36, -0.78) rotate(11deg)',
                 }}
@@ -1126,18 +1671,18 @@ export const EventsPage: React.FC<EventsPageProps> = ({
                 src={CLOUD3_SRC}
                 alt=""
                 decoding="async"
-                className="cyber-cloud-slow absolute left-[24%] top-[13dvh] z-10 w-[58vw] max-w-[560px] sm:w-[37rem] opacity-70 object-contain"
+                className="cyber-cloud-slow events-cloud-img absolute left-[22%] top-[11dvh] z-10 w-[58vw] max-w-[560px] sm:w-[37rem] opacity-70 object-contain"
                 style={{
                   transform: 'scale(-1.42, 0.72) rotate(-6deg)',
                 }}
               />
 
-              {/* Layer B: Main Sculpted Cumulus Billows (varied flips, rotations & stretches) */}
+              {/* Layer B: Main Cumulus Billows */}
               <img
                 src={CLOUD3_SRC}
                 alt=""
                 decoding="async"
-                className="cyber-cloud-reverse absolute right-[-18%] top-[5dvh] z-10 w-[78vw] max-w-[760px] sm:w-[50rem] opacity-95 object-contain"
+                className="cyber-cloud-reverse events-cloud-img absolute right-[-18%] top-[5dvh] z-10 w-[78vw] max-w-[760px] sm:w-[50rem] opacity-85 object-contain"
                 style={{
                   transform: 'scale(-1.18, 1.05) rotate(-12deg)',
                 }}
@@ -1146,7 +1691,7 @@ export const EventsPage: React.FC<EventsPageProps> = ({
                 src={CLOUD3_SRC}
                 alt=""
                 decoding="async"
-                className="cyber-cloud-slow absolute right-[8%] top-[13dvh] z-10 w-[68vw] max-w-[660px] sm:w-[44rem] opacity-92 object-contain"
+                className="cyber-cloud-slow events-cloud-img absolute right-[8%] top-[13dvh] z-10 w-[68vw] max-w-[660px] sm:w-[44rem] opacity-80 object-contain"
                 style={{
                   transform: 'scale(1.32, -0.88) rotate(8deg)',
                 }}
@@ -1155,7 +1700,7 @@ export const EventsPage: React.FC<EventsPageProps> = ({
                 src={CLOUD3_SRC}
                 alt=""
                 decoding="async"
-                className="cyber-cloud-reverse absolute left-[14%] top-[18dvh] z-10 w-[74vw] max-w-[720px] sm:w-[48rem] opacity-95 object-contain"
+                className="cyber-cloud-reverse events-cloud-img absolute left-[14%] top-[16dvh] z-10 w-[74vw] max-w-[720px] sm:w-[48rem] opacity-85 object-contain"
                 style={{
                   transform: 'scale(-1.38, 0.84) rotate(-4deg)',
                 }}
@@ -1164,7 +1709,7 @@ export const EventsPage: React.FC<EventsPageProps> = ({
                 src={CLOUD3_SRC}
                 alt=""
                 decoding="async"
-                className="cyber-cloud-slow absolute left-[-6%] top-[15dvh] z-10 w-[64vw] max-w-[620px] sm:w-[41rem] opacity-90 object-contain"
+                className="cyber-cloud-slow events-cloud-img absolute left-[-6%] top-[14dvh] z-10 w-[64vw] max-w-[620px] sm:w-[41rem] opacity-80 object-contain"
                 style={{
                   transform: 'scale(1.15, -0.94) rotate(14deg)',
                 }}
@@ -1173,549 +1718,584 @@ export const EventsPage: React.FC<EventsPageProps> = ({
                 src={CLOUD3_SRC}
                 alt=""
                 decoding="async"
-                className="cyber-cloud-reverse absolute left-[-22%] top-[12dvh] z-10 w-[76vw] max-w-[740px] sm:w-[49rem] opacity-95 object-contain"
+                className="cyber-cloud-reverse events-cloud-img absolute left-[-22%] top-[11dvh] z-10 w-[76vw] max-w-[740px] sm:w-[49rem] opacity-80 object-contain"
                 style={{
                   transform: 'scale(1.26, 0.96) rotate(7deg)',
                 }}
               />
+
+              {/* Layer C: Deep Foreground Cloud Bed */}
+              <img
+                src={CLOUD3_SRC}
+                alt=""
+                decoding="async"
+                className="events-cloud-img absolute left-[-14%] top-[18dvh] z-10 w-[84vw] max-w-[820px] sm:w-[54rem] opacity-85 object-contain"
+                style={{
+                  transform: 'scale(-1.45, 0.9) rotate(-3deg)',
+                }}
+              />
+              <img
+                src={CLOUD3_SRC}
+                alt=""
+                decoding="async"
+                className="events-cloud-img absolute left-[20%] top-[17dvh] z-10 w-[86vw] max-w-[840px] sm:w-[56rem] opacity-85 object-contain"
+                style={{
+                  transform: 'scale(1.48, -0.92) rotate(4deg)',
+                }}
+              />
+              <img
+                src={CLOUD3_SRC}
+                alt=""
+                decoding="async"
+                className="events-cloud-img absolute right-[-16%] top-[15dvh] z-10 w-[84vw] max-w-[820px] sm:w-[54rem] opacity-85 object-contain"
+                style={{
+                  transform: 'scale(-1.4, 0.95) rotate(-5deg)',
+                }}
+              />
             </div>
 
-            {/* Layer C: Deep Foreground Cloud Bed */}
-            <img
-              src={CLOUD3_SRC}
-              alt=""
-              className="absolute left-[-14%] top-[18dvh] z-10 w-[84vw] max-w-[820px] sm:w-[54rem] opacity-100 object-contain"
-              style={{
-                transform: 'scale(-1.45, 0.9) rotate(-3deg)',
-              }}
-            />
-            <img
-              src={CLOUD3_SRC}
-              alt=""
-              className="absolute left-[20%] top-[17dvh] z-10 w-[86vw] max-w-[840px] sm:w-[56rem] opacity-100 object-contain"
-              style={{
-                transform: 'scale(1.48, -0.92) rotate(4deg)',
-              }}
-            />
-            <img
-              src={CLOUD3_SRC}
-              alt=""
-              className="absolute right-[-16%] top-[15dvh] z-10 w-[84vw] max-w-[820px] sm:w-[54rem] opacity-100 object-contain"
-              style={{
-                transform: 'scale(-1.4, 0.95) rotate(-5deg)',
-              }}
-            />
-
-            {/* Smooth pure-white floor blend at the bottom edge of Section 1 */}
+            {/* Smooth --void floor blend at the bottom edge of Section 1 */}
             <div
-              className="pointer-events-none absolute inset-x-0 bottom-0 z-20 h-[15dvh]"
+              className="pointer-events-none absolute inset-x-0 bottom-0 z-20 h-[22dvh]"
               style={{
                 background:
-                  'linear-gradient(180deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.88) 55%, #ffffff 100%)',
+                  'linear-gradient(180deg, rgba(7, 6, 15, 0) 0%, rgba(7, 6, 15, 0.85) 68%, var(--void) 100%)',
               }}
             />
+          </div>
+
+          {/* 5. FULL-SCENE HORIZONTAL CRT SCANLINE OVERLAY (z-32) */}
+          <div
+            className="events-hero-scanlines pointer-events-none absolute inset-0 z-32 select-none"
+            aria-hidden="true"
+          />
+
+          {/* 6. BOTTOM SCROLL PROMPT: [ SCROLL TO DESCEND ] (z-35) */}
+          <div className="pointer-events-none absolute inset-x-0 bottom-[3dvh] z-35 flex items-center justify-center select-none">
+            <span className="font-[var(--font-mono)] text-[10px] sm:text-[11px] uppercase tracking-[0.28em] text-[var(--text-3)]">
+              {lang === 'VI' ? '[ CUỘN XUỐNG ĐỂ HẠ CÁNH ]' : '[ SCROLL TO DESCEND ]'}
+            </span>
           </div>
         </section>
 
         {/* =====================================================================
-            SECTION 2: COMPACT WHITE RADAR ZONE -> SMOOTH EASE-IN-OUT GRADIENT -> PURPLE YEAR PORTALS
+            SECTION 2: COORDINATES & YEAR ARCHIVES / VERTICAL ORBIT TIMELINE
+            Pure --void background, max-w-[1306px] container, left-aligned heading.
            ===================================================================== */}
         <section
           ref={yearSectionRef}
           aria-label="Events By Year 2024 2025 2026"
-          className="relative z-40 flex w-full flex-col overflow-hidden"
-          style={{
-            background: activeYearData
-              ? `linear-gradient(
-                  180deg,
-                  #ffffff 0px,
-                  #fdfbff 18px,
-                  #faf5ff 36px,
-                  #f4ebff 56px,
-                  #ede0ff 78px,
-                  #e3d0ff 102px,
-                  #d6bdfa 128px,
-                  #c7a7f5 156px,
-                  #b58fed 186px,
-                  #a176e3 218px,
-                  #8c5dd6 252px,
-                  #7746c7 288px,
-                  #6232b4 326px,
-                  #4e219f 366px,
-                  #3b1587 408px,
-                  #2b0d6e 452px,
-                  #1f0856 498px,
-                  #170640 546px,
-                  #13052f 598px,
-                  #100424 660px,
-                  #0d031d 740px,
-                  #0b0217 100%
-                )`
-              : `linear-gradient(
-                  180deg,
-                  #ffffff 0%,
-                  #ffffff 5%,
-                  #fdfbff 8%,
-                  #f7f0ff 11%,
-                  #ece0ff 14%,
-                  #dcc6ff 17%,
-                  #c5a5fa 20%,
-                  #a97ef0 23%,
-                  #8855df 26%,
-                  #6632c0 29%,
-                  #471c99 32%,
-                  #2f106e 35%,
-                  #1f094a 38%,
-                  #160634 42%,
-                  #120526 47%,
-                  #120526 100%
-                )`,
-          }}
+          className="relative z-40 flex w-full flex-col bg-[var(--void)] pb-16 sm:pb-24"
         >
-          {/* -----------------------------------------------------------------
-              PART 2A: TOP WHITE ZONE — CYBER SYSTEM NOTIFICATION
-              Compact top & bottom spacing so there is no dead whitespace above or below.
-             ----------------------------------------------------------------- */}
-          <div className="relative z-10 flex w-full flex-col items-center justify-start px-8 pt-0 pb-2 sm:px-6 sm:pt-1 sm:pb-3">
-            <div className="relative flex w-full max-w-[82vw] sm:max-w-[94vw] flex-col items-center text-center">
-              {/* Main Cyber System Notification Text on the White Background (Single line on tablet/laptop/PC) */}
-              <p
-                className="font-mono text-xs sm:whitespace-nowrap sm:text-[clamp(11.5px,1.5vw,23px)] font-bold tracking-[0.08em] sm:tracking-[0.11em] text-[#1e1038] uppercase leading-relaxed"
-                style={{
-                  textShadow:
-                    '0 2px 16px rgba(139, 92, 246, 0.22), 0 0 1px rgba(30, 16, 56, 0.3)',
-                }}
-              >
-                {lang === 'VI'
-                  ? 'Hãy điều chỉnh radar và chọn tọa độ để đáp xuống!'
-                  : 'Adjust your radar and select a coordinate for landing!'}
-                <span className="ml-2 inline-block h-3.5 w-2 sm:h-4 sm:w-2.5 align-middle bg-[#6d28d9] shadow-[0_0_8px_rgba(109,40,217,0.6)] animate-pulse" />
-              </p>
+          <div className="mx-auto flex w-full max-w-[1306px] flex-col px-4 pt-6 sm:px-8 sm:pt-10 md:px-12">
+            {/* Left-Aligned Section Title & Subtitle (Mục A & Bước 3) */}
+            <div className="mb-8 sm:mb-10 lg:mb-12">
+              {isTimelineVisible && activeYearData ? (
+                <>
+                  <h1
+                    ref={timelineHeadingRef}
+                    tabIndex={-1}
+                    className="font-bold tracking-[-0.01em] text-[var(--text-1)] text-3xl sm:text-5xl lg:text-[54px] leading-none focus:outline-none"
+                    style={{ fontFamily: 'var(--font-display)' }}
+                  >
+                    {lang === 'VI'
+                      ? `Sự kiện ${activeYearData.year}`
+                      : `Events ${activeYearData.year}`}
+                  </h1>
 
-              {/* Subtle Cyber Divider & Smaller Coordinate Readout */}
-              <div className="mt-1.5 sm:mt-2 flex items-center gap-2 sm:gap-2.5 text-[7.5px] sm:text-[9px] font-mono tracking-[0.22em] sm:tracking-[0.26em] text-[#5b21b6]/60 uppercase">
-                <span className="h-[1px] w-8 sm:w-16 bg-gradient-to-r from-transparent via-[#7c3aed]/35 to-[#7c3aed]/65" />
-                <span>// COORD: 2024 · 2025 · 2026 //</span>
-                <span className="h-[1px] w-8 sm:w-16 bg-gradient-to-l from-transparent via-[#7c3aed]/35 to-[#7c3aed]/65" />
-              </div>
-            </div>
-          </div>
-
-          {/* -----------------------------------------------------------------
-              PART 2B: COMPACT GRADIENT TRANSITION ZONE (WHITE -> PURPLE)
-             ----------------------------------------------------------------- */}
-          <div
-            className={`pointer-events-none w-full select-none ${
-              activeYearData ? 'h-[5dvh] sm:h-[7dvh]' : 'h-[11dvh] sm:h-[14dvh]'
-            }`}
-            aria-hidden="true"
-          />
-
-          {/* -----------------------------------------------------------------
-              PART 2C: THE PURPLE ZONE — 3 CYBERPUNK YEAR PORTALS (2024, 2025, 2026)
-              Starts immediately after the compact transition with no excess top gap.
-             ----------------------------------------------------------------- */}
-          <div className="relative flex w-full flex-col items-center justify-start px-4 pt-3 pb-14 sm:px-8 sm:pt-5 sm:pb-18 md:px-12 lg:px-16">
-            {/* Soft Centered Ambient Glow (strictly away from top edge so zero seam) */}
-            <div
-              className="pointer-events-none absolute inset-0 z-0"
-              style={{
-                backgroundImage: `
-                  radial-gradient(circle at 50% 55%, rgba(168, 85, 247, 0.16) 0%, transparent 50%),
-                  radial-gradient(circle at 20% 72%, rgba(34, 211, 238, 0.09) 0%, transparent 40%),
-                  radial-gradient(circle at 80% 75%, rgba(236, 72, 153, 0.11) 0%, transparent 40%)
-                `,
-              }}
-              aria-hidden="true"
-            />
-
-          {/* =================================================================
-              VIEW MODE A: THE 3 YEAR PORTAL CARDS (2024, 2025, 2026)
-             ================================================================= */}
-          {!activeYearData ? (
-            <div className="relative z-10 grid w-full max-w-6xl grid-cols-1 gap-4 sm:grid-cols-3 sm:gap-5 md:gap-7">
-              {YEAR_ARCHIVES.map((item, idx) => (
-                <button
-                  key={item.year}
-                  type="button"
-                  onMouseEnter={() => {
-                    soundFx.playHover();
-                    // Warm up the first 4 event banners of this year so timeline opens with zero image pop-in
-                    item.events.slice(0, 4).forEach((ev) => {
-                      const img = new Image();
-                      img.src = ev.bannerImg;
-                    });
-                  }}
-                  onClick={() => {
-                    soundFx.playSelect();
-                    orbitShipYRef.current = 0;
-                    orbitShipAppearedRef.current = false;
-                    setSelectedYear(item.year);
-                  }}
-                  className={`group relative flex h-full flex-col overflow-hidden border bg-[#120624]/85 text-left transition-all duration-300 hover:-translate-y-1.5 focus:outline-none ${
-                    isPhone ? 'min-h-[190px] p-4' : 'min-h-[260px] sm:min-h-[280px] p-5 md:p-6'
-                  } ${item.borderClass} shadow-[0_10px_35px_rgba(0,0,0,0.8)] hover:shadow-[0_0_32px_rgba(232,121,249,0.45)]`}
-                >
-                  {/* Pure Color Blade Runner Gradient Overlay */}
-                  <div
-                    className={`pointer-events-none absolute inset-0 z-1 bg-gradient-to-t ${item.glowClass}`}
-                    aria-hidden="true"
-                  />
-
-                  {/* Top-Left & Bottom-Right Cyberpunk Corner Brackets */}
-                  <span
-                    className="pointer-events-none absolute top-2 left-2 z-10 h-3 w-3 border-t-2 border-l-2 border-cyan-300/80 transition-all group-hover:h-4 group-hover:w-4 group-hover:border-white"
-                    aria-hidden="true"
-                  />
-                  <span
-                    className="pointer-events-none absolute bottom-2 right-2 z-10 h-3 w-3 border-b-2 border-r-2 border-fuchsia-400/80 transition-all group-hover:h-4 group-hover:w-4 group-hover:border-white"
-                    aria-hidden="true"
-                  />
-
-                  {/* Card Top Row: Sector Index & Event Count Badge */}
-                  <div className="relative z-10 flex w-full shrink-0 items-center justify-between gap-2">
-                    <span className="font-mono text-[10px] sm:text-xs tracking-[0.25em] text-cyan-300/90 uppercase">
-                      {`CHRONO // 0${idx + 1}`}
-                    </span>
-                    <span className="border border-fuchsia-300/45 bg-purple-950/75 px-2 py-0.5 text-[9px] sm:text-[10px] font-semibold tracking-[0.16em] text-pink-200 uppercase backdrop-blur-sm">
-                      {`${String(item.events.length).padStart(2, '0')} ${
-                        lang === 'VI' ? 'SỰ KIỆN' : 'EVENTS'
-                      }`}
-                    </span>
-                  </div>
-
-                  {/* Card Center/Bottom: Giant Year Number (2024 / 2025 / 2026) locked at identical top offset */}
-                  <div className="relative z-10 mt-6 sm:mt-16 md:mt-20 flex flex-1 flex-col">
-                    <div className="flex items-baseline gap-2">
-                      <span
-                        className="font-bold tracking-[0.12em] text-white transition-all duration-300 group-hover:tracking-[0.16em]"
-                        style={{
-                          fontFamily: 'var(--font-display)',
-                          fontSize: isPhone ? '2.5rem' : 'clamp(2.75rem, 4.2vw, 4rem)',
-                          lineHeight: 1,
-                          textShadow: `0 0 18px ${item.accentHex}, 0 0 36px rgba(232,121,249,0.45)`,
-                        }}
-                      >
-                        {item.year}
-                      </span>
-                      <ChevronRight className="h-5 w-5 sm:h-6 sm:w-6 text-cyan-300 transition-transform duration-300 group-hover:translate-x-1.5" />
-                    </div>
-
-                    <div className="mt-2 h-[1px] w-full shrink-0 bg-gradient-to-r from-cyan-400/70 via-fuchsia-400/50 to-transparent" />
-
-                    <p className="mt-2.5 flex-1 text-xs sm:text-[13px] leading-relaxed text-purple-100/90">
-                      {lang === 'VI' ? item.descVI : item.descEN}
-                    </p>
-
-                    <div className="mt-auto pt-3 inline-flex items-center gap-1.5 text-[10px] sm:text-[11px] font-semibold tracking-[0.2em] text-cyan-300 uppercase group-hover:text-white">
+                  <p
+                    aria-label={decodedFilesSubtitle}
+                    className="mt-3 sm:mt-3.5 text-[17px] leading-[1.5] text-[var(--text-2)]"
+                    style={{ fontFamily: 'var(--font-sans)' }}
+                  >
+                    <span aria-hidden="true">
+                      <span className="text-[var(--violet)]">&gt; </span>
                       <span>
-                        {lang === 'VI' ? 'MỞ HỒ SƠ SỰ KIỆN' : 'ACCESS YEAR ARCHIVE'}
+                        {lang === 'VI'
+                          ? `${String(activeYearData.events.length).padStart(2, '0')} tệp đã giải mã.`
+                          : `${String(activeYearData.events.length).padStart(2, '0')} files decoded.`}
                       </span>
-                      <ChevronRight className="h-3.5 w-3.5" />
-                    </div>
-                  </div>
-                </button>
-              ))}
+                    </span>
+                    <span className="events-hard-cursor" aria-hidden="true" />
+                  </p>
+                </>
+              ) : (
+                <>
+                  <h1
+                    className="font-bold tracking-[-0.01em] text-[var(--text-1)] text-3xl sm:text-5xl lg:text-[54px] leading-none"
+                    style={{ fontFamily: 'var(--font-display)' }}
+                  >
+                    {lang === 'VI' ? 'Tọa độ' : 'Coordinates'}
+                  </h1>
+
+                  {/* Mục A: Dòng "> Adjust your radar..."
+                      - Font thân, 17px, màu theo bộ token tím của web (--text-2 / --violet)
+                      - Giữ chỗ bằng bản đầy đủ visibility:hidden để mobile xuống dòng không làm nhảy bố cục
+                      - Ký tự "> " hiện sẵn; phần sau gõ 32ms/ký tự; con trỏ đặc 8x15px var(--violet) nhấp nháy cứng */}
+                  <p
+                    aria-label={fullRadarPromptText}
+                    className="relative mt-3 sm:mt-3.5 text-[17px] leading-[1.5] text-[var(--text-2)]"
+                    style={{ fontFamily: 'var(--font-sans)' }}
+                  >
+                    <span
+                      className="invisible block select-none pointer-events-none"
+                      aria-hidden="true"
+                    >
+                      {fullRadarPromptText}
+                      <span className="inline-block w-[8px] h-[15px] ml-[3px]" />
+                    </span>
+
+                    <span
+                      className="absolute inset-0 block"
+                      aria-hidden="true"
+                    >
+                      <span className="text-[var(--violet)]">&gt; </span>
+                      <span>{visibleRadarBodySlice}</span>
+                      <span className="events-hard-cursor" />
+                    </span>
+                  </p>
+                </>
+              )}
             </div>
-          ) : (
-            /* =================================================================
-               VIEW MODE B: VERTICAL ORBIT TIMELINE FOR SELECTED YEAR (2024 / 2025 / 2026)
-               - No NIÊN ĐẠI banner header.
-               - Starts with Traceback II centered at the top of the vertical orbit axis;
-                 as the user scrolls down, Traceback II travels straight down the axis
-                 (without rotation) while timeline events alternate on Left & Right sides.
-               ================================================================= */
-            <div className="relative z-10 flex w-full max-w-7xl flex-col gap-6">
-              {/* Top Year Switcher Bar (2024 | 2025 | 2026 + Close back to 3 cards) */}
-              <div className="flex flex-wrap items-center justify-between gap-3 border border-fuchsia-400/40 bg-[#15072c]/90 px-4 py-3 shadow-[0_0_25px_rgba(192,38,211,0.25)] backdrop-blur-md">
-                <div className="flex flex-wrap items-center gap-2 sm:gap-3">
-                  {YEAR_ARCHIVES.map((yr) => {
-                    const isCurrent = yr.year === activeYearData.year;
+
+            {/* =================================================================
+                VIEW MODE A: THE 3 YEAR PORTAL CARDS & LOCKING COORDINATE STEP
+               ================================================================= */}
+            {!isTimelineVisible ? (
+              <>
+                {/* Lưới 3 thẻ năm (Ẩn bằng display:none ở Bước 2 t = 700ms -> 1500ms) */}
+                <div
+                  style={{
+                    display: transitionPhase === 'locking' ? 'none' : undefined,
+                  }}
+                  className={`grid w-full grid-cols-[repeat(auto-fit,minmax(270px,1fr))] gap-6 lg:gap-[34px] ${
+                    transitionPhase !== 'idle' ? 'pointer-events-none' : ''
+                  }`}
+                >
+                  {YEAR_ARCHIVES.map((item, idx) => {
+                    const isGlitching = transitionPhase === 'glitching';
+                    const cardAnimClass = isGlitching
+                      ? 'year-card-glitch-out'
+                      : yearCardsRevealStage === 'hidden'
+                        ? 'events-card-pre-reveal'
+                        : yearCardsRevealStage === 'revealing'
+                          ? 'events-card-reveal-anim'
+                          : '';
+
+                    const cardAnimStyle: React.CSSProperties | undefined = isGlitching
+                      ? {
+                          animationDuration: `${
+                            reducedMotionActive
+                              ? REDUCED_FADE_DURATION_MS
+                              : GLITCH_DURATION_MS
+                          }ms`,
+                          animationDelay: `${
+                            reducedMotionActive ? 0 : idx * GLITCH_STAGGER_MS
+                          }ms`,
+                        }
+                      : yearCardsRevealStage === 'revealing'
+                        ? {
+                            animationDuration: `${CARD_REVEAL_DURATION_MS}ms`,
+                            animationDelay: `${idx * YEAR_CARD_STAGGER_MS}ms`,
+                          }
+                        : undefined;
+
                     return (
                       <button
-                        key={yr.year}
+                        key={item.year}
                         type="button"
+                        disabled={transitionPhase !== 'idle'}
                         onMouseEnter={() => {
-                          if (!isCurrent) soundFx.playHover();
+                          if (transitionPhase !== 'idle') return;
+                          soundFx.playHover();
+                          item.events.slice(0, 6).forEach((ev) => {
+                            const img = new Image();
+                            img.decoding = 'async';
+                            img.src = ev.bannerImg;
+                            img.decode?.().catch(() => {});
+                          });
                         }}
-                        onClick={() => {
-                          soundFx.playSelect();
-                          orbitShipAppearedRef.current = false;
-                          orbitShipYRef.current = 0;
-                          setSelectedYear(yr.year);
-                        }}
-                        className={`cursor-pointer px-3.5 py-1.5 text-xs sm:text-sm font-bold tracking-[0.18em] uppercase transition-all focus:outline-none ${
-                          isCurrent
-                            ? 'border border-cyan-300 bg-fuchsia-600/45 text-white shadow-[0_0_15px_rgba(34,211,238,0.55)]'
-                            : 'border border-fuchsia-400/25 bg-purple-950/40 text-purple-200/75 hover:border-pink-300/60 hover:text-white'
-                        }`}
+                        onClick={() => handleSelectYearCard(item.year)}
+                        style={cardAnimStyle}
+                        className={`relay-card relay-card-interactive group flex min-h-[250px] sm:min-h-[280px] flex-col justify-between overflow-hidden p-6 sm:p-7 text-left cursor-pointer ${cardAnimClass}`}
                       >
-                        {yr.year}
+                        {/* Faint Radar Circles Motif (opacity ~0.2) */}
+                        <svg
+                          viewBox="0 0 240 240"
+                          fill="none"
+                          aria-hidden="true"
+                          className="pointer-events-none absolute -right-12 -bottom-12 h-56 w-56 opacity-20 transition-opacity duration-200 group-hover:opacity-30"
+                        >
+                          <circle cx="120" cy="120" r="36" stroke="var(--line)" strokeWidth="1" />
+                          <circle
+                            cx="120"
+                            cy="120"
+                            r="68"
+                            stroke="var(--line)"
+                            strokeWidth="1"
+                            strokeDasharray="3 4"
+                          />
+                          <circle cx="120" cy="120" r="102" stroke="var(--line)" strokeWidth="1" />
+                          <line x1="120" y1="6" x2="120" y2="234" stroke="var(--line)" strokeWidth="1" />
+                          <line x1="6" y1="120" x2="234" y2="120" stroke="var(--line)" strokeWidth="1" />
+                        </svg>
+
+                        <div className="relative z-10 flex w-full flex-col">
+                          {/* (1) Top Row: "CHRONO // 01" left + Event count tag right */}
+                          <div className="flex w-full items-center justify-between gap-2">
+                            <span className="font-[var(--font-mono)] text-[11px] sm:text-[12px] uppercase tracking-[0.2em] text-[var(--lilac)]">
+                              {`CHRONO // 0${idx + 1}`}
+                            </span>
+                            <span className="site-badge px-2 py-0.5 font-[var(--font-mono)] text-[11px] font-bold uppercase tracking-[0.14em]">
+                              {`${String(item.events.length).padStart(2, '0')} ${
+                                lang === 'VI' ? 'SỰ KIỆN' : 'EVENTS'
+                              }`}
+                            </span>
+                          </div>
+
+                          {/* (2) Giant Year Number (~68px, display font, --text-1, no glow) */}
+                          <div className="mt-4 sm:mt-5">
+                            <span
+                              className="block font-bold leading-none tracking-[0.04em] text-[var(--text-1)] text-[54px] sm:text-[64px] lg:text-[68px]"
+                              style={{ fontFamily: 'var(--font-display)' }}
+                            >
+                              {item.year}
+                            </span>
+                          </div>
+
+                          {/* (3) Thin divider line --line + short 1-2 line description (14px, --text-2) */}
+                          <div className="my-4 h-[1px] w-full bg-[var(--line)]" aria-hidden="true" />
+
+                          <p className="font-[var(--font-sans)] text-[14px] leading-relaxed text-[var(--text-2)] line-clamp-2">
+                            {lang === 'VI' ? item.descVI : item.descEN}
+                          </p>
+                        </div>
+
+                        {/* (4) Footer link "ACCESS YEAR ARCHIVE >" */}
+                        <div className="relative z-10 mt-6 inline-flex items-center gap-1.5 font-[var(--font-mono)] text-[11px] sm:text-[12px] font-bold uppercase tracking-[0.18em] text-[var(--lilac)] transition-colors duration-150 group-hover:text-[var(--text-1)]">
+                          <span>
+                            {lang === 'VI' ? 'MỞ HỒ SƠ SỰ KIỆN >' : 'ACCESS YEAR ARCHIVE >'}
+                          </span>
+                        </div>
                       </button>
                     );
                   })}
                 </div>
 
-                <button
-                  type="button"
-                  onMouseEnter={() => soundFx.playHover()}
-                  onClick={() => {
-                    soundFx.playBack();
-                    orbitShipAppearedRef.current = false;
-                    orbitShipYRef.current = 0;
-                    setSelectedYear(null);
-                  }}
-                  className="inline-flex cursor-pointer items-center gap-1.5 border border-pink-300/40 bg-purple-950/60 px-3 py-1.5 text-[11px] sm:text-xs font-semibold tracking-[0.15em] text-pink-200 uppercase transition-all hover:border-cyan-300 hover:bg-fuchsia-900/50 hover:text-white focus:outline-none"
-                >
-                  <X className="h-3.5 w-3.5" />
-                  <span>{lang === 'VI' ? 'CHỌN LẠI NĂM' : 'ALL YEARS'}</span>
-                </button>
-              </div>
-
-              {/* VERTICAL ORBIT TIMELINE TRACK — CYBERPUNK COSMOS AESTHETIC */}
-              <div
-                ref={orbitTrackRef}
-                className={`relative w-full ${
-                  isPhone
-                    ? 'pt-24 pb-16'
-                    : 'pt-28 pb-20 sm:pt-36 sm:pb-28 md:pt-44 md:pb-32'
-                }`}
-              >
-                {/* Unexplored Star-Chart Vertical Axis Line (Left axis on Phone, Center axis on Tablet/PC) */}
-                <div
-                  className={`pointer-events-none absolute top-8 bottom-8 z-0 -translate-x-1/2 flex flex-col items-center opacity-45 ${
-                    isPhone ? 'left-4' : 'left-1/2'
-                  }`}
-                  aria-hidden="true"
-                >
-                  <div className="h-full w-[1.5px] bg-gradient-to-b from-cyan-400/50 via-fuchsia-400/40 to-purple-400/25 shadow-[0_0_8px_rgba(192,38,211,0.35)]" />
-                </div>
-
-                {/* Progressive Cyberpunk Cosmos Quantum Wake — Reveals as Traceback II moves down */}
-                <div
-                  ref={orbitWakeRef}
-                  className={`pointer-events-none absolute z-10 -translate-x-1/2 flex flex-col items-center ${
-                    isPhone ? 'top-6 left-4' : 'top-6 sm:top-10 left-1/2'
-                  }`}
-                  style={{
-                    height: `${
-                      orbitShipAppeared
-                        ? Math.max(isPhone ? 24 : 38, orbitShipYRef.current + (isPhone ? 20 : 34)).toFixed(1)
-                        : '0'
-                    }px`,
-                    opacity: orbitShipAppeared ? 1 : 0,
-                  }}
-                  aria-hidden="true"
-                >
-                  {/* Top Astral Origin Star (✦) & Coordinate Tag */}
-                  <div className="relative flex flex-col items-center shrink-0">
-                    {!isPhone && (
-                      <span className="mb-1 font-mono text-[7px] sm:text-[8px] tracking-[0.28em] text-cyan-200/70 uppercase whitespace-nowrap">
-                        00.0 // ORIGIN
-                      </span>
-                    )}
-                    <span className="text-[10px] sm:text-xs leading-none text-cyan-200 drop-shadow-[0_0_8px_#22d3ee]">
-                      ✦
-                    </span>
-                  </div>
-
-                  {/* Multi-Layered Cyberpunk Cosmos Conduit & Stardust Wake */}
-                  <div className="relative flex-1 w-8 sm:w-12 flex justify-center overflow-hidden">
-                    {/* 1. Soft Cosmic Nebula Aura */}
-                    <div className="absolute inset-y-0 left-1/2 -translate-x-1/2 w-5 sm:w-7 bg-gradient-to-b from-purple-500/5 via-fuchsia-500/20 to-cyan-400/30 blur-md" />
-
-                    {/* 2. Twin Parallel Cyber-Telemetry Micro-Rails */}
-                    <div className="absolute inset-y-2 left-1/2 -translate-x-1/2 w-3.5 sm:w-4.5 border-x border-dashed border-cyan-300/20" />
-
-                    {/* 3. Main Glowing Starlight Conduit Core */}
-                    <div className="relative h-full w-[1.5px] bg-gradient-to-b from-purple-300/20 via-fuchsia-300/80 to-cyan-200 shadow-[0_0_10px_rgba(232,121,249,0.8),0_0_20px_rgba(34,211,238,0.65)]" />
-
-                    {/* 4. Stardust Nodes along the Revealed Wake */}
-                    <span className="absolute top-[28%] left-1/2 -translate-x-1/2 text-[7px] text-fuchsia-200/80 drop-shadow-[0_0_6px_#e879f9]">
-                      ✦
-                    </span>
-                    <span className="absolute top-[62%] left-1/2 -translate-x-1/2 text-[8px] text-cyan-200/85 drop-shadow-[0_0_6px_#22d3ee]">
-                      ✦
-                    </span>
-                  </div>
-
-                  {/* Leading Quantum Flare right at Traceback II's core */}
-                  <span className="h-2 w-2 shrink-0 rotate-45 bg-cyan-200 shadow-[0_0_12px_#22d3ee,0_0_24px_#e879f9]" />
-                </div>
-
-                {/* TRACEBACK II SPACESHIP ON THE VERTICAL ORBIT AXIS
-                    - Left axis (left-4) on Phone, Center axis (left-1/2) on Tablet/PC
-                    - No flanking stars, no circle, zero rotation
-                    - Appears by gliding down from the top switcher bar (-56px) to its current position (orbitShipYRef) */}
-                <div
-                  ref={orbitShipRef}
-                  className={`pointer-events-none absolute top-0 z-30 flex flex-col items-center select-none ${
-                    isPhone ? 'left-4' : 'left-1/2'
-                  }`}
-                  style={{
-                    transform: orbitShipAppeared
-                      ? `translate3d(-50%, ${orbitShipYRef.current.toFixed(1)}px, 0) scale(1)`
-                      : 'translate3d(-50%, -56px, 0) scale(0.86)',
-                    opacity: orbitShipAppeared ? 1 : 0,
-                    transition: orbitShipEntering
-                      ? 'transform 680ms cubic-bezier(0.22, 1, 0.36, 1), opacity 500ms ease-out'
-                      : 'opacity 320ms ease-out',
-                    willChange: 'transform, opacity',
-                  }}
-                >
-                  {/* Ion Starlight Plume above the ship */}
+                {/* Bước 2 (t = 700ms -> 1500ms): Dòng khoá tọa độ ở gần vị trí thẻ cũ (cách tiêu đề ~90px) */}
+                {transitionPhase === 'locking' && selectedYear && (
                   <div
-                    className="mb-0.5 flex flex-col items-center"
+                    role="status"
+                    aria-live="polite"
+                    className="mt-[18px] sm:mt-[22px] min-h-[180px] font-[var(--font-mono)] text-[14px] tracking-[0.16em] text-[var(--text-2)]"
+                  >
+                    <span className="text-[var(--violet)]">&gt; </span>
+                    <span>{`Locking coordinate // `}</span>
+                    <span className="text-[var(--lilac)]">{selectedYear}</span>
+                    <span>{` ...`}</span>
+                    <span className="events-hard-cursor" aria-hidden="true" />
+                  </div>
+                )}
+              </>
+            ) : (
+              /* =================================================================
+                 VIEW MODE B: VERTICAL ORBIT TIMELINE FOR SELECTED YEAR (2024 / 2025 / 2026)
+                 ================================================================= */
+              <div className="relative z-10 flex w-full flex-col">
+                {/* Timeline Sub-Tab Bar (no box around tabs, 2px --violet underline) */}
+                <div className="sticky top-0 z-40 border-b border-[var(--line)] bg-[var(--void)]/85 backdrop-blur-xs">
+                  <nav
+                    aria-label="Year Archive Tabs"
+                    className="flex w-full items-center gap-5 overflow-x-auto no-scrollbar sm:gap-8"
+                  >
+                    {YEAR_ARCHIVES.map((yr) => {
+                      const isCurrent = yr.year === activeYearData.year;
+                      return (
+                        <button
+                          key={yr.year}
+                          type="button"
+                          onMouseEnter={() => {
+                            if (!isCurrent) soundFx.playHover();
+                          }}
+                          onClick={() => handleSelectYearTab(yr.year)}
+                          className={`relative -mb-[1px] shrink-0 cursor-pointer border-b-2 py-2.5 sm:py-3 font-[var(--font-mono)] text-[11px] sm:text-[12px] uppercase tracking-[0.2em] whitespace-nowrap transition-colors duration-150 focus:outline-none ${
+                            isCurrent
+                              ? 'border-[var(--violet)] font-semibold text-[var(--text-1)]'
+                              : 'border-transparent font-normal text-[var(--text-2)] hover:text-[var(--text-1)]'
+                          }`}
+                        >
+                          {yr.year}
+                        </button>
+                      );
+                    })}
+
+                    <button
+                      type="button"
+                      onMouseEnter={() => soundFx.playHover()}
+                      onClick={() => handleSelectYearTab(null)}
+                      className="relative -mb-[1px] shrink-0 cursor-pointer border-b-2 border-transparent py-2.5 sm:py-3 font-[var(--font-mono)] text-[11px] sm:text-[12px] uppercase tracking-[0.2em] whitespace-nowrap text-[var(--text-2)] transition-colors duration-150 hover:text-[var(--text-1)] focus:outline-none"
+                    >
+                      {lang === 'VI' ? 'Tất cả các năm' : 'All years'}
+                    </button>
+                  </nav>
+                </div>
+
+                {/* VERTICAL ORBIT TIMELINE TRACK */}
+                <div
+                  ref={orbitTrackRef}
+                  className={`relative w-full ${
+                    isPhone
+                      ? 'pt-24 pb-16'
+                      : 'pt-28 pb-20 sm:pt-36 sm:pb-28 md:pt-44 md:pb-32'
+                  }`}
+                >
+                  {/* Unexplored Vertical Axis Line (Left axis on Phone <760px, Center axis on Desktop) */}
+                  <div
+                    className={`pointer-events-none absolute top-8 bottom-8 z-0 -translate-x-1/2 flex flex-col items-center ${
+                      isPhone ? 'left-4' : 'left-4 md:left-1/2'
+                    }`}
                     aria-hidden="true"
                   >
-                    <div className="h-4 sm:h-6 w-[1.5px] bg-gradient-to-t from-cyan-200 via-fuchsia-300/60 to-transparent shadow-[0_0_10px_#22d3ee]" />
+                    <div className="h-full w-[1px] bg-[var(--line)]" />
                   </div>
 
-                  <img
-                    src={TRACEBACK_SRC}
-                    alt="Tàu Traceback II Orbit"
-                    decoding="async"
-                    className={`${
-                      isPhone ? 'w-14' : 'w-20 sm:w-28 md:w-36 lg:w-44'
-                    } h-auto object-contain select-none`}
-                  />
-                </div>
-
-                {/* TIMELINE EVENT POINTS — All on Right for Phone; Alternating Left & Right for Tablet/PC */}
-                <div className="relative z-20 flex flex-col">
-                  {activeYearData.events.map((ev, idx) => {
-                    const isLeft = !isPhone && idx % 2 === 0;
-                    const isReached = Boolean(reachedEventMap[idx]);
-                    return (
-                      <div
-                        key={ev.id}
-                        ref={(el) => {
-                          eventRowRefs.current[idx] = el;
-                        }}
-                        className={`relative flex w-full items-center transition-all duration-500 ease-out ${
-                          isLeft ? 'justify-start' : 'justify-end'
-                        } ${
-                          idx > 0
-                            ? isPhone
-                              ? 'mt-5'
-                              : '-mt-4 sm:-mt-10 md:-mt-16 lg:-mt-24'
-                            : ''
-                        } ${
-                          isReached
-                            ? 'opacity-100 translate-y-0 scale-100'
-                            : 'pointer-events-none opacity-0 translate-y-6 scale-95'
-                        }`}
+                  {/* Progressive Revealed Axis Line — Reveals as Traceback II moves down */}
+                  <div
+                    ref={orbitWakeRef}
+                    className={`pointer-events-none absolute z-10 -translate-x-1/2 flex flex-col items-center ${
+                      isPhone ? 'top-6 left-4' : 'top-6 sm:top-10 left-4 md:left-1/2'
+                    }`}
+                    style={{
+                      height: `${
+                        orbitShipAppeared
+                          ? Math.max(
+                              isPhone ? 24 : 38,
+                              orbitShipYRef.current + (isPhone ? 20 : 34)
+                            ).toFixed(1)
+                          : '0'
+                      }px`,
+                      opacity: orbitShipAppeared ? 1 : 0,
+                    }}
+                    aria-hidden="true"
+                  >
+                    {/* Top Origin Coordinate Tag ("ALT 00.0") */}
+                    <div className="relative flex flex-col items-center shrink-0">
+                      <span
+                        ref={orbitAltLabelRef}
+                        className="mb-1 font-[var(--font-mono)] text-[9px] tracking-[0.2em] text-[var(--lilac)] uppercase whitespace-nowrap"
                       >
-                        {/* Cyberpunk Cosmos Diamond Node on the Axis */}
+                        ALT 00.0
+                      </span>
+                      <span className="text-[10px] leading-none text-[var(--lilac)]">
+                        ✦
+                      </span>
+                    </div>
+
+                    {/* Revealed 1px --violet Conduit Line */}
+                    <div className="relative flex-1 w-6 flex justify-center overflow-hidden">
+                      <div className="relative h-full w-[1px] bg-[var(--violet)]" />
+                    </div>
+
+                    {/* Leading Diamond Node at Traceback II's core */}
+                    <span className="h-2 w-2 shrink-0 rotate-45 border border-[var(--lilac)] bg-[var(--violet-d)]" />
+                  </div>
+
+                  {/* TRACEBACK II SPACESHIP ON THE VERTICAL ORBIT AXIS */}
+                  <div
+                    ref={orbitShipRef}
+                    className={`pointer-events-none absolute top-0 z-30 flex flex-col items-center select-none ${
+                      isPhone ? 'left-4' : 'left-4 md:left-1/2'
+                    }`}
+                    style={{
+                      transform: orbitShipAppeared
+                        ? `translate3d(-50%, ${orbitShipYRef.current.toFixed(1)}px, 0) scale(1)`
+                        : 'translate3d(-50%, -56px, 0) scale(0.86)',
+                      opacity: orbitShipAppeared ? 1 : 0,
+                      transition: orbitShipEntering
+                        ? 'transform 680ms cubic-bezier(0.22, 1, 0.36, 1), opacity 500ms ease-out'
+                        : 'opacity 320ms ease-out',
+                      willChange: 'transform, opacity',
+                    }}
+                  >
+                    <div className="mb-0.5 flex flex-col items-center" aria-hidden="true">
+                      <div className="h-4 sm:h-6 w-[1px] bg-gradient-to-t from-[var(--lilac)] to-transparent" />
+                    </div>
+
+                    <img
+                      src={TRACEBACK_SRC}
+                      alt="Tàu Traceback II Orbit"
+                      decoding="async"
+                      className={`events-ship-img ${
+                        isPhone ? 'w-14' : 'w-16 sm:w-24 md:w-36 lg:w-44'
+                      } h-auto object-contain select-none`}
+                    />
+                  </div>
+
+                  {/* TIMELINE EVENT CARDS */}
+                  <div className="relative z-20 flex flex-col">
+                    {activeYearData.events.map((ev, idx) => {
+                      const isLeft = !isPhone && idx % 2 === 0;
+                      const isReached = Boolean(reachedEventMap[idx]);
+                      const isClickable = Boolean(ev.isClickable);
+                      const eventTitle = lang === 'VI' ? ev.titleVI : ev.titleEN;
+                      const eventType = lang === 'VI' ? ev.typeVI : ev.typeEN;
+                      const shouldStaggerInViewport =
+                        timelineEventsStaggering && idx < 4 && !reducedMotionActive;
+
+                      return (
                         <div
-                          className={`pointer-events-none absolute top-1/2 z-20 -translate-x-1/2 -translate-y-1/2 flex items-center justify-center ${
-                            isPhone ? 'left-4' : 'left-1/2'
-                          }`}
-                          aria-hidden="true"
-                        >
-                          <span className="h-3 w-3 sm:h-3.5 sm:w-3.5 rotate-45 border border-cyan-300/70 bg-[#14072b] shadow-[0_0_12px_rgba(34,211,238,0.6),0_0_20px_rgba(232,121,249,0.45)] flex items-center justify-center">
-                            <span className="h-1 w-1 bg-fuchsia-200 shadow-[0_0_6px_#fff]" />
-                          </span>
-                        </div>
-
-                        {/* Cyber-Cosmos Telemetry Bridge between Axis and Event Card */}
-                        <div
-                          className={`pointer-events-none absolute top-1/2 z-10 flex flex-col -translate-y-1/2 ${
-                            isPhone
-                              ? 'left-4 w-6 items-start'
-                              : `${
-                                  isLeft
-                                    ? 'right-1/2 items-end'
-                                    : 'left-1/2 items-start'
-                                } w-[52px] sm:w-[82px] md:w-[106px] lg:w-[130px]`
-                          }`}
-                          aria-hidden="true"
-                        >
-                          <div
-                            className={`h-[1px] w-full ${
-                              isLeft
-                                ? 'bg-gradient-to-l from-cyan-300/80 via-fuchsia-400/50 to-purple-300/15'
-                                : 'bg-gradient-to-r from-cyan-300/80 via-fuchsia-400/50 to-purple-300/15'
-                            } shadow-[0_0_8px_rgba(34,211,238,0.45)]`}
-                          />
-                        </div>
-
-                        {/* Event Card: Full width to the right of left-axis on Phone; Half-width alternating on Tablet/PC */}
-                        <article
-                          role="button"
-                          tabIndex={0}
-                          aria-label={lang === 'VI' ? ev.titleVI : ev.titleEN}
-                          onMouseEnter={() => {
-                            if (isReached) soundFx.playHover();
+                          key={ev.id}
+                          ref={(el) => {
+                            eventRowRefs.current[idx] = el;
                           }}
-                          onClick={() => {
-                            soundFx.playSelect();
-                            setSelectedEventIndex(idx);
-                          }}
-                          onKeyDown={(e) => {
-                            if (e.key === 'Enter' || e.key === ' ') {
-                              e.preventDefault();
-                              soundFx.playSelect();
-                              setSelectedEventIndex(idx);
-                            }
-                          }}
-                          className={`group relative flex cursor-pointer flex-col overflow-hidden border border-purple-300/35 bg-[#120626]/95 shadow-[0_10px_30px_rgba(0,0,0,0.75)] transition-all duration-300 [content-visibility:auto] [contain-intrinsic-size:auto_220px] hover:-translate-y-1 hover:border-cyan-300/80 hover:shadow-[0_0_26px_rgba(34,211,238,0.35)] focus:outline-none focus:border-cyan-300 ${
-                            isPhone
-                              ? 'w-[calc(100%-44px)]'
-                              : 'w-[calc(50%-52px)] sm:w-[calc(50%-82px)] md:w-[calc(50%-106px)] lg:w-[calc(50%-130px)]'
-                          }`}
-                        >
-                          {/* Top-Left & Bottom-Right Cyberpunk Corner Brackets */}
-                          <span
-                            className="pointer-events-none absolute top-1.5 left-1.5 z-20 h-2.5 w-2.5 sm:h-3 sm:w-3 border-t-2 border-l-2 border-cyan-300/85"
-                            aria-hidden="true"
-                          />
-                          <span
-                            className="pointer-events-none absolute bottom-1.5 right-1.5 z-20 h-2.5 w-2.5 sm:h-3 sm:w-3 border-b-2 border-r-2 border-fuchsia-400/85"
-                            aria-hidden="true"
-                          />
-
-                          {/* Event Illustration Image — aspect-[16/9] reserves exact height before lazy decode */}
-                          <div className="relative aspect-[16/9] w-full overflow-hidden bg-[#1a0933]">
-                            <img
-                              src={ev.bannerImg}
-                              alt={lang === 'VI' ? ev.titleVI : ev.titleEN}
-                              loading={idx < 4 ? 'eager' : 'lazy'}
-                              decoding="async"
-                              onLoad={() => {
-                                if (scrollContainerRef.current) {
-                                  computeAndSyncOrbit(scrollContainerRef.current);
+                          style={
+                            shouldStaggerInViewport
+                              ? {
+                                  animationDuration: `${CARD_REVEAL_DURATION_MS}ms`,
+                                  animationDelay: `${idx * EVENT_CARD_STAGGER_MS}ms`,
                                 }
-                              }}
-                              className="block h-full w-full object-contain transition-transform duration-500 group-hover:scale-[1.03]"
-                            />
-                          </div>
-
-                          {/* Event Time Bar Below Illustration */}
-                          <div className="flex items-center justify-center gap-1.5 border-t border-fuchsia-400/25 bg-[#120626]/95 px-2.5 py-2 sm:px-4 sm:py-2.5">
-                            <Clock className="h-3 w-3 sm:h-3.5 sm:w-3.5 shrink-0 text-cyan-300" />
-                            <span className="font-mono text-[10px] sm:text-xs md:text-[13px] font-semibold tracking-[0.18em] text-purple-100 uppercase group-hover:text-cyan-200 transition-colors">
-                              {ev.date}
+                              : undefined
+                          }
+                          className={`relative flex w-full items-center transition-all duration-500 ease-out justify-end ${
+                            isLeft ? 'md:justify-start' : 'md:justify-end'
+                          } ${
+                            idx > 0
+                              ? isPhone
+                                ? 'mt-6'
+                                : 'mt-6 md:-mt-14 lg:-mt-20'
+                              : ''
+                          } ${
+                            shouldStaggerInViewport
+                              ? 'events-card-reveal-anim'
+                              : isReached
+                                ? 'opacity-100 translate-y-0'
+                                : 'pointer-events-none opacity-0 translate-y-6'
+                          }`}
+                        >
+                          {/* Flat Square Diamond Node on the Axis */}
+                          <div
+                            className={`pointer-events-none absolute top-1/2 z-20 -translate-x-1/2 -translate-y-1/2 flex items-center justify-center ${
+                              isPhone ? 'left-4' : 'left-4 md:left-1/2'
+                            }`}
+                            aria-hidden="true"
+                          >
+                            <span className="flex h-3 w-3 rotate-45 items-center justify-center border border-[var(--line)] bg-[var(--void)]">
+                              <span className="h-1 w-1 bg-[var(--accent)]" />
                             </span>
                           </div>
-                        </article>
-                      </div>
-                    );
-                  })}
+
+                          {/* 1px Horizontal Telemetry Bridge between Axis and Event Card */}
+                          <div
+                            className={`pointer-events-none absolute top-1/2 z-10 flex flex-col -translate-y-1/2 ${
+                              isPhone
+                                ? 'left-4 w-6 items-start'
+                                : `left-4 w-6 md:w-[88px] lg:w-[116px] ${
+                                    isLeft
+                                      ? 'md:left-auto md:right-1/2 md:items-end'
+                                      : 'md:left-1/2 md:items-start'
+                                  }`
+                            }`}
+                            aria-hidden="true"
+                          >
+                            <div className="h-[1px] w-full bg-[var(--line)]" />
+                          </div>
+
+                          {/* SHARED RELAY CARD FOR TIMELINE EVENT */}
+                          <article
+                            role={isClickable ? 'button' : undefined}
+                            tabIndex={isClickable ? 0 : undefined}
+                            aria-label={eventTitle}
+                            onMouseEnter={
+                              isClickable
+                                ? () => {
+                                    if (isReached) soundFx.playHover();
+                                  }
+                                : undefined
+                            }
+                            onClick={
+                              isClickable
+                                ? () => {
+                                    soundFx.playSelect();
+                                    setSelectedEventIndex(idx);
+                                  }
+                                : undefined
+                            }
+                            onKeyDown={
+                              isClickable
+                                ? (e) => {
+                                    if (e.key === 'Enter' || e.key === ' ') {
+                                      e.preventDefault();
+                                      soundFx.playSelect();
+                                      setSelectedEventIndex(idx);
+                                    }
+                                  }
+                                : undefined
+                            }
+                            className={`relay-card relay-card-interactive group flex flex-col overflow-hidden [content-visibility:auto] [contain-intrinsic-size:auto_260px] ${
+                              !isReached ? 'is-locked' : ''
+                            } ${
+                              isClickable
+                                ? 'cursor-pointer'
+                                : 'cursor-default'
+                            } ${
+                              isPhone
+                                ? 'w-[calc(100%-40px)]'
+                                : 'w-[calc(100%-40px)] md:w-[calc(50%-88px)] lg:w-[calc(50%-116px)]'
+                            }`}
+                          >
+                            {/* Event Banner Image with Global Dark-Blended Treatment */}
+                            <div className="relative aspect-[16/9] w-full overflow-hidden bg-[var(--void)]">
+                              <img
+                                src={ev.bannerImg}
+                                alt={eventTitle}
+                                loading={idx < 4 ? 'eager' : 'lazy'}
+                                decoding="async"
+                                onLoad={scheduleMeasureAndSyncOrbit}
+                                className="anecdote-card-img block h-full w-full object-cover"
+                              />
+                              <div
+                                className="events-img-multiply pointer-events-none absolute inset-0"
+                                aria-hidden="true"
+                              />
+                              <div
+                                className="events-img-scanlines pointer-events-none absolute inset-0"
+                                aria-hidden="true"
+                              />
+                            </div>
+
+                            {/* Bottom Info Area */}
+                            <div className="flex flex-col justify-between gap-2 border-t border-[var(--line)] bg-[var(--void)] px-3.5 py-3 sm:px-4 sm:py-3.5">
+                              <div className="flex items-center justify-between gap-2">
+                                <span className="truncate font-[var(--font-mono)] text-[10px] sm:text-[12px] uppercase tracking-[0.2em] text-[var(--lilac)]">
+                                  {ev.date}
+                                </span>
+                                <span className="site-badge shrink-0 px-2 py-0.5 font-[var(--font-mono)] text-[10px] sm:text-[11px] font-semibold uppercase tracking-[0.14em]">
+                                  {eventType}
+                                </span>
+                              </div>
+
+                              <h3 className="font-[var(--font-sans)] text-[15px] sm:text-[18px] font-semibold leading-snug text-[var(--text-1)]">
+                                {eventTitle}
+                              </h3>
+                            </div>
+                          </article>
+                        </div>
+                      );
+                    })}
+                  </div>
                 </div>
               </div>
-            </div>
-          )}
+            )}
 
-            {/* Back to Top (Traceback II Orbit) Button */}
+            {/* Back to Top / Year Selection ("[ ▲ ORBIT ]") Button */}
             <div className="relative z-10 mt-8 sm:mt-10 flex justify-center">
               <button
                 type="button"
                 onMouseEnter={() => soundFx.playHover()}
                 onClick={scrollToTopSection}
-                className="inline-flex cursor-pointer items-center gap-2 border border-fuchsia-400/40 bg-[#16082e]/80 px-4 py-2 text-[10px] sm:text-xs font-semibold tracking-[0.2em] text-purple-200 uppercase transition-all hover:border-cyan-300 hover:bg-fuchsia-950/70 hover:text-white hover:shadow-[0_0_18px_rgba(34,211,238,0.4)] focus:outline-none"
+                className="relay-card relay-card-interactive inline-flex cursor-pointer items-center gap-2 px-5 py-2.5 font-[var(--font-mono)] text-[11px] sm:text-[12px] font-semibold uppercase tracking-[0.2em] text-[var(--lilac)] transition-colors hover:text-[var(--text-1)]"
               >
-                <span>{lang === 'VI' ? '▲ QUỸ ĐẠO' : '▲ ORBIT'}</span>
+                <span>{lang === 'VI' ? '[ ▲ QUỸ ĐẠO ]' : '[ ▲ ORBIT ]'}</span>
               </button>
             </div>
           </div>
@@ -1723,8 +2303,7 @@ export const EventsPage: React.FC<EventsPageProps> = ({
       </div>
 
       {/* =====================================================================
-          EVENT DOSSIER MODAL (BẢNG THÔNG TIN SỰ KIỆN)
-          Opens when user clicks any event card on the timeline
+          EVENT DOSSIER MODAL (Unified with .relay-card and purple/amber tokens)
          ===================================================================== */}
       {activeModalEvent && activeYearData && selectedEventIndex !== null && (
         <div
@@ -1735,85 +2314,70 @@ export const EventsPage: React.FC<EventsPageProps> = ({
             soundFx.playBack();
             setSelectedEventIndex(null);
           }}
-          className="fixed inset-0 z-50 flex items-center justify-center bg-[#06020f]/85 p-3 sm:p-5 md:p-8 backdrop-blur-md animate-[fadeIn_180ms_ease-out]"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-[var(--void)]/85 p-3 sm:p-5 md:p-8 backdrop-blur-xs"
         >
           <div
             onClick={(e) => e.stopPropagation()}
-            className="relative flex max-h-[90dvh] w-full max-w-3xl flex-col overflow-hidden border border-cyan-300/60 bg-[#110524]/95 shadow-[0_0_45px_rgba(34,211,238,0.25),0_0_80px_rgba(192,38,211,0.3)]"
+            className="relay-card flex max-h-[90dvh] w-full max-w-3xl flex-col overflow-hidden bg-[var(--deep)]"
           >
-            {/* Cyberpunk Corner Brackets */}
-            <span
-              className="pointer-events-none absolute top-2 left-2 z-30 h-3.5 w-3.5 border-t-2 border-l-2 border-cyan-300"
-              aria-hidden="true"
-            />
-            <span
-              className="pointer-events-none absolute top-2 right-2 z-30 h-3.5 w-3.5 border-t-2 border-r-2 border-fuchsia-400"
-              aria-hidden="true"
-            />
-            <span
-              className="pointer-events-none absolute bottom-2 left-2 z-30 h-3.5 w-3.5 border-b-2 border-l-2 border-fuchsia-400"
-              aria-hidden="true"
-            />
-            <span
-              className="pointer-events-none absolute bottom-2 right-2 z-30 h-3.5 w-3.5 border-b-2 border-r-2 border-cyan-300"
-              aria-hidden="true"
-            />
-
             {/* Top Dossier Header Bar */}
-            <div className="flex flex-wrap items-center justify-between gap-2 border-b border-fuchsia-400/35 bg-[#190934]/95 px-4 py-3 sm:px-6">
-              <div className="flex flex-wrap items-center gap-2 sm:gap-3">
-                <span
-                  className={`border px-2 py-0.5 text-[9px] sm:text-[10px] font-semibold tracking-[0.16em] uppercase ${
-                    activeModalEvent.accentColor === 'cyan'
-                      ? 'border-cyan-300/60 bg-cyan-950/60 text-cyan-200'
-                      : activeModalEvent.accentColor === 'amber'
-                      ? 'border-amber-300/60 bg-amber-950/60 text-amber-200'
-                      : 'border-fuchsia-300/60 bg-fuchsia-950/60 text-pink-200'
-                  }`}
-                >
+            <div className="flex flex-wrap items-center justify-between gap-2 border-b border-[var(--line)] bg-[var(--void)] px-4 py-3 sm:px-6">
+              <div className="flex flex-wrap items-center gap-2.5">
+                <span className="font-[var(--font-mono)] text-[11px] sm:text-[12px] uppercase tracking-[0.2em] text-[var(--lilac)]">
+                  {activeModalEvent.date}
+                </span>
+                <span className="site-badge px-2 py-0.5 font-[var(--font-mono)] text-[10px] sm:text-[11px] font-semibold uppercase tracking-[0.14em]">
                   {lang === 'VI' ? activeModalEvent.typeVI : activeModalEvent.typeEN}
                 </span>
               </div>
 
               <div className="flex items-center gap-1.5 sm:gap-2">
-                <span className="hidden sm:inline-block mr-1 font-mono text-[11px] tracking-[0.18em] text-purple-200/70">
-                  {`${String(selectedEventIndex + 1).padStart(2, '0')} / ${String(
-                    activeYearData.events.length
-                  ).padStart(2, '0')}`}
-                </span>
+                {clickableEventIndices.length > 1 && (
+                  <>
+                    <span className="hidden sm:inline-block mr-1 font-[var(--font-mono)] text-[11px] tracking-[0.18em] text-[var(--text-3)]">
+                      {`${String(
+                        clickableEventIndices.indexOf(selectedEventIndex) + 1
+                      ).padStart(2, '0')} / ${String(clickableEventIndices.length).padStart(
+                        2,
+                        '0'
+                      )}`}
+                    </span>
 
-                <button
-                  type="button"
-                  onMouseEnter={() => soundFx.playHover()}
-                  onClick={() => {
-                    soundFx.playSelect();
-                    setSelectedEventIndex(
-                      (selectedEventIndex - 1 + activeYearData.events.length) %
-                        activeYearData.events.length
-                    );
-                  }}
-                  title={lang === 'VI' ? 'Sự kiện trước' : 'Previous event'}
-                  aria-label={lang === 'VI' ? 'Sự kiện trước' : 'Previous event'}
-                  className="flex h-7 w-7 cursor-pointer items-center justify-center border border-purple-300/35 bg-purple-950/60 text-purple-100 transition-all hover:border-cyan-300 hover:bg-fuchsia-900/50 hover:text-white focus:outline-none"
-                >
-                  <ChevronLeft className="h-4 w-4" />
-                </button>
+                    <button
+                      type="button"
+                      onMouseEnter={() => soundFx.playHover()}
+                      onClick={() => {
+                        soundFx.playSelect();
+                        const curPos = clickableEventIndices.indexOf(selectedEventIndex);
+                        const prevPos =
+                          (curPos - 1 + clickableEventIndices.length) %
+                          clickableEventIndices.length;
+                        setSelectedEventIndex(clickableEventIndices[prevPos]);
+                      }}
+                      title={lang === 'VI' ? 'Sự kiện trước' : 'Previous event'}
+                      aria-label={lang === 'VI' ? 'Sự kiện trước' : 'Previous event'}
+                      className="flex h-7 w-7 cursor-pointer items-center justify-center border border-[var(--line)] bg-[var(--void)] text-[var(--text-2)] transition-colors hover:border-[var(--accent)] hover:text-[var(--text-1)] focus:outline-none"
+                    >
+                      <ChevronLeft className="h-4 w-4" />
+                    </button>
 
-                <button
-                  type="button"
-                  onMouseEnter={() => soundFx.playHover()}
-                  onClick={() => {
-                    soundFx.playSelect();
-                    setSelectedEventIndex(
-                      (selectedEventIndex + 1) % activeYearData.events.length
-                    );
-                  }}
-                  title={lang === 'VI' ? 'Sự kiện tiếp theo' : 'Next event'}
-                  aria-label={lang === 'VI' ? 'Sự kiện tiếp theo' : 'Next event'}
-                  className="flex h-7 w-7 cursor-pointer items-center justify-center border border-purple-300/35 bg-purple-950/60 text-purple-100 transition-all hover:border-cyan-300 hover:bg-fuchsia-900/50 hover:text-white focus:outline-none"
-                >
-                  <ChevronRight className="h-4 w-4" />
-                </button>
+                    <button
+                      type="button"
+                      onMouseEnter={() => soundFx.playHover()}
+                      onClick={() => {
+                        soundFx.playSelect();
+                        const curPos = clickableEventIndices.indexOf(selectedEventIndex);
+                        const nextPos = (curPos + 1) % clickableEventIndices.length;
+                        setSelectedEventIndex(clickableEventIndices[nextPos]);
+                      }}
+                      title={lang === 'VI' ? 'Sự kiện tiếp theo' : 'Next event'}
+                      aria-label={lang === 'VI' ? 'Sự kiện tiếp theo' : 'Next event'}
+                      className="flex h-7 w-7 cursor-pointer items-center justify-center border border-[var(--line)] bg-[var(--void)] text-[var(--text-2)] transition-colors hover:border-[var(--accent)] hover:text-[var(--text-1)] focus:outline-none"
+                    >
+                      <ChevronRight className="h-4 w-4" />
+                    </button>
+                  </>
+                )}
 
                 <button
                   type="button"
@@ -1824,7 +2388,7 @@ export const EventsPage: React.FC<EventsPageProps> = ({
                   }}
                   title={lang === 'VI' ? 'Đóng hồ sơ (ESC)' : 'Close dossier (ESC)'}
                   aria-label={lang === 'VI' ? 'Đóng hồ sơ' : 'Close dossier'}
-                  className="ml-1 flex h-7 w-7 cursor-pointer items-center justify-center border border-pink-300/50 bg-fuchsia-950/70 text-pink-200 transition-all hover:border-cyan-300 hover:bg-fuchsia-800/80 hover:text-white focus:outline-none"
+                  className="ml-1 flex h-7 w-7 cursor-pointer items-center justify-center border border-[var(--line)] bg-[var(--void)] text-[var(--text-1)] transition-colors hover:border-[var(--accent)] focus:outline-none"
                 >
                   <X className="h-4 w-4" />
                 </button>
@@ -1833,8 +2397,8 @@ export const EventsPage: React.FC<EventsPageProps> = ({
 
             {/* Scrollable Modal Body */}
             <div className="cyber-events-scroll flex-1 overflow-y-auto p-4 sm:p-6">
-              {/* Full Event Banner Showcase */}
-              <div className="relative aspect-[16/9] w-full overflow-hidden border border-purple-300/30 bg-[#0b0318] shadow-[0_8px_28px_rgba(0,0,0,0.8)]">
+              {/* Full Event Banner Showcase — True original color when opened */}
+              <div className="relative aspect-[16/9] w-full overflow-hidden border border-[var(--line)] bg-[var(--void)]">
                 <img
                   src={activeModalEvent.bannerImg}
                   alt={lang === 'VI' ? activeModalEvent.titleVI : activeModalEvent.titleEN}
@@ -1843,27 +2407,17 @@ export const EventsPage: React.FC<EventsPageProps> = ({
                 />
               </div>
 
-              {/* Event Title, Time (on new line below title), and External Link Button */}
+              {/* Event Title, Summary & External Link Button */}
               <div className="mt-4 sm:mt-5 flex flex-col gap-4">
-                <div className="flex flex-col items-start gap-2.5 border-b border-fuchsia-400/25 pb-3.5">
-                  <h3
-                    className="text-base sm:text-xl md:text-2xl font-bold tracking-[0.06em] text-white"
-                    style={{
-                      textShadow: '0 0 16px rgba(34,211,238,0.45)',
-                    }}
-                  >
+                <div className="flex flex-col items-start gap-2 border-b border-[var(--line)] pb-4">
+                  <h3 className="font-[var(--font-sans)] text-lg sm:text-xl font-semibold text-[var(--text-1)]">
                     {lang === 'VI' ? activeModalEvent.titleVI : activeModalEvent.titleEN}
                   </h3>
-
-                  <div className="inline-flex items-center gap-1.5 border border-cyan-300/40 bg-[#180833]/90 px-3 py-1">
-                    <Clock className="h-3.5 w-3.5 shrink-0 text-cyan-300" />
-                    <span className="font-mono text-xs sm:text-sm font-semibold tracking-[0.16em] text-cyan-100 uppercase">
-                      {activeModalEvent.date}
-                    </span>
-                  </div>
+                  <p className="font-[var(--font-sans)] text-xs sm:text-[14px] leading-relaxed text-[var(--text-2)]">
+                    {lang === 'VI' ? activeModalEvent.summaryVI : activeModalEvent.summaryEN}
+                  </p>
                 </div>
 
-                {/* External Link Button (replaces HỒ SƠ CHI TIẾT SỰ KIỆN) */}
                 <div className="flex items-center justify-start">
                   <a
                     href={activeModalEvent.linkUrl || '#'}
@@ -1884,15 +2438,14 @@ export const EventsPage: React.FC<EventsPageProps> = ({
                         e.preventDefault();
                       }
                     }}
-                    className="group relative inline-flex w-full sm:w-auto cursor-pointer items-center justify-center gap-2.5 border border-cyan-300/65 bg-gradient-to-r from-[#1d093d] via-[#2e0c5e] to-[#1d093d] px-5 py-2.5 text-xs sm:text-sm font-bold tracking-[0.18em] text-cyan-100 uppercase shadow-[0_0_20px_rgba(34,211,238,0.25)] transition-all duration-300 hover:border-cyan-200 hover:from-fuchsia-900/70 hover:via-purple-800/80 hover:to-cyan-900/70 hover:text-white hover:shadow-[0_0_28px_rgba(34,211,238,0.5)] focus:outline-none"
+                    className="inline-flex w-full sm:w-auto cursor-pointer items-center justify-center gap-2 border border-[var(--line)] bg-[var(--void)] px-5 py-2.5 font-[var(--font-mono)] text-xs font-bold uppercase tracking-[0.18em] text-[var(--lilac)] transition-colors hover:border-[var(--violet)] hover:text-[var(--text-1)] focus:outline-none"
                   >
-                    <ExternalLink className="h-4 w-4 shrink-0 text-cyan-300 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                    <ExternalLink className="h-3.5 w-3.5 shrink-0" />
                     <span>
                       {lang === 'VI'
-                        ? 'XEM CHI TIẾT SỰ KIỆN'
-                        : 'VIEW EVENT DETAILS'}
+                        ? 'XEM CHI TIẾT SỰ KIỆN >'
+                        : 'VIEW EVENT DETAILS >'}
                     </span>
-                    <ChevronRight className="h-4 w-4 shrink-0 text-fuchsia-300 transition-transform duration-300 group-hover:translate-x-1" />
                   </a>
                 </div>
               </div>

@@ -147,26 +147,26 @@ export const GameModals: React.FC<GameModalsProps> = ({
 
   return (
     <div
-      className="fixed inset-0 z-30 flex items-center justify-center bg-black/45 p-4 backdrop-blur-xs"
+      className="fixed inset-0 z-30 flex items-center justify-center bg-[var(--void)]/75 p-4 backdrop-blur-xs"
       onClick={handleClose}
     >
       <div
-        className="relative w-full max-w-xl border border-fuchsia-400/70 bg-[#140726]/90 p-6 text-purple-50 shadow-[0_0_35px_rgba(217,70,239,0.45)]"
+        className="relative w-full max-w-xl border border-[var(--line)] bg-[var(--deep)]/95 p-6 text-[var(--text-1)]"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Top bar inside modal */}
-        <div className="mb-5 flex items-center justify-between border-b border-fuchsia-400/30 pb-3">
+        <div className="mb-5 flex items-center justify-between border-b border-[var(--line)] pb-3">
           <div className="flex items-center gap-2.5">
-            {activeModal === 'home' && <Home className="h-5 w-5 text-fuchsia-400" />}
-            {activeModal === 'combat' && <Swords className="h-5 w-5 text-fuchsia-400" />}
-            {activeModal === 'story' && <BookOpen className="h-5 w-5 text-fuchsia-400" />}
-            {activeModal === 'dating' && <Heart className="h-5 w-5 text-fuchsia-400" />}
-            {activeModal === 'gallery' && <ImageIcon className="h-5 w-5 text-fuchsia-400" />}
-            {activeModal === 'events' && <Calendar className="h-5 w-5 text-fuchsia-400" />}
-            {activeModal === 'contact' && <MessageSquare className="h-5 w-5 text-fuchsia-400" />}
-            {activeModal === 'interact' && <Sparkles className="h-5 w-5 text-fuchsia-400" />}
-            {activeModal === 'about' && <Info className="h-5 w-5 text-fuchsia-400" />}
-            <h2 className="text-lg font-bold tracking-wider text-white uppercase">
+            {activeModal === 'home' && <Home className="h-5 w-5 text-[var(--accent)]" />}
+            {activeModal === 'combat' && <Swords className="h-5 w-5 text-[var(--accent)]" />}
+            {activeModal === 'story' && <BookOpen className="h-5 w-5 text-[var(--accent)]" />}
+            {activeModal === 'dating' && <Heart className="h-5 w-5 text-[var(--accent)]" />}
+            {activeModal === 'gallery' && <ImageIcon className="h-5 w-5 text-[var(--accent)]" />}
+            {activeModal === 'events' && <Calendar className="h-5 w-5 text-[var(--accent)]" />}
+            {activeModal === 'contact' && <MessageSquare className="h-5 w-5 text-[var(--accent)]" />}
+            {activeModal === 'interact' && <Sparkles className="h-5 w-5 text-[var(--accent)]" />}
+            {activeModal === 'about' && <Info className="h-5 w-5 text-[var(--accent)]" />}
+            <h2 className="text-lg font-bold tracking-wider text-[var(--text-1)] uppercase">
               {activeModal === 'home' && (lang === 'VI' ? 'Hồ Sơ' : 'Profile')}
               {activeModal === 'combat' && (lang === 'VI' ? 'Chiến Đấu' : 'Battle')}
               {activeModal === 'story' && (lang === 'VI' ? 'Cốt Truyện' : 'Storyline')}
@@ -180,7 +180,7 @@ export const GameModals: React.FC<GameModalsProps> = ({
           </div>
           <button
             onClick={handleClose}
-            className="flex h-8 w-8 items-center justify-center border border-fuchsia-400/50 bg-fuchsia-950/50 text-fuchsia-200 transition-colors hover:border-white hover:bg-fuchsia-600 hover:text-white"
+            className="flex h-8 w-8 items-center justify-center border border-[var(--line)] bg-[var(--void)] text-[var(--text-2)] transition-colors hover:border-[var(--accent)] hover:text-[var(--text-1)]"
             aria-label="Close modal"
           >
             <X className="h-4 w-4" />
@@ -190,15 +190,15 @@ export const GameModals: React.FC<GameModalsProps> = ({
         {/* 1. HỒ SƠ */}
         {activeModal === 'home' && (
           <div className="space-y-4">
-            <div className="border border-fuchsia-500/35 bg-purple-950/45 p-5">
-              <div className="mb-1 text-xs font-bold tracking-wider text-pink-300 uppercase">
+            <div className="border border-[var(--line)] bg-[var(--void)]/65 p-5">
+              <div className="mb-1 text-xs font-bold tracking-wider text-[var(--accent)] uppercase">
                 Định Danh Quan Sát Viên
               </div>
-              <div className="mb-3 text-base font-bold text-white">
+              <div className="mb-3 text-base font-bold text-[var(--text-1)]">
                 Lữ Khách Đêm · Trạm Tinh Vân #04
               </div>
-              <p className="text-sm leading-relaxed text-purple-100">
-                Hồ sơ lưu trữ hành trình <strong>Trăng Soi Dặm Trường</strong>. Trạng thái kết nối tâm thức và tần số ánh trăng đang duy trì ở mức ổn định 99.8%.
+              <p className="text-sm leading-relaxed text-[var(--text-2)]">
+                Hồ sơ lưu trữ hành trình <strong className="text-[var(--text-1)]">Trăng Soi Dặm Trường</strong>. Trạng thái kết nối tâm thức và tần số ánh trăng đang duy trì ở mức ổn định 99.8%.
               </p>
             </div>
           </div>
@@ -217,20 +217,20 @@ export const GameModals: React.FC<GameModalsProps> = ({
                   }}
                   className={`border px-4 py-3 text-left transition ${
                     selectedCombat === idx
-                      ? 'border-pink-300 bg-fuchsia-700/40 text-white shadow-[0_0_12px_rgba(244,114,182,0.5)]'
-                      : 'border-fuchsia-500/30 bg-purple-950/40 text-purple-200 hover:border-fuchsia-400/70'
+                      ? 'border-[var(--accent)] bg-[var(--accent)]/15 text-[var(--text-1)]'
+                      : 'border-[var(--line)] bg-[var(--void)]/50 text-[var(--text-2)] hover:border-[var(--accent)]'
                   }`}
                 >
-                  <div className="text-xs font-bold text-pink-300">{mission.code}</div>
-                  <div className="text-sm font-semibold text-white">{mission.name}</div>
+                  <div className="text-xs font-bold text-[var(--accent)]">{mission.code}</div>
+                  <div className="text-sm font-semibold text-[var(--text-1)]">{mission.name}</div>
                 </button>
               ))}
             </div>
-            <div className="border border-fuchsia-500/35 bg-purple-950/45 p-5">
-              <div className="mb-1 text-xs font-semibold text-pink-300">
+            <div className="border border-[var(--line)] bg-[var(--void)]/65 p-5">
+              <div className="mb-1 text-xs font-semibold text-[var(--accent)]">
                 {COMBAT_MISSIONS[selectedCombat].difficulty}
               </div>
-              <p className="text-sm leading-relaxed text-purple-100">
+              <p className="text-sm leading-relaxed text-[var(--text-2)]">
                 {COMBAT_MISSIONS[selectedCombat].desc}
               </p>
             </div>
@@ -240,15 +240,15 @@ export const GameModals: React.FC<GameModalsProps> = ({
         {/* 3. CỐT TRUYỆN */}
         {activeModal === 'story' && (
           <div className="space-y-5">
-            <div className="border border-fuchsia-500/35 bg-purple-950/40 p-5">
-              <div className="mb-2 flex items-center justify-between text-xs text-fuchsia-300/80">
+            <div className="border border-[var(--line)] bg-[var(--void)]/65 p-5">
+              <div className="mb-2 flex items-center justify-between text-xs text-[var(--text-2)]">
                 <span>{STORY_SCENES[storyIndex].chapter}</span>
                 <span className="tabular-nums">0{storyIndex + 1} / 0{STORY_SCENES.length}</span>
               </div>
-              <div className="mb-1 text-sm font-semibold text-pink-300">
+              <div className="mb-1 text-sm font-semibold text-[var(--accent)]">
                 {STORY_SCENES[storyIndex].speaker}
               </div>
-              <p className="text-base leading-relaxed text-purple-100">
+              <p className="text-base leading-relaxed text-[var(--text-1)]">
                 {STORY_SCENES[storyIndex].line}
               </p>
             </div>
@@ -259,7 +259,7 @@ export const GameModals: React.FC<GameModalsProps> = ({
                   soundFx.playHover();
                   setStoryIndex((prev) => (prev > 0 ? prev - 1 : STORY_SCENES.length - 1));
                 }}
-                className="border border-fuchsia-400/50 bg-purple-950/60 px-4 py-2 text-xs font-semibold tracking-wider text-purple-100 uppercase transition hover:border-pink-300 hover:bg-fuchsia-900/60"
+                className="border border-[var(--line)] bg-[var(--void)]/80 px-4 py-2 text-xs font-semibold tracking-wider text-[var(--text-2)] uppercase transition hover:border-[var(--accent)] hover:text-[var(--text-1)]"
               >
                 Đoạn Trước
               </button>
@@ -268,7 +268,7 @@ export const GameModals: React.FC<GameModalsProps> = ({
                   soundFx.playSelect();
                   setStoryIndex((prev) => (prev + 1) % STORY_SCENES.length);
                 }}
-                className="border border-pink-300 bg-fuchsia-600/80 px-4 py-2 text-xs font-semibold tracking-wider text-white uppercase shadow-[0_0_15px_rgba(236,72,153,0.6)] transition hover:bg-fuchsia-500"
+                className="site-badge px-4 py-2 text-xs font-semibold tracking-wider uppercase transition hover:bg-[var(--accent)]/25"
               >
                 Tiếp Theo
               </button>
@@ -289,17 +289,17 @@ export const GameModals: React.FC<GameModalsProps> = ({
                   }}
                   className={`border px-4 py-3 text-left transition ${
                     selectedDating === idx
-                      ? 'border-pink-300 bg-fuchsia-700/40 text-white shadow-[0_0_12px_rgba(244,114,182,0.5)]'
-                      : 'border-fuchsia-500/30 bg-purple-950/40 text-purple-200 hover:border-fuchsia-400/70'
+                      ? 'border-[var(--accent)] bg-[var(--accent)]/15 text-[var(--text-1)]'
+                      : 'border-[var(--line)] bg-[var(--void)]/50 text-[var(--text-2)] hover:border-[var(--accent)]'
                   }`}
                 >
-                  <div className="text-sm font-bold text-white">{mem.title}</div>
-                  <div className="text-xs text-pink-200/80">{mem.location}</div>
+                  <div className="text-sm font-bold text-[var(--text-1)]">{mem.title}</div>
+                  <div className="text-xs text-[var(--text-2)]">{mem.location}</div>
                 </button>
               ))}
             </div>
-            <div className="border border-fuchsia-500/35 bg-purple-950/45 p-5">
-              <p className="text-base italic leading-relaxed text-pink-100">
+            <div className="border border-[var(--line)] bg-[var(--void)]/65 p-5">
+              <p className="text-base italic leading-relaxed text-[var(--text-1)]">
                 {DATING_MEMORIES[selectedDating].quote}
               </p>
             </div>
@@ -319,23 +319,23 @@ export const GameModals: React.FC<GameModalsProps> = ({
                   }}
                   className={`border px-3 py-2.5 text-left transition ${
                     selectedGallery === idx
-                      ? 'border-pink-300 bg-fuchsia-700/40 text-white shadow-[0_0_12px_rgba(244,114,182,0.5)]'
-                      : 'border-fuchsia-500/30 bg-purple-950/40 text-purple-200 hover:border-fuchsia-400/70'
+                      ? 'border-[var(--accent)] bg-[var(--accent)]/15 text-[var(--text-1)]'
+                      : 'border-[var(--line)] bg-[var(--void)]/50 text-[var(--text-2)] hover:border-[var(--accent)]'
                   }`}
                 >
-                  <div className="text-xs font-bold text-pink-300">{item.id}</div>
-                  <div className="truncate text-xs text-purple-100">{item.title}</div>
+                  <div className="text-xs font-bold text-[var(--accent)]">{item.id}</div>
+                  <div className="truncate text-xs text-[var(--text-1)]">{item.title}</div>
                 </button>
               ))}
             </div>
-            <div className="border border-fuchsia-500/30 bg-purple-950/45 p-5">
-              <div className="mb-1 text-sm font-bold text-white">
+            <div className="border border-[var(--line)] bg-[var(--void)]/65 p-5">
+              <div className="mb-1 text-sm font-bold text-[var(--text-1)]">
                 {GALLERY_ITEMS[selectedGallery].title}
               </div>
-              <div className="mb-2 text-xs text-pink-300/80">
+              <div className="mb-2 text-xs text-[var(--accent)]">
                 {GALLERY_ITEMS[selectedGallery].meta}
               </div>
-              <p className="text-sm leading-relaxed text-purple-100/90">
+              <p className="text-sm leading-relaxed text-[var(--text-2)]">
                 {GALLERY_ITEMS[selectedGallery].desc}
               </p>
             </div>
@@ -348,14 +348,14 @@ export const GameModals: React.FC<GameModalsProps> = ({
             {EVENT_ITEMS.map((ev) => (
               <div
                 key={ev.title}
-                className="border border-fuchsia-500/35 bg-purple-950/45 p-4"
+                className="border border-[var(--line)] bg-[var(--void)]/65 p-4"
               >
                 <div className="mb-1 flex items-center justify-between text-xs">
-                  <span className="font-bold text-pink-300">{ev.tag}</span>
-                  <span className="text-purple-200/75">{ev.time}</span>
+                  <span className="site-badge px-2 py-0.5 text-[10px] font-bold">{ev.tag}</span>
+                  <span className="text-[var(--text-2)]">{ev.time}</span>
                 </div>
-                <div className="mb-1 text-sm font-bold text-white">{ev.title}</div>
-                <p className="text-xs leading-relaxed text-purple-100/90">{ev.desc}</p>
+                <div className="mb-1 text-sm font-bold text-[var(--text-1)]">{ev.title}</div>
+                <p className="text-xs leading-relaxed text-[var(--text-2)]">{ev.desc}</p>
               </div>
             ))}
           </div>
@@ -367,13 +367,13 @@ export const GameModals: React.FC<GameModalsProps> = ({
             {CONTACT_MESSAGES.map((msg) => (
               <div
                 key={msg.sender}
-                className="border border-fuchsia-500/35 bg-purple-950/45 p-4"
+                className="border border-[var(--line)] bg-[var(--void)]/65 p-4"
               >
                 <div className="mb-1 flex items-center justify-between text-xs">
-                  <span className="font-bold text-pink-300">{msg.sender}</span>
-                  <span className="text-purple-200/75">{msg.time}</span>
+                  <span className="font-bold text-[var(--accent)]">{msg.sender}</span>
+                  <span className="text-[var(--text-2)]">{msg.time}</span>
                 </div>
-                <p className="text-sm leading-relaxed text-purple-100">{msg.text}</p>
+                <p className="text-sm leading-relaxed text-[var(--text-1)]">{msg.text}</p>
               </div>
             ))}
           </div>
@@ -382,14 +382,14 @@ export const GameModals: React.FC<GameModalsProps> = ({
         {/* 8. TƯƠNG TÁC */}
         {activeModal === 'interact' && (
           <div className="space-y-4">
-            <div className="border border-fuchsia-500/35 bg-purple-950/45 p-5 text-center">
-              <div className="mb-2 text-xs tracking-wider text-pink-300 uppercase">
+            <div className="border border-[var(--line)] bg-[var(--void)]/65 p-5 text-center">
+              <div className="mb-2 text-xs tracking-wider text-[var(--accent)] uppercase">
                 Mức Độ Đồng Bộ Nhịp Tim & Ánh Trăng
               </div>
-              <div className="mb-3 text-2xl font-bold tabular-nums text-white">
+              <div className="mb-3 text-2xl font-bold tabular-nums text-[var(--text-1)]">
                 {92 + (interactPulse % 8)}.4%
               </div>
-              <p className="mb-4 text-sm text-purple-100">
+              <p className="mb-4 text-sm text-[var(--text-2)]">
                 {interactPulse === 0
                   ? 'Chạm vào nút gửi tín hiệu bên dưới để truyền sóng cộng hưởng qua bầu trời đêm.'
                   : 'Tín hiệu cộng hưởng đã được đáp lại từ phía bên kia cầu vượt!'}
@@ -399,7 +399,7 @@ export const GameModals: React.FC<GameModalsProps> = ({
                   soundFx.playSelect();
                   setInteractPulse((p) => p + 1);
                 }}
-                className="border border-pink-300 bg-fuchsia-600/80 px-5 py-2 text-xs font-bold tracking-wider text-white uppercase shadow-[0_0_15px_rgba(236,72,153,0.65)] transition hover:bg-fuchsia-500"
+                className="site-badge px-5 py-2 text-xs font-bold tracking-wider uppercase transition hover:bg-[var(--accent)]/25"
               >
                 Gửi Tín Hiệu Tương Tác
               </button>
@@ -410,11 +410,11 @@ export const GameModals: React.FC<GameModalsProps> = ({
         {/* 9. GIỚI THIỆU */}
         {activeModal === 'about' && (
           <div className="space-y-4">
-            <div className="border border-fuchsia-500/35 bg-purple-950/45 p-5">
-              <div className="mb-2 text-sm font-bold tracking-wider text-pink-300 uppercase">
+            <div className="border border-[var(--line)] bg-[var(--void)]/65 p-5">
+              <div className="mb-2 text-sm font-bold tracking-wider text-[var(--accent)] uppercase">
                 Trăng Soi Dặm Trường
               </div>
-              <p className="text-sm leading-relaxed text-purple-100">
+              <p className="text-sm leading-relaxed text-[var(--text-2)]">
                 Không gian trải nghiệm lấy cảm hứng từ giao diện màn hình chờ khoa học viễn tưởng lãng mạn, kết hợp hình chiếu toàn ảnh giữa màn đêm tím và những vệt sao băng thanh mảnh bay qua bầu trời.
               </p>
             </div>

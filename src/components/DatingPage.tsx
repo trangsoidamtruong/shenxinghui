@@ -1,20 +1,62 @@
-import React, { useState, useEffect } from 'react';
-import { ChevronRight, X } from 'lucide-react';
+import React, { useState, useEffect, useRef, Suspense, lazy } from 'react';
+import { X } from 'lucide-react';
 import { soundFx } from '../utils/soundFx';
+
+const loadMemoriaPage = () => import('./MemoriaPage');
+const MemoriaPage = lazy(() =>
+  loadMemoriaPage().then((m) => ({ default: m.MemoriaPage }))
+);
 
 interface DatingPageProps {
   lang: 'VI' | 'EN';
   isPhone?: boolean;
+  onToggleLang?: () => void;
   onBackHome: () => void;
 }
 
 const DATING_TABS = [
-  { id: 'BY YOUR SIDE', labelVI: 'KỀ BÊN NGƯỜI', labelEN: 'BY YOUR SIDE' },
-  { id: 'FALLING FOR YOU', labelVI: 'ƯỚC HẸN RUNG ĐỘNG', labelEN: 'FALLING FOR YOU' },
-  { id: 'ANECDOTES', labelVI: 'GIAI THOẠI', labelEN: 'ANECDOTES' },
-  { id: 'JOURNAL', labelVI: 'SỔ TAY', labelEN: 'JOURNAL' },
-  { id: 'PLAYTIME', labelVI: 'DẠO CHƠI', labelEN: 'PLAYTIME' },
-  { id: 'PHOTO STUDIO', labelVI: 'CHỤP ẢNH', labelEN: 'PHOTO STUDIO' },
+  {
+    id: 'BY YOUR SIDE',
+    labelVI: 'Kề bên người',
+    labelEN: 'By your side',
+    subtitleVI: '> Chọn tệp để giải mã.',
+    subtitleEN: '> Select a file to decode.',
+  },
+  {
+    id: 'FALLING FOR YOU',
+    labelVI: 'Ước hẹn rung động',
+    labelEN: 'Falling for you',
+    subtitleVI: '> Chọn tệp để giải mã.',
+    subtitleEN: '> Select a file to decode.',
+  },
+  {
+    id: 'ANECDOTES',
+    labelVI: 'Giai thoại',
+    labelEN: 'Anecdotes',
+    subtitleVI: '> Chọn tệp để giải mã.',
+    subtitleEN: '> Select a file to decode.',
+  },
+  {
+    id: 'JOURNAL',
+    labelVI: 'Sổ tay',
+    labelEN: 'Journal',
+    subtitleVI: '> Chọn tệp để giải mã.',
+    subtitleEN: '> Select a file to decode.',
+  },
+  {
+    id: 'PLAYTIME',
+    labelVI: 'Dạo chơi',
+    labelEN: 'Playtime',
+    subtitleVI: '> Chọn tệp để giải mã.',
+    subtitleEN: '> Select a file to decode.',
+  },
+  {
+    id: 'PHOTO STUDIO',
+    labelVI: 'Chụp ảnh',
+    labelEN: 'Photo studio',
+    subtitleVI: '> Chọn tệp để giải mã.',
+    subtitleEN: '> Select a file to decode.',
+  },
 ] as const;
 
 type DatingSubTab = (typeof DATING_TABS)[number]['id'];
@@ -261,27 +303,195 @@ const ALL_CARD_IMAGES = [
   ...PLAYTIME_CARDS,
 ].map((c) => c.image);
 
+/**
+ * Subtle Star Particles & Very Light Falling Meteors on #05040f
+ */
+const SubtleStarfieldCanvas: React.FC = () => {
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    let animId: number | null = null;
+    let width = (canvas.width = window.innerWidth);
+    let height = (canvas.height = window.innerHeight);
+
+    const handleResize = () => {
+      if (!canvas) return;
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+    };
+
+    window.addEventListener('resize', handleResize, { passive: true });
+
+    // Small static/slow-twinkling star specks
+    const stars = Array.from({ length: 36 }, () => ({
+      x: Math.random() * width,
+      y: Math.random() * height,
+      r: 0.55 + Math.random() * 0.85,
+      baseAlpha: 0.12 + Math.random() * 0.32,
+      phase: Math.random() * Math.PI * 2,
+      speed: 0.008 + Math.random() * 0.014,
+    }));
+
+    // 2 very light, sparse falling meteors
+    const angle = 28 * (Math.PI / 180);
+    const createFaintMeteor = (initial = false) => {
+      const spd = 2.4 + Math.random() * 1.4;
+      return {
+        x: initial ? Math.random() * width : width * 0.35 + Math.random() * width * 0.8,
+        y: initial ? Math.random() * height * 0.6 : -30,
+        vx: -Math.cos(angle) * spd,
+        vy: Math.sin(angle) * spd,
+        len: 42 + Math.random() * 38,
+        life: 0,
+        maxLife: 130 + Math.floor(Math.random() * 90),
+        delay: initial ? Math.floor(Math.random() * 120) : 140 + Math.floor(Math.random() * 220),
+        maxAlpha: 0.16 + Math.random() * 0.12,
+      };
+    };
+
+    const meteors = [createFaintMeteor(true), createFaintMeteor(true)];
+
+    const render = () => {
+      if (document.hidden) {
+        animId = null;
+        return;
+      }
+
+      ctx.clearRect(0, 0, width, height);
+
+      // Draw tiny star specks (--text-2 #a79fc7)
+      for (let i = 0; i < stars.length; i++) {
+        const s = stars[i];
+        s.phase += s.speed;
+        const alpha = s.baseAlpha + Math.sin(s.phase) * 0.08;
+        ctx.fillStyle = `rgba(167, 159, 199, ${Math.max(0.04, Math.min(0.45, alpha))})`;
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      // Draw very light falling meteors (--text-1 #e6e2f5 -> --text-2 #a79fc7)
+      for (let i = 0; i < meteors.length; i++) {
+        const m = meteors[i];
+        if (m.delay > 0) {
+          m.delay--;
+          continue;
+        }
+
+        m.x += m.vx;
+        m.y += m.vy;
+        m.life++;
+
+        const p = m.life / m.maxLife;
+        const alpha =
+          p < 0.2
+            ? (p / 0.2) * m.maxAlpha
+            : p > 0.75
+            ? ((1 - p) / 0.25) * m.maxAlpha
+            : m.maxAlpha;
+
+        if (alpha > 0.01) {
+          const spd = Math.hypot(m.vx, m.vy) || 1;
+          const tx = m.x - (m.vx / spd) * m.len;
+          const ty = m.y - (m.vy / spd) * m.len;
+
+          const grad = ctx.createLinearGradient(m.x, m.y, tx, ty);
+          grad.addColorStop(0, `rgba(230, 226, 245, ${alpha})`);
+          grad.addColorStop(1, 'rgba(167, 159, 199, 0)');
+
+          ctx.strokeStyle = grad;
+          ctx.lineWidth = 0.8;
+          ctx.beginPath();
+          ctx.moveTo(m.x, m.y);
+          ctx.lineTo(tx, ty);
+          ctx.stroke();
+        }
+
+        if (m.life >= m.maxLife || m.x < -80 || m.y > height + 80) {
+          meteors[i] = createFaintMeteor(false);
+        }
+      }
+
+      animId = requestAnimationFrame(render);
+    };
+
+    const handleVis = () => {
+      if (!document.hidden && animId === null) {
+        animId = requestAnimationFrame(render);
+      } else if (document.hidden && animId !== null) {
+        cancelAnimationFrame(animId);
+        animId = null;
+      }
+    };
+
+    document.addEventListener('visibilitychange', handleVis);
+    animId = requestAnimationFrame(render);
+
+    return () => {
+      if (animId !== null) cancelAnimationFrame(animId);
+      window.removeEventListener('resize', handleResize);
+      document.removeEventListener('visibilitychange', handleVis);
+    };
+  }, []);
+
+  return (
+    <canvas
+      ref={canvasRef}
+      className="pointer-events-none fixed inset-0 z-0 h-full w-full"
+      aria-hidden="true"
+    />
+  );
+};
+
 export const DatingPage: React.FC<DatingPageProps> = ({
   lang,
   isPhone = false,
+  onToggleLang,
   onBackHome,
 }) => {
-  const [activeSubTab, setActiveSubTab] = useState<DatingSubTab>('BY YOUR SIDE');
+  const [activeSubTab, setActiveSubTab] = useState<DatingSubTab>('ANECDOTES');
   const [selectedCard, setSelectedCard] = useState<AnecdoteCard | null>(null);
-  // Slide index for Phone 1-card portrait carousel mode
-  const [carouselIdx, setCarouselIdx] = useState<number>(0);
+  const [isMemoriaGalleryOpen, setIsMemoriaGalleryOpen] = useState<boolean>(() => {
+    if (typeof window === 'undefined') return false;
+    return window.location.pathname.startsWith('/memoria');
+  });
 
-  // Preload all lightweight WebP card images in the background so switching tabs or slides is instantaneous
+  // Preload active tab images immediately, then warm up remaining tab images during browser idle time
   useEffect(() => {
-    ALL_CARD_IMAGES.forEach((src) => {
+    const activeImages = new Set(ANECDOTE_CARDS.map((c) => c.image));
+    activeImages.forEach((src) => {
       const img = new Image();
       img.decoding = 'async';
       img.src = src;
     });
-  }, []);
 
-  // Phone is always locked to Portrait 1-card view; Tablet & Laptop are always locked to Landscape multi-card view
-  const isSingleCardView = isPhone;
+    const preloadRemaining = () => {
+      ALL_CARD_IMAGES.forEach((src) => {
+        if (activeImages.has(src)) return;
+        const img = new Image();
+        img.decoding = 'async';
+        img.src = src;
+      });
+    };
+
+    const win = window as Window & {
+      requestIdleCallback?: (cb: () => void, opts?: { timeout: number }) => number;
+      cancelIdleCallback?: (id: number) => void;
+    };
+
+    if (typeof win.requestIdleCallback === 'function') {
+      const idleId = win.requestIdleCallback(preloadRemaining, { timeout: 1500 });
+      return () => win.cancelIdleCallback?.(idleId);
+    }
+
+    const timerId = window.setTimeout(preloadRemaining, 450);
+    return () => window.clearTimeout(timerId);
+  }, []);
 
   const activeDeck =
     activeSubTab === 'BY YOUR SIDE'
@@ -295,328 +505,294 @@ export const DatingPage: React.FC<DatingPageProps> = ({
       : activeSubTab === 'PLAYTIME'
       ? PLAYTIME_CARDS
       : ANECDOTE_CARDS;
-  const safeCarouselIdx = Math.min(carouselIdx, activeDeck.length - 1);
-  const maxIdx = activeDeck.length - 1;
-
-  const handlePrevCard = () => {
-    setCarouselIdx((prev) => Math.max(0, prev - 1));
-  };
-
-  const handleNextCard = () => {
-    setCarouselIdx((prev) => Math.min(maxIdx, prev + 1));
-  };
-
-  const visibleCards = isSingleCardView
-    ? activeDeck.slice(safeCarouselIdx, safeCarouselIdx + 1)
-    : activeDeck;
 
   const activeTabObj =
-    DATING_TABS.find((t) => t.id === activeSubTab) ?? DATING_TABS[0];
-  const activeTabLabel =
+    DATING_TABS.find((t) => t.id === activeSubTab) ?? DATING_TABS[2];
+  const activeTabTitle =
     lang === 'VI' ? activeTabObj.labelVI : activeTabObj.labelEN;
+  const activeTabSubtitle =
+    lang === 'VI' ? activeTabObj.subtitleVI : activeTabObj.subtitleEN;
 
-  return (
-    <div className="relative z-20 flex h-full w-full flex-col justify-between overflow-hidden bg-[#090315]/75 px-3.5 py-3.5 sm:px-7 sm:py-4 md:px-9 md:py-5 lg:px-12 lg:py-7 backdrop-blur-[4px]">
-      {/* Subtle Cyberpunk Scanline & Interference Glitch Overlay in Background */}
-      <div className="cyber-dating-glitch-overlay" aria-hidden="true" />
-
-      {/* TOP CYBERPUNK BREADCRUMB NAVIGATION & TABS */}
-      <header className="relative z-10 flex shrink-0 flex-col gap-2 sm:gap-2.5 lg:gap-3.5">
-        {/* Cyberpunk Breadcrumb Path: TRĂNG SOI DẶM TRƯỜNG > HẸN HÒ > [ACTIVE_TAB]
-            Right padding reserves space only on this top row for the top-right VI + BGM buttons */}
-        <div className="mr-16 sm:mr-24 flex flex-wrap items-center gap-1.5 sm:gap-2.5 border-b border-fuchsia-400/35 bg-gradient-to-r from-[#1e0938]/85 via-[#2d0e52]/55 to-transparent px-2.5 py-1.5 sm:px-4 sm:py-2 shadow-[0_4px_20px_rgba(192,38,211,0.22)]">
-          {/* Breadcrumb 1: TRĂNG SOI DẶM TRƯỜNG / MOONSTRIDE (Click to return Home) */}
-          <button
-            type="button"
-            onMouseEnter={() => soundFx.playHover()}
-            onClick={() => {
-              soundFx.playBack();
+  if (isMemoriaGalleryOpen) {
+    return (
+      <div className="relative z-20 h-full w-full overflow-hidden bg-[var(--void)]">
+        <Suspense fallback={<div className="h-full w-full bg-[var(--void)]" />}>
+          <MemoriaPage
+            lang={lang}
+            isPhone={isPhone}
+            onToggleLang={onToggleLang}
+            onBackHome={() => {
+              try {
+                if (window.location.pathname !== '/') {
+                  window.history.pushState({ page: 'home' }, '', '/');
+                }
+              } catch {
+                // ignore
+              }
               onBackHome();
             }}
-            className="cursor-pointer text-[11px] sm:text-xs md:text-[13px] lg:text-sm font-semibold tracking-[0.08em] sm:tracking-[0.14em] text-purple-200/85 uppercase transition-all duration-150 hover:text-white hover:drop-shadow-[0_0_10px_#e879f9] focus:outline-none"
-          >
-            {lang === 'VI' ? 'TRĂNG SOI DẶM TRƯỜNG' : 'MOONSTRIDE'}
-          </button>
-
-          {/* Cyberpunk `>` Separator */}
-          <ChevronRight
-            className="h-3 w-3 sm:h-3.5 sm:w-3.5 md:h-4 md:w-4 shrink-0 text-fuchsia-400 drop-shadow-[0_0_6px_#e879f9]"
-            aria-hidden="true"
-          />
-
-          {/* Breadcrumb 2: HẸN HÒ / DATING */}
-          <button
-            type="button"
-            onMouseEnter={() => soundFx.playHover()}
-            onClick={() => {
-              soundFx.playSelect();
-              setActiveSubTab('BY YOUR SIDE');
-              setCarouselIdx(0);
+            onBackToDating={() => {
+              try {
+                if (window.location.pathname !== '/') {
+                  window.history.pushState({ page: 'dating' }, '', '/');
+                }
+              } catch {
+                // ignore
+              }
+              setIsMemoriaGalleryOpen(false);
+              setActiveSubTab('FALLING FOR YOU');
             }}
-            className="cursor-pointer text-[11px] sm:text-xs md:text-[13px] lg:text-sm font-semibold tracking-[0.08em] sm:tracking-[0.14em] text-pink-200 uppercase transition-colors hover:text-white focus:outline-none"
-          >
-            {lang === 'VI' ? 'HẸN HÒ' : 'DATING'}
-          </button>
-
-          {/* Cyberpunk `>` Separator */}
-          <ChevronRight
-            className="h-3 w-3 sm:h-3.5 sm:w-3.5 md:h-4 md:w-4 shrink-0 text-cyan-300 drop-shadow-[0_0_6px_#67e8f9]"
-            aria-hidden="true"
+            onClose={() => {
+              try {
+                if (window.location.pathname !== '/') {
+                  window.history.pushState({ page: 'dating' }, '', '/');
+                }
+              } catch {
+                // ignore
+              }
+              setIsMemoriaGalleryOpen(false);
+            }}
           />
+        </Suspense>
+      </div>
+    );
+  }
 
-          {/* Breadcrumb 3: Active Tab Name (Unframed plain text) */}
-          <span className="text-[11px] sm:text-xs md:text-[13px] lg:text-sm font-bold tracking-[0.1em] sm:tracking-[0.15em] text-white uppercase">
-            {activeTabLabel}
-          </span>
-        </div>
+  return (
+    <div className="cyber-events-scroll relative z-20 flex h-full w-full flex-col overflow-y-auto overflow-x-hidden bg-[var(--void)] text-[var(--text-1)]">
+      {/* Subtle Star Specks & Very Light Falling Meteors */}
+      <SubtleStarfieldCanvas />
 
-        {/* 6 Sub-Navigation Tabs: Full width with comfortable, legible text on phone, tablet, and PC */}
-        <nav
-          aria-label="Dating Sub Navigation"
-          className="flex w-full flex-wrap items-center gap-1.5 sm:gap-2 md:gap-2.5 lg:gap-3 overflow-hidden"
-        >
-          {DATING_TABS.map((tab) => {
-            const isTabActive = activeSubTab === tab.id;
-            const tabText = lang === 'VI' ? tab.labelVI : tab.labelEN;
-            return (
+      {/* TOP BAR: BREADCRUMB & TAB BAR */}
+      <header className="relative z-10 shrink-0">
+        {/* Row 1: Breadcrumb (left) + Language Toggle Button (right, does not follow scroll) */}
+        <div className="border-b border-[var(--line)]">
+          <div className="mx-auto flex w-full max-w-[1140px] items-center justify-between gap-2.5 px-4 py-2.5 sm:px-8 sm:py-3.5 md:px-12">
+            <div className="flex items-center gap-2.5 min-w-0">
               <button
-                key={tab.id}
                 type="button"
-                onMouseEnter={() => {
-                  if (!isTabActive) soundFx.playHover();
+                onMouseEnter={() => soundFx.playHover()}
+                onClick={() => {
+                  soundFx.playBack();
+                  onBackHome();
                 }}
+                className="cursor-pointer font-[var(--font-mono)] text-[10px] sm:text-[11px] font-medium uppercase tracking-[0.22em] text-[var(--text-2)] transition-colors duration-150 hover:text-[var(--text-1)] focus:outline-none"
+              >
+                {lang === 'VI' ? 'TRĂNG SOI DẶM TRƯỜNG' : 'MOONSTRIDE'}
+              </button>
+
+              <span
+                className="font-[var(--font-mono)] text-[10px] sm:text-[11px] text-[var(--violet)]"
+                aria-hidden="true"
+              >
+                &gt;
+              </span>
+
+              <button
+                type="button"
+                onMouseEnter={() => soundFx.playHover()}
                 onClick={() => {
                   soundFx.playSelect();
-                  setActiveSubTab(tab.id);
-                  setCarouselIdx(0);
-                  setSelectedCard(null);
+                  setActiveSubTab('ANECDOTES');
                 }}
-                className={`shrink-0 cursor-pointer px-2.5 py-1 sm:px-3 sm:py-1 md:px-3.5 md:py-1.5 lg:px-4 text-[11px] sm:text-xs md:text-[13px] lg:text-sm font-semibold tracking-[0.08em] sm:tracking-[0.12em] lg:tracking-[0.15em] uppercase transition-all whitespace-nowrap focus:outline-none ${
-                  isTabActive
-                    ? 'border border-pink-300/85 bg-fuchsia-600/35 text-white shadow-[0_0_12px_rgba(232,121,249,0.55)]'
-                    : 'border border-transparent text-purple-200/75 hover:border-fuchsia-400/40 hover:text-white'
-                }`}
+                className="cursor-pointer font-[var(--font-mono)] text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.22em] text-[var(--text-1)] transition-colors duration-150 hover:text-[var(--lilac)] focus:outline-none"
               >
-                {tabText}
+                {lang === 'VI' ? 'HẸN HÒ' : 'DATING'}
               </button>
-            );
-          })}
-        </nav>
-      </header>
-
-      {/* MAIN TAB CONTENT AREA (No scrollbar, centered in remaining viewport height) */}
-      <div className="relative z-10 flex flex-1 min-h-0 items-center justify-center overflow-hidden">
-        {/* ALL 6 TABS: ANECDOTES (4 cards), BY YOUR SIDE (2 cards), FALLING FOR YOU (3 cards), JOURNAL (2 cards), PHOTO STUDIO (3 cards), PLAYTIME (2 cards)
-            - Phone (Always Portrait, isSingleCardView): Shows 1 well-proportioned card at a time with Left/Right cyberpunk arrows
-            - Tablet & Laptop (Always Landscape, !isSingleCardView): Shows all cards in a single centered row */}
-        <div className="flex w-full max-w-5xl flex-col items-center justify-center gap-2.5 sm:gap-4">
-            <div className="flex w-full items-center justify-center gap-4 sm:gap-6 md:gap-8">
-              {/* Left Cyberpunk `<` Arrow Button (Hidden on first image, shown on subsequent images in Phone Portrait View) */}
-              {isSingleCardView && (
-                <button
-                  type="button"
-                  onClick={handlePrevCard}
-                  disabled={safeCarouselIdx <= 0}
-                  aria-hidden={safeCarouselIdx <= 0}
-                  aria-label={lang === 'VI' ? 'Hình trước' : 'Previous image'}
-                  className={`cyber-arrow-btn h-10 w-10 shrink-0 focus:outline-none ${
-                    safeCarouselIdx <= 0
-                      ? 'invisible pointer-events-none'
-                      : 'cursor-pointer'
-                  }`}
-                >
-                  <svg
-                    viewBox="0 0 36 36"
-                    fill="none"
-                    className="h-7 w-7"
-                  >
-                    {/* Outer sharp cyberpunk `<` chevron */}
-                    <path
-                      d="M23 5L9 18L23 31"
-                      stroke="currentColor"
-                      strokeWidth="2.4"
-                      strokeLinecap="square"
-                    />
-                    {/* Inner secondary cyber echo `<` line */}
-                    <path
-                      d="M28 10L19.5 18L28 26"
-                      stroke="#67e8f9"
-                      strokeWidth="1.5"
-                      strokeLinecap="square"
-                      strokeOpacity="0.85"
-                    />
-                    {/* Tiny cyber diamond node at vertex */}
-                    <rect
-                      x="4.5"
-                      y="16.5"
-                      width="3"
-                      height="3"
-                      transform="rotate(45 6 18)"
-                      fill="#f0abfc"
-                    />
-                  </svg>
-                </button>
-              )}
-
-              {/* Cards Grid: 1 column on Phone (Portrait), 2 / 3 / 4 columns on Tablet & Laptop (Landscape) */}
-              <div
-                className={`grid place-items-center ${
-                  isSingleCardView
-                    ? 'grid-cols-1'
-                    : activeSubTab === 'BY YOUR SIDE' ||
-                      activeSubTab === 'JOURNAL' ||
-                      activeSubTab === 'PLAYTIME'
-                    ? 'grid-cols-2 gap-6 sm:gap-8 md:gap-10 lg:gap-12'
-                    : activeSubTab === 'FALLING FOR YOU'
-                    ? 'grid-cols-3 gap-5 sm:gap-6 md:gap-8 lg:gap-10'
-                    : 'w-full grid-cols-4 gap-3 sm:gap-3.5 md:gap-4 lg:gap-6 xl:gap-7'
-                }`}
-              >
-                {visibleCards.map((card) => {
-                  const cardTitle = lang === 'VI' ? card.titleVI : card.titleEN;
-                  return (
-                    <button
-                      key={card.id}
-                      type="button"
-                      onMouseEnter={() => soundFx.playHover()}
-                      onClick={() => {
-                        soundFx.playSelect();
-                        setSelectedCard(card);
-                      }}
-                      className="group relative flex flex-col items-center text-center cursor-pointer focus:outline-none"
-                    >
-                      {/* Card Image Container */}
-                      <div
-                        className={`relative aspect-[9/15.5] overflow-hidden rounded-lg border border-fuchsia-400/45 bg-[#140726] shadow-[0_6px_22px_rgba(0,0,0,0.65)] transition-all duration-300 group-hover:-translate-y-1.5 group-hover:border-pink-300 group-hover:shadow-[0_0_24px_rgba(232,121,249,0.65)] ${
-                          isSingleCardView
-                            ? 'h-[45vh] max-h-[320px] max-w-[56vw]'
-                            : 'h-[40vh] max-h-[235px] md:h-[42vh] md:max-h-[255px] lg:h-[48vh] lg:max-h-[340px] xl:h-[54vh] xl:max-h-[410px]'
-                        }`}
-                      >
-                        <img
-                          src={card.image}
-                          alt={cardTitle}
-                          decoding="async"
-                          referrerPolicy="no-referrer"
-                          className="h-full w-full object-cover object-top transition-transform duration-500 group-hover:scale-105"
-                        />
-                        {/* Subtle bottom gradient for polish */}
-                        <div
-                          className="pointer-events-none absolute inset-x-0 bottom-0 h-1/4 bg-gradient-to-t from-[#0d041a]/75 via-transparent to-transparent"
-                          aria-hidden="true"
-                        />
-                      </div>
-
-                      {/* Title below each image */}
-                      <span
-                        className={`font-semibold tracking-wide text-purple-100 transition-colors duration-200 group-hover:text-white group-hover:drop-shadow-[0_0_8px_#e879f9] ${
-                          isSingleCardView
-                            ? 'mt-2 text-[13px]'
-                            : 'mt-1.5 md:mt-2 lg:mt-2.5 text-[11px] md:text-xs lg:text-[14px] xl:text-[15px]'
-                        }`}
-                      >
-                        {cardTitle}
-                      </span>
-                    </button>
-                  );
-                })}
-              </div>
-
-              {/* Right Cyberpunk `>` Arrow Button (Hidden on last image, shown on earlier images in Phone Portrait View) */}
-              {isSingleCardView && (
-                <button
-                  type="button"
-                  onClick={handleNextCard}
-                  disabled={safeCarouselIdx >= maxIdx}
-                  aria-hidden={safeCarouselIdx >= maxIdx}
-                  aria-label={lang === 'VI' ? 'Hình sau' : 'Next image'}
-                  className={`cyber-arrow-btn h-10 w-10 shrink-0 focus:outline-none ${
-                    safeCarouselIdx >= maxIdx
-                      ? 'invisible pointer-events-none'
-                      : 'cursor-pointer'
-                  }`}
-                >
-                  <svg
-                    viewBox="0 0 36 36"
-                    fill="none"
-                    className="h-7 w-7 rotate-180"
-                  >
-                    {/* Outer sharp cyberpunk `<` chevron */}
-                    <path
-                      d="M23 5L9 18L23 31"
-                      stroke="currentColor"
-                      strokeWidth="2.4"
-                      strokeLinecap="square"
-                    />
-                    {/* Inner secondary cyber echo `<` line */}
-                    <path
-                      d="M28 10L19.5 18L28 26"
-                      stroke="#67e8f9"
-                      strokeWidth="1.5"
-                      strokeLinecap="square"
-                      strokeOpacity="0.85"
-                    />
-                    {/* Tiny cyber diamond node at vertex */}
-                    <rect
-                      x="4.5"
-                      y="16.5"
-                      width="3"
-                      height="3"
-                      transform="rotate(45 6 18)"
-                      fill="#f0abfc"
-                    />
-                  </svg>
-                </button>
-              )}
             </div>
 
-            {/* Subtle Indicator Dots for Phone 1-Card View */}
-            {isSingleCardView && (
-              <div className="flex items-center gap-2 pt-0.5 sm:pt-1">
-                {activeDeck.map((card, idx) => (
-                  <button
-                    key={card.id}
-                    type="button"
-                    onClick={() => setCarouselIdx(idx)}
-                    aria-label={`Slide ${idx + 1}`}
-                    className={`h-1.5 sm:h-2 transition-all duration-200 cursor-pointer rounded-full ${
-                      safeCarouselIdx === idx
-                        ? 'w-6 sm:w-7 bg-pink-300 shadow-[0_0_8px_#e879f9]'
-                        : 'w-2 sm:w-2.5 bg-purple-400/35 hover:bg-purple-300/60'
-                    }`}
-                  />
-                ))}
+            {onToggleLang && (
+              <div className="flex shrink-0 items-stretch border border-[var(--line)] bg-[var(--deep)]/85">
+                <button
+                  type="button"
+                  onMouseEnter={() => soundFx.playHover()}
+                  onClick={() => {
+                    soundFx.playSelect();
+                    onToggleLang();
+                  }}
+                  title={lang === 'VI' ? 'Switch to English' : 'Chuyển sang Tiếng Việt'}
+                  aria-label={lang === 'VI' ? 'Switch to English' : 'Chuyển sang Tiếng Việt'}
+                  className="hud-mono-text flex h-7 sm:h-8 items-center justify-center px-2.5 sm:px-3 cursor-pointer rounded-none text-[var(--text-2)] transition-colors duration-200 hover:bg-[var(--violet-d)]/35 hover:text-[var(--text-1)] focus:outline-none"
+                >
+                  {lang}
+                </button>
               </div>
             )}
           </div>
+        </div>
+
+        {/* Row 2: Tab Bar (regular case, active tab only has --violet underline, no box fill) */}
+        <div className="border-b border-[var(--line)]">
+          <nav
+            aria-label="Dating Sub Navigation"
+            className="mx-auto flex w-full max-w-[1140px] flex-wrap items-center gap-x-4 gap-y-0.5 px-4 py-1 sm:gap-x-7 sm:gap-y-1 sm:px-8 sm:py-0 md:gap-x-9 md:px-12"
+          >
+            {DATING_TABS.map((tab) => {
+              const isTabActive = activeSubTab === tab.id;
+              const tabText = lang === 'VI' ? tab.labelVI : tab.labelEN;
+              return (
+                <button
+                  key={tab.id}
+                  type="button"
+                  onMouseEnter={() => {
+                    if (!isTabActive) soundFx.playHover();
+                  }}
+                  onClick={() => {
+                    soundFx.playSelect();
+                    setActiveSubTab(tab.id);
+                    setSelectedCard(null);
+                  }}
+                  className={`relative sm:-mb-[1px] shrink-0 cursor-pointer border-b-2 py-1 sm:py-3 font-[var(--font-mono)] text-[11px] sm:text-[12px] tracking-[0.04em] whitespace-nowrap transition-colors duration-150 focus:outline-none ${
+                    isTabActive
+                      ? 'border-[var(--violet)] font-medium text-[var(--text-1)]'
+                      : 'border-transparent font-normal text-[var(--text-2)] hover:text-[var(--text-1)]'
+                  }`}
+                >
+                  {tabText}
+                </button>
+              );
+            })}
+          </nav>
+        </div>
+      </header>
+
+      {/* MAIN CONTENT AREA */}
+      <div className="relative z-10 flex flex-1 flex-col">
+        <div className="mx-auto flex flex-1 w-full max-w-[1140px] flex-col justify-center px-4 py-6 sm:px-8 sm:py-8 md:px-12 lg:py-10">
+          {/* Page Title & Command-line Subtitle */}
+          <div className="mb-6 sm:mb-8 lg:mb-10">
+            <h1 className="font-[var(--font-mono)] text-2xl sm:text-3xl md:text-4xl lg:text-[40px] font-bold tracking-[-0.02em] text-[var(--text-1)]">
+              {activeTabTitle}
+            </h1>
+            <p className="mt-2 sm:mt-2.5 font-[var(--font-sans)] text-xs sm:text-[13px] md:text-[14px] tracking-[0.01em] text-[var(--text-2)]">
+              {activeTabSubtitle}
+            </p>
+          </div>
+
+          {/* Cards Grid:
+              - Mobile: 1-2 columns preserving vertical aspect ratio
+              - Tablet & Desktop: 4 columns single row matching reference layout */}
+          <div className="grid w-full grid-cols-1 min-[360px]:grid-cols-2 sm:grid-cols-4 gap-3.5 sm:gap-3 md:gap-4 lg:gap-6">
+            {activeDeck.map((card) => {
+              const cardTitle = lang === 'VI' ? card.titleVI : card.titleEN;
+              return (
+                <button
+                  key={card.id}
+                  type="button"
+                  onMouseEnter={() => soundFx.playHover()}
+                  onClick={() => {
+                    soundFx.playSelect();
+                    if (
+                      card.id === 'ffy-2' ||
+                      (activeSubTab === 'FALLING FOR YOU' &&
+                        (card.titleEN === 'Memoria' || card.titleVI === 'Tư Niệm'))
+                    ) {
+                      setIsMemoriaGalleryOpen(true);
+                      return;
+                    }
+                    setSelectedCard(card);
+                  }}
+                  className="group relative flex aspect-[10/14] w-full cursor-pointer flex-col rounded-none border border-[var(--line)] bg-[var(--void)] text-left transition-colors duration-[400ms] ease-in-out hover:border-[var(--accent)] focus:border-[var(--accent)] focus:outline-none [content-visibility:auto] [contain-intrinsic-size:auto_320px]"
+                >
+                  {/* 2 Corner Brackets: Top-Left & Bottom-Right */}
+                  <span
+                    className="pointer-events-none absolute -top-[1px] -left-[1px] z-20 h-2.5 w-2.5 border-t-2 border-l-2 border-[var(--text-2)] transition-colors duration-[400ms] ease-in-out group-hover:border-[var(--accent)]"
+                    aria-hidden="true"
+                  />
+                  <span
+                    className="pointer-events-none absolute -right-[1px] -bottom-[1px] z-20 h-2.5 w-2.5 border-r-2 border-b-2 border-[var(--text-2)] transition-colors duration-[400ms] ease-in-out group-hover:border-[var(--accent)]"
+                    aria-hidden="true"
+                  />
+
+                  {/* Top ~75%: Image Area with Global Dark-Blended Treatment */}
+                  <div className="relative h-[75%] w-full overflow-hidden bg-[var(--void)]">
+                    <img
+                      src={card.image}
+                      alt={cardTitle}
+                      decoding="async"
+                      referrerPolicy="no-referrer"
+                      className="anecdote-card-img h-full w-full object-cover object-top"
+                    />
+
+                    {/* Subtle #1a1233 multiply overlay (15% -> 3% on hover) */}
+                    <div
+                      className="anecdote-card-tint pointer-events-none absolute inset-0"
+                      aria-hidden="true"
+                    />
+
+                    {/* Bottom 55% dark gradient to #07060f */}
+                    <div
+                      className="anecdote-card-gradient pointer-events-none absolute inset-0"
+                      aria-hidden="true"
+                    />
+
+                    {/* Scanlines (hidden unless card has .is-locked) */}
+                    <div
+                      className="anecdote-card-scanlines pointer-events-none absolute inset-0"
+                      aria-hidden="true"
+                    />
+                  </div>
+
+                  {/* Bottom ~25%: Info Area Inside the Same Card Frame */}
+                  <div className="flex h-[25%] w-full flex-col justify-between border-t border-[var(--line)] bg-[var(--void)] px-3 py-2.5 sm:px-2.5 sm:py-1.5 md:px-3 md:py-2 lg:px-4 lg:py-3">
+                    {/* Top Info Row: ANECDOTE // 01 (or GIAI THOẠI // 01) + bordered OPEN / MỞ label */}
+                    <div className="flex items-center justify-between gap-1.5 lg:gap-2">
+                      <span className="truncate font-[var(--font-mono)] text-[9px] md:text-[10px] lg:text-[11px] uppercase tracking-[0.12em] lg:tracking-[0.18em] text-[var(--text-2)]">
+                        {lang === 'VI' ? card.chapterCodeVI : card.chapterCodeEN}
+                      </span>
+                      <span className="site-badge shrink-0 rounded-none px-1.5 py-0.5 lg:px-2 font-[var(--font-mono)] text-[9px] lg:text-[10px] uppercase tracking-[0.12em] lg:tracking-[0.14em]">
+                        {lang === 'VI' ? 'MỞ' : 'OPEN'}
+                      </span>
+                    </div>
+
+                    {/* Bottom Info Row: Anecdote Title in clean sans-serif, --text-1, medium-bold */}
+                    <div className="truncate font-[var(--font-sans)] text-[13px] sm:text-[12px] md:text-[13px] lg:text-[15px] font-semibold text-[var(--text-1)]">
+                      {cardTitle}
+                    </div>
+                  </div>
+                </button>
+              );
+            })}
+          </div>
+        </div>
       </div>
 
-      {/* Anecdote Card Detail Modal when a portrait card is clicked */}
+      {/* Decoded Memory Detail Modal when a card is clicked */}
       {selectedCard && (
         <div
-          className="fixed inset-0 z-40 flex items-center justify-center bg-black/65 p-4 backdrop-blur-xs"
+          className="fixed inset-0 z-40 flex items-center justify-center bg-black/75 p-4 backdrop-blur-xs"
           onClick={() => {
             soundFx.playBack();
             setSelectedCard(null);
           }}
         >
           <div
-            className="relative flex w-full max-w-lg flex-col sm:flex-row gap-5 border border-fuchsia-400/70 bg-[#140726]/95 p-5 text-purple-50 shadow-[0_0_35px_rgba(217,70,239,0.5)]"
+            className="relative flex w-full max-w-lg flex-col sm:flex-row gap-5 rounded-none border border-[var(--line)] bg-[var(--deep)] p-5 text-[var(--text-1)]"
             onClick={(e) => e.stopPropagation()}
           >
+            {/* Corner brackets on modal */}
+            <span
+              className="pointer-events-none absolute -top-[1px] -left-[1px] h-3 w-3 border-t-2 border-l-2 border-[var(--lilac)]"
+              aria-hidden="true"
+            />
+            <span
+              className="pointer-events-none absolute -right-[1px] -bottom-[1px] h-3 w-3 border-r-2 border-b-2 border-[var(--lilac)]"
+              aria-hidden="true"
+            />
+
             <button
               type="button"
               onClick={() => {
                 soundFx.playBack();
                 setSelectedCard(null);
               }}
-              className="absolute top-3 right-3 flex h-7 w-7 cursor-pointer items-center justify-center border border-fuchsia-400/50 bg-fuchsia-950/60 text-fuchsia-200 hover:border-white hover:text-white"
+              className="absolute top-3 right-3 flex h-7 w-7 cursor-pointer items-center justify-center rounded-none border border-[var(--line)] bg-[var(--void)] text-[var(--text-2)] transition-colors hover:border-[var(--violet)] hover:text-[var(--text-1)]"
               aria-label="Close detail"
             >
               <X className="h-4 w-4" />
             </button>
 
-            <div className="mx-auto w-36 sm:w-44 shrink-0 overflow-hidden rounded-md border border-pink-300/60">
+            <div className="site-media-frame mx-auto w-36 sm:w-44 shrink-0 overflow-hidden rounded-none border border-[var(--line)]">
               <img
                 src={selectedCard.image}
                 alt={lang === 'VI' ? selectedCard.titleVI : selectedCard.titleEN}
@@ -626,14 +802,14 @@ export const DatingPage: React.FC<DatingPageProps> = ({
               />
             </div>
 
-            <div className="flex flex-col justify-center">
-              <div className="mb-1 text-[11px] font-bold tracking-widest text-pink-300 uppercase">
+            <div className="flex flex-col justify-center pr-4">
+              <div className="mb-1.5 font-[var(--font-mono)] text-[10px] sm:text-[11px] uppercase tracking-[0.18em] text-[var(--lilac)]">
                 {lang === 'VI' ? selectedCard.chapterCodeVI : selectedCard.chapterCodeEN}
               </div>
-              <h3 className="mb-2.5 text-lg font-bold text-white">
+              <h3 className="mb-2.5 font-[var(--font-sans)] text-lg font-semibold text-[var(--text-1)]">
                 {lang === 'VI' ? selectedCard.titleVI : selectedCard.titleEN}
               </h3>
-              <p className="text-xs sm:text-sm leading-relaxed text-purple-100/90">
+              <p className="font-[var(--font-sans)] text-xs sm:text-sm leading-relaxed text-[var(--text-2)]">
                 {lang === 'VI' ? selectedCard.summaryVI : selectedCard.summaryEN}
               </p>
             </div>

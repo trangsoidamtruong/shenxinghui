@@ -16,6 +16,12 @@ async function startServer() {
       },
       appType: 'spa',
     });
+    app.use((req, _res, next) => {
+      if (req.url && req.url.startsWith('/src/')) {
+        vite.moduleGraph.invalidateAll();
+      }
+      next();
+    });
     app.use(vite.middlewares);
   } else {
     const distPath = path.join(import.meta.dirname, 'dist');

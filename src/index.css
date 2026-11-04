@@ -2,314 +2,470 @@
 
 @layer base {
   :root {
-    --font-display: 'Chakra Petch', 'Exo 2', sans-serif;
-    --font-ui: 'Chakra Petch', sans-serif;
+    --font-display: 'Chakra Petch', 'Segoe UI', sans-serif;
+    --font-ui: 'Chakra Petch', 'Segoe UI', sans-serif;
+    --font-mono: 'JetBrains Mono', 'IBM Plex Mono', ui-monospace, monospace;
+    --font-sans: 'Space Grotesk', 'Be Vietnam Pro', 'Segoe UI', sans-serif;
+    --font-prose: 'Be Vietnam Pro', 'Segoe UI', sans-serif;
+    --ease-boot: cubic-bezier(0.2, 0.8, 0.2, 1);
+
+    /* Unified Streamlined Palette */
+    --void: #07060f;               /* Nền chính: đen chàm */
+    --deep: #0e0b1c;               /* Nền panel tối đồng bộ */
+    --indigo-tint: #1a1233;        /* Overlay chàm đậm cho ảnh */
+    --line: #3a2f6b;               /* Viền/đường kẻ: tím chàm mờ */
+    --text-1: #e6e2f5;             /* Chữ chính: bạc oải hương */
+    --text-2: #a79fc7;             /* Chữ phụ */
+    --text-3: #786f99;             /* Chữ ghi chú mờ */
+    --lilac: #CFB1F1;              /* Nhãn mono nhỏ, số thứ tự */
+    --accent: #A964F7;             /* Màu nhấn tím chủ đạo */
+    --violet: #A964F7;             /* Nhấn: viền khi hover, nút, đường quét */
+    --violet-d: #823CDD;           /* Nền nút khi hover/active */
+    --glow: rgba(169, 100, 247, 0.35);
+
+    --vig: .82;
+    --left: .75;
   }
 
   body {
     font-family: var(--font-ui);
-    background-color: #090414;
-    color: #ffffff;
+    background-color: var(--void);
+    color: var(--text-1);
     overflow: hidden;
   }
 }
 
-/* Slender, Sleek Metallic Silver Sci-Fi Title matching reference "GAME OVER" */
+/* ==========================================================================
+   GLOBAL UNIFIED BADGE (.site-badge) — Violet Accent #A964F7 / #CFB1F1
+   ========================================================================== */
+.site-badge {
+  border: 1px solid rgba(169, 100, 247, 0.55);
+  background-color: rgba(169, 100, 247, 0.1);
+  color: var(--lilac);
+  transition:
+    border-color 0.4s ease,
+    background-color 0.4s ease,
+    color 0.4s ease;
+}
+
+.group:hover .site-badge,
+.group:focus-visible .site-badge,
+.relay-card-interactive:hover .site-badge,
+.relay-card-interactive:focus-visible .site-badge {
+  border-color: var(--violet);
+  background-color: rgba(169, 100, 247, 0.22);
+  color: var(--text-1);
+}
+
+/* ==========================================================================
+   GLOBAL IMAGE TREATMENT SYSTEM
+   - Default: Original colors, brightness(0.82) saturate(0.88) contrast(1.05),
+     bottom 55% gradient to #07060f, and #1a1233 multiply overlay (15% opacity).
+   - Hover/Focus: filter -> none (brightness 1), #1a1233 overlay -> 3%,
+     card border -> #e0a458, transition 0.4s ease.
+   - Locked (.is-locked): Scanline + purple tint ONLY when locked/undecoded;
+     reveals true color on hover or open.
+   ========================================================================== */
+.site-media-frame {
+  position: relative;
+  overflow: hidden;
+  background-color: var(--void);
+}
+
+/* Overlay chàm đậm #1a1233, opacity 15%, mix-blend-mode: multiply */
+.site-media-frame::before,
+.anecdote-card-tint,
+.events-img-multiply {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+  background-color: #1a1233;
+  opacity: 0.15;
+  mix-blend-mode: multiply;
+  transition: opacity 0.4s ease;
+}
+
+/* Gradient ở đáy mỗi ảnh: từ trong suốt xuống #07060f, phủ ~55% chiều cao ảnh */
+.site-media-frame::after,
+.anecdote-card-gradient,
+.events-img-scanlines {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 3;
+  background: linear-gradient(
+    180deg,
+    rgba(7, 6, 15, 0) 42%,
+    rgba(7, 6, 15, 0.64) 76%,
+    #07060f 100%
+  );
+  transition: opacity 0.4s ease;
+}
+
+/* Ảnh giữ màu gốc, dịu xuống để chìm vào nền tối */
+.site-media-frame > img,
+.anecdote-card-img,
+.site-card-img {
+  filter: brightness(0.82) saturate(0.88) contrast(1.05);
+  opacity: 1;
+  transition:
+    filter 0.4s ease,
+    transform 0.4s ease,
+    opacity 0.4s ease;
+}
+
+/* Bỏ lớp phủ scanline mặc định trên mọi ảnh đã mở */
+.anecdote-card-scanlines {
+  background: none;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+/* Hover / Focus trên thẻ ảnh: filter về none, overlay chàm giảm còn 3%, transition 0.4s ease */
+.group:hover .site-media-frame > img,
+.group:focus-visible .site-media-frame > img,
+.group:hover .anecdote-card-img,
+.group:focus-visible .anecdote-card-img,
+.group:hover .site-card-img,
+.group:focus-visible .site-card-img,
+.relay-card-interactive:hover .anecdote-card-img,
+.relay-card-interactive:focus-visible .anecdote-card-img {
+  filter: brightness(1) saturate(1) contrast(1);
+}
+
+.group:hover .site-media-frame::before,
+.group:focus-visible .site-media-frame::before,
+.group:hover .anecdote-card-tint,
+.group:focus-visible .anecdote-card-tint,
+.group:hover .events-img-multiply,
+.group:focus-visible .events-img-multiply,
+.relay-card-interactive:hover .events-img-multiply,
+.relay-card-interactive:focus-visible .events-img-multiply {
+  opacity: 0.03;
+}
+
+/* Trạng thái "Khóa / Chưa giải mã" (.is-locked):
+   CHỈ trạng thái này mới có scanline + tint tím; khi hover hoặc mở sẽ hiện màu thật */
+.is-locked .anecdote-card-img,
+.is-locked .site-card-img,
+.is-locked .site-media-frame > img {
+  filter: brightness(0.65) saturate(0.42) contrast(1.1) hue-rotate(-10deg);
+}
+
+.is-locked .anecdote-card-tint,
+.is-locked .events-img-multiply,
+.is-locked .site-media-frame::before {
+  background-color: var(--indigo-tint);
+  opacity: 0.42;
+  mix-blend-mode: color;
+}
+
+.is-locked .anecdote-card-scanlines {
+  opacity: 1;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(7, 6, 15, 0.36) 0px,
+    rgba(7, 6, 15, 0.36) 1px,
+    rgba(58, 47, 107, 0.12) 1px,
+    rgba(58, 47, 107, 0.12) 3px
+  );
+}
+
+.is-locked:hover .anecdote-card-img,
+.is-locked:focus-visible .anecdote-card-img,
+.is-locked:hover .site-card-img,
+.is-locked:focus-visible .site-card-img,
+.is-locked:hover .site-media-frame > img,
+.is-locked:focus-visible .site-media-frame > img {
+  filter: brightness(1) saturate(1) contrast(1);
+}
+
+.is-locked:hover .anecdote-card-tint,
+.is-locked:focus-visible .anecdote-card-tint,
+.is-locked:hover .events-img-multiply,
+.is-locked:focus-visible .events-img-multiply,
+.is-locked:hover .site-media-frame::before,
+.is-locked:focus-visible .site-media-frame::before {
+  background-color: #1a1233;
+  opacity: 0.03;
+  mix-blend-mode: multiply;
+}
+
+.is-locked:hover .anecdote-card-scanlines,
+.is-locked:focus-visible .anecdote-card-scanlines {
+  opacity: 0;
+}
+
+/* ==========================================================================
+   TYPOGRAPHY & HOME SCREEN HUD
+   ========================================================================== */
 .cyber-title-wrapper {
   position: relative;
   display: inline-block;
-  filter:
-    drop-shadow(0 1px 0px rgba(32, 48, 64, 0.9))
-    drop-shadow(0 4px 10px rgba(0, 0, 0, 0.75))
-    drop-shadow(0 0 14px rgba(175, 235, 255, 0.32));
+  overflow: visible;
+  padding-top: 0.16em;
 }
 
 .cyber-title-line {
   position: relative;
   display: block;
   font-family: var(--font-display);
-  font-weight: 400;
+  font-weight: 600;
   font-style: italic;
   text-transform: uppercase;
-  letter-spacing: 0.16em;
-  line-height: 1.18;
-  transform: skewX(-6deg) scaleX(1.14);
-  transform-origin: left center;
-  /* Crisp, airy metallic chrome-silver gradient with icy cyan-white specular sheen */
-  background-image: linear-gradient(
-    180deg,
-    #ffffff 0%,
-    #eaf3fa 22%,
-    #9eb2c4 47%,
-    #788da1 53%,
-    #e6f2fa 60%,
-    #bfd0de 80%,
-    #f2fbff 95%,
-    #a8cbe0 100%
-  );
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  -webkit-text-stroke: 0.45px rgba(240, 250, 255, 0.85);
+  letter-spacing: 0.09em;
+  line-height: 1.08;
+  font-size: clamp(28px, 4.4vw, 58px);
+  color: var(--text-1);
+  text-shadow: 0 2px 16px rgba(7, 6, 15, 0.85);
+  overflow: visible;
 }
 
-/* Razor-thin chiseled 3D metallic edge */
-.cyber-title-line::before {
-  content: attr(data-text);
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  color: transparent;
-  -webkit-text-stroke: 1.2px rgba(45, 64, 82, 0.78);
-  transform: translate(1px, 1.5px);
-  pointer-events: none;
+.cyber-title-line-phone {
+  font-size: 27px;
 }
 
-/* Delicate icy bottom rim reflection */
-.cyber-title-line::after {
-  content: attr(data-text);
-  position: absolute;
-  inset: 0;
-  z-index: -2;
-  color: transparent;
-  -webkit-text-stroke: 0.75px rgba(165, 238, 255, 0.48);
-  transform: translate(-0.5px, 2px);
-  filter: blur(0.6px);
-  pointer-events: none;
+@media (max-width: 639px) {
+  .cyber-title-line {
+    font-size: 27px;
+  }
 }
 
-/* Holographic PC Game Menu Buttons */
+.logo-sub-label {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--text-2);
+}
+
+.hud-mono-text {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+}
+
+.menu-item-index {
+  font-family: var(--font-mono);
+  font-weight: 400;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  color: var(--text-3);
+  transition: color 0.3s ease;
+}
+
 .game-menu-btn {
   position: relative;
   font-family: var(--font-ui);
-  letter-spacing: 0.24em;
+  font-weight: 500;
+  font-size: 15px;
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  color: var(--text-2);
   transition:
-    color 160ms cubic-bezier(0.16, 1, 0.3, 1),
-    text-shadow 160ms cubic-bezier(0.16, 1, 0.3, 1),
-    box-shadow 160ms cubic-bezier(0.16, 1, 0.3, 1),
-    border-color 160ms cubic-bezier(0.16, 1, 0.3, 1),
-    background 160ms cubic-bezier(0.16, 1, 0.3, 1);
+    color 0.3s ease,
+    border-color 0.3s ease,
+    background 0.3s ease;
 }
 
-/* Idle state: ONLY text, no box or border */
+.game-menu-btn-phone {
+  font-size: 13px;
+  letter-spacing: 0.12em;
+}
+
+@media (max-width: 639px) {
+  .game-menu-btn {
+    font-size: 13px;
+    letter-spacing: 0.12em;
+  }
+}
+
+.game-menu-btn:hover,
+.game-menu-btn:focus-visible {
+  color: var(--text-1);
+}
+
+.game-menu-btn:hover .menu-item-index,
+.game-menu-btn:focus-visible .menu-item-index,
+.game-menu-btn-active .menu-item-index {
+  color: var(--accent);
+}
+
 .game-menu-btn-idle {
   background: transparent;
-  border: 1.5px solid transparent;
+  border: 1px solid transparent;
   box-shadow: none;
-  color: rgba(243, 232, 255, 0.88);
+  color: var(--text-2);
   text-shadow: 0 1px 6px rgba(0, 0, 0, 0.75);
 }
 
-/* Hover or Clicked state: Glowing purple frame surrounding the item (like CODEX in reference) */
 .game-menu-btn-active {
   background: linear-gradient(
     90deg,
-    rgba(46, 14, 84, 0.58) 0%,
-    rgba(88, 28, 135, 0.28) 55%,
-    rgba(30, 10, 60, 0.45) 100%
+    rgba(169, 100, 247, 0.2) 0%,
+    rgba(26, 18, 51, 0.65) 100%
   );
-  border: 1.5px solid #e879f9;
-  box-shadow:
-    0 0 12px rgba(217, 70, 239, 0.85),
-    0 0 26px rgba(168, 85, 247, 0.45),
-    inset 0 0 12px rgba(217, 70, 239, 0.45);
-  color: #ffffff;
-  text-shadow:
-    0 0 8px #ffffff,
-    0 0 16px #e879f9,
-    0 0 28px #a855f7;
+  border: 1px solid var(--violet);
+  color: var(--text-1);
 }
 
-/* Inner double-frame outline visible only when active/hovered */
-.game-menu-btn-active::before {
-  content: '';
+/* Right-edge Vertical HUD Tab (MENU // SUB) */
+.menu-sub-tab {
   position: absolute;
-  inset: 2px;
-  border: 1px solid rgba(245, 208, 254, 0.48);
-  pointer-events: none;
-}
-
-/* Right-side Cyberpunk Arrow `<` & Top-Right Eye Trigger */
-.cyber-arrow-btn {
+  right: 0;
+  top: 39%;
+  z-index: 30;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  color: #f5d0fe;
-  filter:
-    drop-shadow(0 0 6px rgba(232, 121, 249, 0.95))
-    drop-shadow(0 0 14px rgba(168, 85, 247, 0.75));
+  gap: 12px;
+  width: 30px;
+  padding: 14px 0 16px 0;
+  color: var(--text-2);
+  background: color-mix(in srgb, var(--deep) 86%, transparent);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  clip-path: polygon(8px 0, 100% 0, 100% 100%, 0 100%, 0 8px);
   transition:
-    transform 200ms cubic-bezier(0.16, 1, 0.3, 1),
-    filter 200ms cubic-bezier(0.16, 1, 0.3, 1),
-    color 200ms cubic-bezier(0.16, 1, 0.3, 1);
+    background 0.3s ease,
+    color 0.3s ease;
 }
 
-.cyber-arrow-btn:hover {
-  color: #ffffff;
-  filter:
-    drop-shadow(0 0 8px #ffffff)
-    drop-shadow(0 0 16px #e879f9)
-    drop-shadow(0 0 28px #a855f7);
-  transform: scale(1.12);
+.menu-sub-tab:hover {
+  background: rgba(169, 100, 247, 0.18);
+  color: var(--text-1);
 }
 
-/* Subtle Cyberpunk Background Glitch Effect for Dating Page */
-@keyframes cyberVideoGlitch {
-  0%, 91%, 100% {
-    transform: translate3d(0, 0, 0) scale(1);
-    filter: hue-rotate(0deg) saturate(1.05);
-  }
-  92% {
-    transform: translate3d(-3px, 1px, 0) scale(1.006);
-    filter: hue-rotate(-14deg) saturate(1.35) contrast(1.08);
-  }
-  93.5% {
-    transform: translate3d(3px, -1px, 0) scale(1.004);
-    filter: hue-rotate(16deg) saturate(1.4);
-  }
-  95% {
-    transform: translate3d(-1.5px, 0, 0) scale(1.002);
-    filter: hue-rotate(-6deg) saturate(1.15);
-  }
-  96.5% {
-    transform: translate3d(0, 0, 0) scale(1);
-    filter: hue-rotate(0deg) saturate(1.05);
-  }
+.menu-sub-tab-label {
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: 10px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  line-height: 1;
+  user-select: none;
 }
 
-@keyframes cyberSliceGlitch1 {
-  0%, 86%, 100% {
-    opacity: 0;
-    transform: translateY(0) translateX(0);
-  }
-  87% {
-    opacity: 0.75;
-    transform: translateY(18vh) translateX(-8px);
-  }
-  88.5% {
-    opacity: 0.35;
-    transform: translateY(62vh) translateX(10px);
-  }
-  90% {
-    opacity: 0.8;
-    transform: translateY(34vh) translateX(-5px);
-  }
-  91.5% {
-    opacity: 0;
-    transform: translateY(0) translateX(0);
-  }
+/* Shared Relay Card Component (Dating & Events unified card system) */
+.relay-card {
+  position: relative;
+  border: 1px solid var(--line);
+  border-radius: 0;
+  background-color: var(--void);
+  transition: border-color 0.4s ease;
 }
 
-@keyframes cyberSliceGlitch2 {
-  0%, 42%, 48%, 100% {
-    opacity: 0;
-    transform: translateY(0) translateX(0);
-  }
-  43% {
-    opacity: 0.65;
-    transform: translateY(74vh) translateX(7px);
-  }
-  44.5% {
-    opacity: 0.45;
-    transform: translateY(27vh) translateX(-9px);
-  }
-  46% {
-    opacity: 0.7;
-    transform: translateY(51vh) translateX(4px);
-  }
-}
-
-.cyber-bg-video-glitch {
-  animation: cyberVideoGlitch 5.5s infinite ease-in-out;
-}
-
-.cyber-dating-glitch-overlay {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  z-index: 1;
-  overflow: hidden;
-  /* Delicate cyberpunk CRT scanlines + faint neon grid */
-  background-image:
-    repeating-linear-gradient(
-      0deg,
-      rgba(232, 121, 249, 0.035) 0px,
-      rgba(232, 121, 249, 0.035) 1px,
-      transparent 1px,
-      transparent 3px
-    ),
-    radial-gradient(
-      circle at 50% 25%,
-      rgba(192, 38, 211, 0.12) 0%,
-      rgba(9, 3, 21, 0.45) 75%
-    );
-}
-
-.cyber-dating-glitch-overlay::before,
-.cyber-dating-glitch-overlay::after {
+.relay-card::before {
   content: '';
   position: absolute;
-  left: -5%;
-  width: 110%;
+  top: -1px;
+  left: -1px;
+  width: 6px;
+  height: 6px;
+  border-top: 2px solid var(--text-2);
+  border-left: 2px solid var(--text-2);
   pointer-events: none;
+  z-index: 25;
+  transition: border-color 0.4s ease;
 }
 
-/* Cyan-Magenta horizontal glitch slice 1 */
-.cyber-dating-glitch-overlay::before {
-  top: 0;
-  height: 26px;
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    rgba(103, 232, 249, 0.16) 20%,
-    rgba(232, 121, 249, 0.22) 55%,
-    rgba(103, 232, 249, 0.14) 85%,
-    transparent 100%
-  );
-  border-top: 1px solid rgba(103, 232, 249, 0.32);
-  border-bottom: 1px solid rgba(232, 121, 249, 0.28);
-  mix-blend-mode: screen;
-  animation: cyberSliceGlitch1 5.5s infinite steps(1, end);
+.relay-card::after {
+  content: '';
+  position: absolute;
+  right: -1px;
+  bottom: -1px;
+  width: 10px;
+  height: 10px;
+  border-right: 2px solid var(--text-2);
+  border-bottom: 2px solid var(--text-2);
+  pointer-events: none;
+  z-index: 25;
+  transition: border-color 0.4s ease;
 }
 
-/* Secondary thin neon interference slice 2 */
-.cyber-dating-glitch-overlay::after {
-  top: 0;
-  height: 12px;
-  background: linear-gradient(
-    90deg,
-    transparent 5%,
-    rgba(232, 121, 249, 0.2) 35%,
-    rgba(103, 232, 249, 0.22) 70%,
-    transparent 95%
-  );
-  border-top: 1px solid rgba(232, 121, 249, 0.35);
-  mix-blend-mode: screen;
-  animation: cyberSliceGlitch2 7s infinite steps(1, end);
+.relay-card-interactive:hover,
+.relay-card-interactive:focus-visible {
+  border-color: var(--accent);
 }
 
-/* Traceback II Spaceship Gentle Levitation (Floating up & down in place) */
+.relay-card-interactive:hover::before,
+.relay-card-interactive:focus-visible::before,
+.relay-card-interactive:hover::after,
+.relay-card-interactive:focus-visible::after {
+  border-color: var(--accent);
+}
+
+.relay-card-interactive:focus-visible {
+  outline: 1px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* Bỏ scanline mặc định trên cảnh tàu Events */
+.events-hero-scanlines {
+  background: none;
+  opacity: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .traceback-ship-float,
+  .cyber-cloud-slow,
+  .cyber-cloud-reverse,
+  .anecdote-card-img {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+/* Traceback II Spaceship Gentle Levitation (GPU-promoted) */
 @keyframes tracebackLevitate {
   0%, 100% {
-    transform: translate3d(0, -14px, 0) rotate(-1.2deg);
+    transform: translate3d(0, -10px, 0) rotate(-0.8deg);
   }
   50% {
-    transform: translate3d(0, 16px, 0) rotate(1.2deg);
+    transform: translate3d(0, 12px, 0) rotate(0.8deg);
   }
 }
 
 .traceback-ship-float {
-  animation: tracebackLevitate 5.2s ease-in-out infinite;
+  animation: tracebackLevitate 6.5s ease-in-out infinite;
   will-change: transform;
+  backface-visibility: hidden;
+  transform: translateZ(0);
 }
 
-/* Slow atmospheric cloud drift animations using `translate` so inline `transform` (rotate/scale/flip) is preserved */
+.events-ship-img {
+  filter: brightness(0.82) saturate(0.88) contrast(1.05);
+  backface-visibility: hidden;
+  transform: translateZ(0);
+}
+
+/* Group filter applied once per cloud layer container instead of 16 individual images */
+.events-cloud-layer-filter {
+  filter: brightness(0.82) saturate(0.88) contrast(1.05);
+  backface-visibility: hidden;
+  transform: translateZ(0);
+}
+
+.events-cloud-img {
+  backface-visibility: hidden;
+}
+
+/* Slow atmospheric cloud drift animations */
 @keyframes cyberCloudDriftSlow {
   0%, 100% {
     translate: 0px 0px;
   }
   50% {
-    translate: -22px -8px;
+    translate: -18px -6px;
   }
 }
 
@@ -318,87 +474,983 @@
     translate: 0px 0px;
   }
   50% {
-    translate: 24px 7px;
+    translate: 18px 5px;
   }
 }
 
 .cyber-cloud-slow {
-  animation: cyberCloudDriftSlow 12s ease-in-out infinite;
+  animation: cyberCloudDriftSlow 15s ease-in-out infinite;
   will-change: translate;
+  backface-visibility: hidden;
 }
 
 .cyber-cloud-reverse {
-  animation: cyberCloudDriftReverse 14s ease-in-out infinite;
+  animation: cyberCloudDriftReverse 18s ease-in-out infinite;
   will-change: translate;
+  backface-visibility: hidden;
 }
 
-/* Blade Runner 2049 / Sci-Fi Holographic HUD Laser Scan & Flicker */
-@keyframes cyberHudScan {
+/* Automatically pause offscreen cloud & ship animations when scrolled down into Coordinates/Timeline */
+.events-clouds-paused,
+.events-clouds-paused .cyber-cloud-slow,
+.events-clouds-paused .cyber-cloud-reverse,
+.events-clouds-paused .traceback-ship-float {
+  animation-play-state: paused !important;
+}
+
+/* Custom sleek dark terminal scrollbar */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--line) var(--void);
+}
+
+.cyber-events-scroll::-webkit-scrollbar,
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+
+.cyber-events-scroll::-webkit-scrollbar-track,
+::-webkit-scrollbar-track {
+  background: var(--void);
+  border-left: 1px solid color-mix(in srgb, var(--line) 45%, transparent);
+}
+
+.cyber-events-scroll::-webkit-scrollbar-thumb,
+::-webkit-scrollbar-thumb {
+  background: var(--line);
+  border-radius: 0px;
+}
+
+.cyber-events-scroll::-webkit-scrollbar-thumb:hover,
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent);
+}
+
+/* Soft scattered floating light motes */
+@keyframes galleryMoteFloat {
   0% {
-    top: -12%;
     opacity: 0;
+    transform: translate3d(0px, 10px, 0) scale(0.8);
   }
-  15% {
-    opacity: 0.75;
+  25% {
+    opacity: var(--mote-opacity, 0.5);
+    transform: translate3d(var(--mote-dx1, 6px), -6px, 0) scale(1);
+  }
+  55% {
+    opacity: calc(var(--mote-opacity, 0.5) * 0.85);
+    transform: translate3d(var(--mote-dx2, -5px), -20px, 0) scale(0.95);
   }
   85% {
-    opacity: 0.75;
+    opacity: var(--mote-opacity, 0.5);
+    transform: translate3d(var(--mote-dx1, 5px), -34px, 0) scale(1.02);
   }
   100% {
-    top: 108%;
+    opacity: 0;
+    transform: translate3d(0px, -46px, 0) scale(0.8);
+  }
+}
+
+.gallery-light-mote {
+  border-radius: 9999px;
+  pointer-events: none;
+  animation-name: galleryMoteFloat;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  will-change: transform, opacity;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.28s ease forwards;
+}
+
+@keyframes bootScanSweep {
+  0% {
+    transform: translateY(0);
+    opacity: 0.7;
+  }
+  100% {
+    transform: translateY(100dvh);
     opacity: 0;
   }
 }
 
-@keyframes cyberHudPulse {
-  0%, 100% {
-    opacity: 0.92;
-  }
-  48% {
-    opacity: 0.98;
-  }
-  50% {
-    opacity: 0.78;
-  }
-  52% {
-    opacity: 0.96;
-  }
+.boot-scanline-active {
+  animation: bootScanSweep 1.1s ease-out forwards;
+  will-change: transform, opacity;
 }
 
-.cyber-hud-scanline {
+.prose-reading-body {
+  font-family: var(--font-prose);
+  font-weight: 400;
+  line-height: 1.6;
+}
+
+/* ==========================================================================
+   HOME BACKGROUND VIDEO STAGE (Unified Image/Media Treatment)
+   ========================================================================== */
+.bg-video-stage {
   position: absolute;
-  left: 0;
-  right: 0;
-  height: 2px;
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    rgba(34, 211, 238, 0.85) 25%,
-    rgba(251, 146, 60, 0.9) 55%,
-    rgba(232, 121, 249, 0.85) 80%,
-    transparent 100%
-  );
-  box-shadow: 0 0 12px rgba(34, 211, 238, 0.75);
-  animation: cyberHudScan 4.8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  inset: 0;
+  width: 100%;
+  height: 100%;
   pointer-events: none;
 }
 
-.cyber-hud-holo {
-  animation: cyberHudPulse 6s infinite ease-in-out;
+.bg-video-poster {
+  position: absolute;
+  inset: 0;
+  background-color: var(--void);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: 68% center;
+  filter: brightness(1.02) saturate(0.96) contrast(1.02);
 }
 
-/* Custom sleek cyberpunk scrollbar for Events page */
-.cyber-events-scroll::-webkit-scrollbar {
-  width: 5px;
+.bg-video-element {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 68% center;
+  filter: brightness(1.02) saturate(0.96) contrast(1.02);
 }
 
-.cyber-events-scroll::-webkit-scrollbar-track {
-  background: rgba(9, 4, 20, 0.75);
+.grade {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
 }
 
-.cyber-events-scroll::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, #22d3ee, #e879f9);
-  border-radius: 9999px;
+.grade > div {
+  position: absolute;
+  inset: 0;
+}
+
+/* 1) Overlay rất nhẹ màu chàm đậm #1a1233, giảm opacity để không làm tối video */
+.grade-tint {
+  background: #1a1233;
+  opacity: 0.06;
+  mix-blend-mode: multiply;
+}
+
+/* 2) Gradient đáy dịu nhẹ + Vignette thoáng hơn để giữ độ sáng cho nhân vật */
+.grade-vignette {
+  background:
+    linear-gradient(
+      180deg,
+      rgba(7, 6, 15, 0) 62%,
+      rgba(7, 6, 15, 0.32) 86%,
+      rgba(7, 6, 15, 0.68) 100%
+    ),
+    radial-gradient(
+      125% 95% at 65% 45%,
+      transparent 58%,
+      rgba(7, 6, 15, 0.42) 100%
+    );
+}
+
+/* 3) Dải tối bên trái (vừa đủ tương phản cho chữ menu) */
+.grade-left {
+  background: linear-gradient(
+    90deg,
+    rgba(7, 6, 15, 0.56),
+    rgba(7, 6, 15, 0.16) 34%,
+    transparent 50%
+  );
+}
+
+/* 4) Dải tối bên phải (nhẹ nhàng cho nút menu phụ) */
+.grade-right {
+  background: linear-gradient(
+    270deg,
+    rgba(7, 6, 15, 0.35),
+    transparent 22%
+  );
+}
+
+/* 5) Bỏ scanline mặc định trên trang chủ */
+.grade-scanline {
+  display: none;
+}
+
+@media (max-width: 760px) {
+  .bg-video-stage {
+    inset: 0 0 auto 0;
+    height: 74%;
+    -webkit-mask-image: linear-gradient(#000 75%, transparent);
+    mask-image: linear-gradient(#000 75%, transparent);
+  }
+
+  .bg-video-poster {
+    background-position: 66% 30%;
+  }
+
+  .bg-video-element {
+    object-position: 66% 30%;
+  }
+
+  .grade-left {
+    background: linear-gradient(
+      180deg,
+      rgba(7, 6, 15, 0.36),
+      transparent 28%,
+      transparent 58%,
+      rgba(7, 6, 15, 0.85)
+    );
+  }
+
+  .grade-right {
+    display: none;
+  }
+}
+
+.is-phone-frame .bg-video-stage {
+  inset: 0 0 auto 0;
+  height: 74%;
+  -webkit-mask-image: linear-gradient(#000 75%, transparent);
+  mask-image: linear-gradient(#000 75%, transparent);
+}
+
+.is-phone-frame .bg-video-poster {
+  background-position: 66% 30%;
+}
+
+.is-phone-frame .bg-video-element {
+  object-position: 66% 30%;
+}
+
+.is-phone-frame .grade-left {
+  background: linear-gradient(
+    180deg,
+    rgba(7, 6, 15, 0.36),
+    transparent 28%,
+    transparent 58%,
+    rgba(7, 6, 15, 0.85)
+  );
+}
+
+.is-phone-frame .grade-right {
+  display: none;
+}
+
+/* ==========================================================================
+   GALLERY ARTIFACT ARCHIVE (.room, .wrap, .win)
+   ========================================================================== */
+.wrap {
+  width: 100%;
+  max-width: 1306px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+@media (min-width: 640px) {
+  .wrap {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .wrap {
+    padding-left: 3rem;
+    padding-right: 3rem;
+  }
+}
+
+.room {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 2.37 / 1;
+  overflow: hidden;
+  background-color: var(--void);
+  user-select: none;
+}
+
+/* 1) Ảnh căn phòng & vật phẩm: filter brightness(0.82) saturate(0.88) contrast(1.05) */
+.room-img-filter {
+  filter: brightness(0.82) saturate(0.88) contrast(1.05);
+  transition: filter 0.4s ease, transform 0.4s ease;
+}
+
+.room-img-filter-active {
+  filter: brightness(1) saturate(1) contrast(1) drop-shadow(0 0 14px rgba(169, 100, 247, 0.45));
+}
+
+/* 2) Overlay chàm đậm #1a1233 nhẹ (16% multiply) + khoét vùng cửa sổ sao */
+.room-layer-night {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(180deg, rgba(26, 18, 51, 0.16), rgba(26, 18, 51, 0.22));
+  mix-blend-mode: multiply;
+  -webkit-mask-image: radial-gradient(36% 74% at 15.5% 43%, rgba(0, 0, 0, 0.05) 0%, rgba(0, 0, 0, 0.4) 55%, rgba(0, 0, 0, 1) 82%);
+  mask-image: radial-gradient(36% 74% at 15.5% 43%, rgba(0, 0, 0, 0.05) 0%, rgba(0, 0, 0, 0.4) 55%, rgba(0, 0, 0, 1) 82%);
+}
+
+/* 3) Ánh sáng cửa sổ dịu nhẹ */
+.room-layer-window-light {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(40% 70% at 16% 45%, rgba(230, 226, 245, 0.12), transparent 70%);
+  mix-blend-mode: screen;
+}
+
+/* 4) Gradient ở đáy (55% chiều cao xuống #07060f) + Vignette */
+.room-layer-vignette {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(7, 6, 15, 0) 42%,
+      rgba(7, 6, 15, 0.62) 78%,
+      #07060f 100%
+    ),
+    radial-gradient(120% 90% at 55% 50%, transparent 48%, rgba(7, 6, 15, 0.76) 100%);
+}
+
+/* 5) Bỏ scanline mặc định trên ảnh căn phòng */
+.room-layer-scanline {
+  display: none;
+}
+
+/* Cửa sổ thông tin hiện vật .win */
+.win {
+  position: relative;
+  width: 100%;
+  max-width: 420px;
+  background-color: color-mix(in srgb, var(--deep) 95%, transparent);
+  border: 1px solid var(--line);
+  border-radius: 0;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.82);
+}
+
+@keyframes vinylSpin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.vinyl-spinning {
+  animation: vinylSpin 4.2s linear infinite;
+}
+
+/* ==========================================================================
+   EVENTS PAGE: TYPEWRITER HARD CURSOR, CARD GLITCH-OUT & STAGGERED REVEAL
+   ========================================================================== */
+@keyframes eventsCursorHardBlink {
+  0%, 49.99% {
+    opacity: 1;
+  }
+  50%, 100% {
+    opacity: 0;
+  }
+}
+
+.events-hard-cursor {
+  display: inline-block;
+  width: 8px;
+  height: 15px;
+  background-color: var(--violet);
+  vertical-align: -2px;
+  margin-left: 3px;
+  animation: eventsCursorHardBlink 1s steps(1) infinite;
+}
+
+@keyframes yearCardGlitchOut {
+  0% {
+    transform: translate(0, 0);
+    clip-path: inset(0 0 0 0);
+    opacity: 1;
+  }
+  20% {
+    transform: translate(-6px, 2px);
+    clip-path: inset(10% 0 55% 0);
+    opacity: 1;
+  }
+  40% {
+    transform: translate(8px, -3px);
+    clip-path: inset(60% 0 8% 0);
+    opacity: 1;
+  }
+  70% {
+    transform: translate(-3px, 0);
+    clip-path: inset(30% 0 30% 0);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(0, 0);
+    clip-path: inset(0 0 0 0);
+    opacity: 0;
+  }
+}
+
+@keyframes yearCardReducedFadeOut {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+.year-card-glitch-out {
+  pointer-events: none !important;
+  animation-name: yearCardGlitchOut;
+  animation-timing-function: steps(2);
+  animation-fill-mode: forwards;
+  will-change: transform, clip-path, opacity;
+}
+
+@keyframes eventsCardSlideUp {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 12px, 0);
+  }
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+.events-card-pre-reveal {
+  opacity: 0;
+  transform: translate3d(0, 12px, 0);
+}
+
+.events-card-reveal-anim {
+  opacity: 0;
+  transform: translate3d(0, 12px, 0);
+  animation-name: eventsCardSlideUp;
+  animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  animation-fill-mode: forwards;
+  will-change: transform, opacity;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .events-hard-cursor {
+    animation: none !important;
+    opacity: 1 !important;
+  }
+
+  .year-card-glitch-out {
+    animation-name: yearCardReducedFadeOut !important;
+    animation-timing-function: ease-out !important;
+  }
+
+  .events-card-pre-reveal,
+  .events-card-reveal-anim {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
+/* ==========================================================================
+   EXHIBITION TERMINAL (.xt-root) — Scoped 1:1 from Triển lãm · Terminal
+   ========================================================================== */
+.xt-root {
+  --void: #07060f;
+  --deep: #0e0b1c;
+  --line: #3a2f6b;
+  --violet: #A964F7;
+  --violet-d: #823CDD;
+  --glow: rgba(169, 100, 247, .35);
+  --ivory: #e6e2f5;
+  --lilac: #CFB1F1;
+  --text2: #a79fc7;
+  --dim: #786f99;
+  --moon: #F2E6C4;
+  --ease: cubic-bezier(.2, .8, .2, 1);
+  --gutter: clamp(16px, 4vw, 48px);
+  --page-max: 1400px;
+  --header-h: 78px;
+
+  position: relative;
+  z-index: 20;
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  min-height: 100dvh;
+  color: var(--ivory);
+  font: 300 15px/1.6 'Be Vietnam Pro', sans-serif;
+  padding: env(safe-area-inset-top, 0) 0 env(safe-area-inset-bottom, 0);
+  overflow-x: hidden;
+  overflow-y: auto;
+  scrollbar-gutter: stable;
+  user-select: text;
+  background:
+    radial-gradient(60% 70% at 50% 55%, rgba(80, 40, 150, .22), transparent 72%),
+    radial-gradient(1.5px 1.5px at 8% 22%, #fff7 50%, transparent),
+    radial-gradient(1px 1px at 22% 78%, #fff6 50%, transparent),
+    radial-gradient(1.5px 1.5px at 90% 30%, #fff6 50%, transparent),
+    radial-gradient(1px 1px at 76% 88%, #fff5 50%, transparent),
+    var(--void);
+}
+
+.xt-root *,
+.xt-root *::before,
+.xt-root *::after {
+  box-sizing: border-box;
+}
+
+.xt-root button,
+.xt-root input {
+  font: inherit;
+  color: inherit;
+}
+
+.xt-root [hidden] {
+  display: none !important;
+}
+
+.xt-root .mono {
+  font: 500 11px/1 'IBM Plex Mono', monospace;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+}
+
+.xt-root .wrap {
+  width: min(100% - 2 * var(--gutter), var(--page-max));
+  max-width: none;
+  padding: 0;
+  margin-inline: auto;
+}
+
+.xt-root .top {
+  height: 78px;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid var(--line);
+  background: rgba(15, 11, 31, .85);
+}
+
+.xt-root .top .wrap {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.xt-root .crumb {
+  color: var(--text2);
+}
+
+.xt-root .crumb #c0 {
+  cursor: pointer;
+  transition: color .12s;
+}
+
+.xt-root .crumb #c0:hover {
+  color: var(--ivory);
+}
+
+.xt-root .crumb i {
+  font-style: normal;
+  color: var(--violet);
+  margin: 0 10px;
+}
+
+.xt-root .crumb b {
+  color: var(--ivory);
+  font-weight: 500;
+}
+
+.xt-root .lang {
+  background: rgba(15, 11, 31, .55);
+  border: 1px solid var(--line);
+  padding: 10px 14px;
+  cursor: pointer;
+  color: var(--lilac);
+  clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 0 100%);
+  transition: background .12s, color .12s;
+}
+
+.xt-root .lang:hover,
+.xt-root .lang:focus-visible {
+  outline: 0;
+  background: rgba(130, 60, 221, .4);
+  color: #fff;
+}
+
+.xt-root .term {
+  position: relative;
+  margin: 22px 0 36px;
+  background: rgba(15, 11, 31, .92);
+  border: 1px solid var(--line);
+}
+
+.xt-root .term::before,
+.xt-root .term::after {
+  content: "";
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  border: 1px solid var(--violet);
+  z-index: 3;
+}
+
+.xt-root .term::before {
+  top: -1px;
+  left: -1px;
+  border-right: 0;
+  border-bottom: 0;
+}
+
+.xt-root .term::after {
+  bottom: -1px;
+  right: -1px;
+  border-left: 0;
+  border-top: 0;
+}
+
+.xt-root .tbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 16px;
+  color: var(--lilac);
+  border-bottom: 1px solid var(--line);
+}
+
+.xt-root .dots {
+  display: flex;
+  gap: 6px;
+}
+
+.xt-root .dots i {
+  width: 8px;
+  height: 8px;
+  border: 1px solid var(--line);
+  display: block;
+}
+
+.xt-root .dots i:last-child {
+  background: var(--violet);
+  border-color: var(--violet);
+}
+
+.xt-root .tbody {
+  display: grid;
+  grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+  height: min(700px, calc(100vh - var(--header-h, 78px) - 120px));
+  min-height: 460px;
+  position: relative;
+}
+
+.xt-root .tbody::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(0deg, rgba(0, 0, 0, .14) 0 1px, transparent 1px 3px);
+}
+
+.xt-root .moonpane {
+  container-type: size;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  border-right: 1px solid var(--line);
+  background: radial-gradient(70% 60% at 50% 50%, rgba(80, 40, 150, .28), transparent);
+}
+
+.xt-root pre {
+  margin: 0;
+  font: 400 12px/1.2 'IBM Plex Mono', monospace;
+  font-size: min(calc(100cqw / 33.6), calc((100cqh - 56px) / 33.6));
+  color: var(--lilac);
+  text-shadow: 0 0 6px rgba(169, 100, 247, .65);
+  transition: color .3s;
+  white-space: pre;
+}
+
+.xt-root pre.obj {
+  color: var(--moon);
+  text-shadow: 0 0 6px rgba(242, 230, 196, .45);
+}
+
+.xt-root .cap {
+  margin-top: 14px;
+  color: var(--dim);
+  font-size: 10px;
+  text-align: center;
+}
+
+.xt-root .cli {
+  padding: 18px 22px;
+  font: 400 13px/1.75 'IBM Plex Mono', monospace;
+  overflow: auto;
+  cursor: default;
+  scrollbar-width: thin;
+  scrollbar-color: var(--line) transparent;
+}
+
+.xt-root .ps {
+  color: var(--violet);
+}
+
+.xt-root .ps b {
+  color: var(--moon);
+  font-weight: 400;
+}
+
+.xt-root .cmd0 {
+  color: var(--ivory);
+}
+
+.xt-root ul {
+  list-style: none;
+  margin: 6px 0 4px;
+  padding: 0;
+}
+
+.xt-root .it {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  width: 100%;
+  text-align: left;
+  background: transparent;
+  border: 0;
+  border-left: 2px solid transparent;
+  padding: 3px 10px;
+  cursor: pointer;
+  color: var(--text2);
+  text-decoration: none;
+  font: inherit;
+  opacity: 0;
+  transform: translateX(-6px);
+  transition: opacity .3s, transform .3s var(--ease), background .12s, border-color .12s;
+}
+
+.xt-root .it.show {
+  opacity: 1;
+  transform: none;
+}
+
+.xt-root .it .ix {
+  color: var(--dim);
+}
+
+.xt-root .it .nm {
+  color: var(--lilac);
+  min-width: 128px;
+}
+
+.xt-root .it .rt {
+  color: var(--dim);
+  margin-left: auto;
+  font-size: 11px;
+}
+
+.xt-root .it::before {
+  content: "  ";
+  white-space: pre;
+}
+
+.xt-root .it.on {
+  background: rgba(130, 60, 221, .28);
+  border-left-color: var(--violet);
+  color: var(--ivory);
+}
+
+.xt-root .it.on::before {
+  content: "> ";
+  color: var(--moon);
+}
+
+.xt-root .it.on .nm {
+  color: var(--moon);
+}
+
+.xt-root .it:focus-visible {
+  outline: 0;
+  background: rgba(130, 60, 221, .2);
+}
+
+.xt-root .desc {
+  color: var(--text2);
+  min-height: 3.5em;
+  margin: 6px 0 8px;
+  padding-left: 12px;
+}
+
+.xt-root .desc::before {
+  content: "# ";
+  color: var(--dim);
+}
+
+.xt-root .ln {
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.xt-root .ln.ok {
+  color: var(--moon);
+}
+
+.xt-root .ln.err {
+  color: #E59AC4;
+}
+
+.xt-root .ln.dim {
+  color: var(--dim);
+}
+
+.xt-root .prompt {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-top: 4px;
+}
+
+.xt-root .prompt input {
+  flex: 1;
+  min-width: 0;
+  background: transparent;
+  border: 0;
+  outline: 0;
+  color: var(--ivory);
+  font: inherit;
+  caret-color: var(--violet);
+  padding: 0;
+  margin: 0;
+}
+
+.xt-root .hint {
+  margin-top: 12px;
+  color: var(--dim);
+  font-size: 10px;
+}
+
+.xt-root .stagew {
+  display: grid;
+  place-items: center;
+}
+
+.xt-root .stagew > * {
+  grid-area: 1 / 1;
+}
+
+.xt-root .fa {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: calc(min(100cqw / (var(--w, 100) * .6), (100cqh - 56px) / var(--h, 50)) * .85);
+  text-align: left;
+  width: calc(var(--w, 100) * .6em);
+  height: calc(var(--h, 50) * 1em);
+}
+
+.xt-root .fa canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.xt-root .fa pre {
+  font: inherit;
+  line-height: 1;
+  margin: 0;
+  text-shadow: none;
+  color: inherit;
+  white-space: pre;
+}
+
+.xt-root .fa i {
+  font-style: normal;
+}
+
+@keyframes faFade {
+  from {
+    opacity: 0;
+    filter: blur(6px);
+  }
+  to {
+    opacity: 1;
+    filter: none;
+  }
+}
+
+.xt-root .cbtn {
+  margin-top: 8px;
+  background: transparent;
+  border: 1px solid var(--line);
+  color: var(--lilac);
+  padding: 7px 12px;
+  cursor: pointer;
+  font-size: 10px;
+  transition: background .12s, color .12s;
+}
+
+.xt-root .cbtn:hover,
+.xt-root .cbtn:focus-visible {
+  outline: 0;
+  background: rgba(130, 60, 221, .4);
+  color: #fff;
+}
+
+@media (max-width: 760px) {
+  .xt-root .fa {
+    font-size: calc(100cqw / (var(--w, 100) * .6) * .85);
+  }
+
+  .xt-root .tbody {
+    grid-template-columns: 1fr;
+    height: auto;
+  }
+
+  .xt-root .moonpane {
+    border-right: 0;
+    border-bottom: 1px solid var(--line);
+    padding: 16px 12px;
+    container-type: inline-size;
+  }
+
+  .xt-root .cli {
+    max-height: 420px;
+    padding: 14px;
+  }
+
+  .xt-root pre {
+    font-size: calc(100cqw / 33.6);
+  }
+
+  .xt-root .it .rt {
+    display: none;
+  }
+
+  .xt-root .prompt input {
+    font-size: 16px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .xt-root * {
+    transition-duration: .01ms !important;
+  }
 }
 
 
