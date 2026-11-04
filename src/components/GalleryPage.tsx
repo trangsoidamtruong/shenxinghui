@@ -258,7 +258,7 @@ function mountExhibitionTerminal(
       r: 'fanfic',
       d: {
         vi: 'Truyện do người hâm mộ sáng tác.',
-        en: 'Stories written by fans, on their own interactive bookshelf.',
+        en: 'Stories written by fans.',
       },
     },
     { r: 'official-art', d: { vi: 'Tranh ảnh chính thức từ nhà phát hành game.', en: 'Official artwork from the game.' } },
@@ -266,7 +266,7 @@ function mountExhibitionTerminal(
       r: 'soundtracks',
       d: {
         vi: 'Âm thanh, nhạc nền từ game.',
-        en: 'The game soundtrack, with its own player.',
+        en: 'Soundtrack from the game.',
       },
     },
     { r: 'profile-design', d: { vi: 'Thiết kế thẻ hồ sơ.', en: 'Profile card designs.' } },

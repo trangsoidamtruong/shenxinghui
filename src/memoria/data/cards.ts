@@ -28,12 +28,12 @@ declare global {
 }
 
 export const MEMORIA_CARDS: MemoriaCard[] = [
-  {id:1, title:"Beachside Victory", titleEn:"Beachside Victory", type:"image", done:true, img:"/assets/aistudio/Beachside_Victory_e14d41ce.webp", src:"", desc:"Mô tả ngắn của thẻ ký ức.", url:"/memoria/mem-01"},
-  {id:2, title:"Firelit Embrace", titleEn:"Firelit Embrace", type:"image", done:true, img:"/assets/aistudio/Firelit_Embrace_63587b2d.webp", src:"", desc:"Mô tả ngắn của thẻ ký ức.", url:"/memoria/mem-02"},
-  {id:3, title:"Horizon's Pulse", titleEn:"Horizon's Pulse", type:"image", done:false, img:"/assets/aistudio/Horizon_s_Pulse_6cc6cff8.webp", src:"", desc:"Mô tả ngắn của thẻ ký ức.", url:"/memoria/mem-03"},
-  {id:4, title:"Moments Refined", titleEn:"Moments Refined", type:"image", done:true, img:"/assets/aistudio/Moments_Refined_2268befd.webp", src:"", desc:"Mô tả ngắn của thẻ ký ức.", url:"/memoria/mem-04"},
-  {id:5, title:"Nocturnal Hunt", titleEn:"Nocturnal Hunt", type:"image", done:true, img:"/assets/aistudio/Nocturnal_Hunt_86e343ca.webp", src:"", desc:"Mô tả ngắn của thẻ ký ức.", url:"/memoria/mem-05"},
-  {id:6, title:"Twofold Heartbeat", titleEn:"Twofold Heartbeat", type:"image", done:true, img:"/assets/aistudio/Twofold_Heartbeat_62fd6a9a.webp", src:"", desc:"Mô tả ngắn của thẻ ký ức.", url:"/memoria/mem-06"}
+  {id:1, title:"Beachside Victory", titleEn:"Beachside Victory", type:"image", done:true, img:"/assets/aistudio/Beachside_Victory_e14d41ce.webp", src:"", desc:"Don't let the sunshine, the beach, and the perfect weather go to waste.", url:"/memoria/mem-01"},
+  {id:2, title:"Firelit Embrace", titleEn:"Firelit Embrace", type:"image", done:true, img:"/assets/aistudio/Firelit_Embrace_63587b2d.webp", src:"", desc:"Because of one mission, I somehow ended up as Xavier's special \"hostage.\"", url:"/memoria/mem-02"},
+  {id:3, title:"Horizon's Pulse", titleEn:"Horizon's Pulse", type:"image", done:false, img:"/assets/aistudio/Horizon_s_Pulse_6cc6cff8.webp", src:"", desc:"If Xavier and I were to live on another planet... what kind of story would unfold?", url:"/memoria/mem-03"},
+  {id:4, title:"Moments Refined", titleEn:"Moments Refined", type:"image", done:true, img:"/assets/aistudio/Moments_Refined_2268befd.webp", src:"", desc:"When life falls apart, come upstairs and we'll piece it back together.", url:"/memoria/mem-04"},
+  {id:5, title:"Nocturnal Hunt", titleEn:"Nocturnal Hunt", type:"image", done:true, img:"/assets/aistudio/Nocturnal_Hunt_86e343ca.webp", src:"", desc:"Xavier seems unusually \"unlucky\" lately...", url:"/memoria/mem-05"},
+  {id:6, title:"Twofold Heartbeat", titleEn:"Twofold Heartbeat", type:"image", done:true, img:"/assets/aistudio/Twofold_Heartbeat_62fd6a9a.webp", src:"", desc:"With New Year approaching, Xavier and I received one last mission to complete before the holiday break.", url:"/memoria/mem-06"}
 ];
 
 if (typeof window !== "undefined") {
