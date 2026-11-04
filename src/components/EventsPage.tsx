@@ -1955,7 +1955,7 @@ export const EventsPage: React.FC<EventsPageProps> = ({
                         onMouseEnter={() => {
                           if (transitionPhase !== 'idle') return;
                           soundFx.playHover();
-                          item.events.slice(0, 6).forEach((ev) => {
+                          item.events.slice(0, 3).forEach((ev) => {
                             const img = new Image();
                             img.decoding = 'async';
                             img.src = ev.bannerImg;
@@ -2301,7 +2301,7 @@ export const EventsPage: React.FC<EventsPageProps> = ({
                               <img
                                 src={ev.bannerImg}
                                 alt={eventTitle}
-                                loading={idx < 4 ? 'eager' : 'lazy'}
+                                loading={idx < 2 ? 'eager' : 'lazy'}
                                 decoding="async"
                                 onLoad={scheduleMeasureAndSyncOrbit}
                                 className="anecdote-card-img block h-full w-full object-cover"

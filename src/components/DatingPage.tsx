@@ -82,6 +82,7 @@ interface AnecdoteCard {
   chapterCodeEN: string;
   summaryVI: string;
   summaryEN: string;
+  disabled?: boolean;
 }
 
 const ANECDOTE_CARDS: AnecdoteCard[] = [
@@ -96,6 +97,7 @@ const ANECDOTE_CARDS: AnecdoteCard[] = [
       'Một kỳ nghỉ hiếm hoi giữa nhịp sống hối hả của thành phố, nơi những khoảnh khắc bình yên bất ngờ mở ra góc nhìn mới về người đồng hành trầm lặng.',
     summaryEN:
       'A rare holiday amidst the bustling city rhythm, where quiet moments unexpectedly reveal a new side of your silent companion.',
+    disabled: true,
   },
   {
     id: 'anec-2',
@@ -108,6 +110,7 @@ const ANECDOTE_CARDS: AnecdoteCard[] = [
       'Những cuộc lướt qua tưởng chừng tình cờ dưới hàng cây rợp bóng, nhưng lại là sự dõi theo âm thầm qua biết bao mùa nắng gió.',
     summaryEN:
       'Seemingly chance encounters beneath the shaded avenues that were, in truth, a silent vigil across countless seasons.',
+    disabled: true,
   },
   {
     id: 'anec-3',
@@ -120,6 +123,7 @@ const ANECDOTE_CARDS: AnecdoteCard[] = [
       'Thời niên thiếu dưới mái trường và lời hứa thầm lặng khi ngước nhìn cơn mưa sao băng đầu tiên xé ngang bầu trời đêm.',
     summaryEN:
       'Youthful days in uniform and an unspoken promise made while gazing up at the first meteor shower streaking across the night sky.',
+    disabled: true,
   },
   {
     id: 'anec-4',
@@ -132,6 +136,7 @@ const ANECDOTE_CARDS: AnecdoteCard[] = [
       'Dư âm vọng về từ tàn tích cổ xưa, nơi chiếc mặt nạ bạc và lưỡi kiếm ánh sáng khắc ghi sứ mệnh vượt qua hàng vạn năm ánh sáng.',
     summaryEN:
       'Echoes resonating from ancient ruins, where the silver mask and blade of light bear witness to a mission spanning ten thousand light-years.',
+    disabled: true,
   },
 ];
 
@@ -147,6 +152,7 @@ const BY_YOUR_SIDE_CARDS: AnecdoteCard[] = [
       'Những giây phút riêng tư tĩnh lặng dưới ánh đèn ấm áp, nơi hơi ấm từ bàn tay đan chặt và nhịp thở dịu dàng xua tan mọi khoảng cách.',
     summaryEN:
       'Quiet, intimate moments beneath warm lights, where interlocked hands and gentle breathing melt away every distance.',
+    disabled: true,
   },
   {
     id: 'bys-2',
@@ -159,6 +165,7 @@ const BY_YOUR_SIDE_CARDS: AnecdoteCard[] = [
       'Buổi chiều nắng nhẹ bên trang sách mở và giai điệu êm đềm qua chiếc tai nghe, lưu giữ ánh nhìn dịu dàng chỉ dành riêng cho bạn.',
     summaryEN:
       'A sunlit afternoon beside an open book and soft melodies through headphones, capturing a tender gaze meant only for you.',
+    disabled: true,
   },
 ];
 
@@ -174,6 +181,7 @@ const FALLING_FOR_YOU_CARDS: AnecdoteCard[] = [
       'Sợi dây gắn kết vô hình được dệt nên từ sự tin tưởng và những khoảnh khắc đời thường bình dị nhưng sâu sắc bên nhau.',
     summaryEN:
       'An unseen bond woven from trust and quiet, heartfelt everyday moments shared together.',
+    disabled: true,
   },
   {
     id: 'ffy-2',
@@ -186,6 +194,7 @@ const FALLING_FOR_YOU_CARDS: AnecdoteCard[] = [
       'Không gian ngập tràn ánh nắng ban mai, nơi từng mảnh ký ức dịu dàng được lưu giữ nguyên vẹn theo năm tháng.',
     summaryEN:
       'A sunlit sanctuary where every tender fragment of memory is preserved untouched through time.',
+    disabled: false,
   },
   {
     id: 'ffy-3',
@@ -198,6 +207,7 @@ const FALLING_FOR_YOU_CARDS: AnecdoteCard[] = [
       'Thánh đường cổ kính dưới ánh trăng bạc, nơi huyền thoại vượt qua hàng vạn năm ánh sáng bắt đầu và khắc ghi lời thề vĩnh cửu.',
     summaryEN:
       'An ancient moonlit cathedral where a myth spanning ten thousand light-years unfolds and etches an eternal vow.',
+    disabled: true,
   },
 ];
 
@@ -213,6 +223,7 @@ const PHOTO_STUDIO_CARDS: AnecdoteCard[] = [
       'Bộ sưu tập trang phục chiến đấu và thường phục tinh xảo, tôn lên phong thái thanh lịch trong từng khung hình kỷ niệm.',
     summaryEN:
       'An exquisite collection of combat attire and casual outfits, highlighting elegance in every commemorative frame.',
+    disabled: true,
   },
   {
     id: 'ps-2',
@@ -225,6 +236,7 @@ const PHOTO_STUDIO_CARDS: AnecdoteCard[] = [
       'Đa dạng phông nền nghệ thuật từ sảnh đường ngập nắng đến bầu trời đêm huyền ảo đượm sắc tím ngân hà.',
     summaryEN:
       'Diverse artistic backdrops ranging from sunlit halls to dreamy night skies bathed in cosmic violet hues.',
+    disabled: true,
   },
   {
     id: 'ps-3',
@@ -237,6 +249,7 @@ const PHOTO_STUDIO_CARDS: AnecdoteCard[] = [
       'Những dáng chụp độc đáo từ khoảnh khắc trầm tư giữa dải ngân hà đến cử chỉ ăn ý khi sánh bước bên nhau.',
     summaryEN:
       'Expressive poses ranging from contemplative moments amidst the cosmos to harmonious gestures side by side.',
+    disabled: true,
   },
   {
     id: 'ps-4',
@@ -249,6 +262,7 @@ const PHOTO_STUDIO_CARDS: AnecdoteCard[] = [
       'Những mẫu thiết kế khung hình và phụ kiện nghệ thuật có sẵn, giúp tái hiện trọn vẹn thần thái điện ảnh chỉ trong một chạm.',
     summaryEN:
       'Curated artistic templates and accessory presets that capture cinematic poise and atmosphere in a single tap.',
+    disabled: true,
   },
 ];
 
@@ -264,6 +278,7 @@ const JOURNAL_CARDS: AnecdoteCard[] = [
       'Kho lưu trữ những dấu ấn, bức vẽ và kỷ vật đặc biệt khắc ghi lời hứa vĩnh cửu qua từng chặng đường bên nhau.',
     summaryEN:
       'An archive of cherished keepsakes, sketches, and milestones etching an eternal promise across every shared journey.',
+    disabled: true,
   },
   {
     id: 'jn-2',
@@ -276,6 +291,7 @@ const JOURNAL_CARDS: AnecdoteCard[] = [
       'Không gian sáng tạo mang đậm dấu ấn cá nhân, nơi từng trang sổ tay được trang trí bằng sticker, ruy băng và những món quà kỷ niệm đáng yêu.',
     summaryEN:
       'A creative personal space where every journal page is decorated with stickers, ribbons, and adorable commemorative gifts.',
+    disabled: true,
   },
 ];
 
@@ -291,6 +307,7 @@ const PLAYTIME_CARDS: AnecdoteCard[] = [
       'Những giờ phút vui nhộn bên máy gắp thú bông, cùng nhau mang về bộ sưu tập thú nhồi bông đáng yêu.',
     summaryEN:
       'Playful moments by the claw machine, teaming up to win an adorable collection of plushies.',
+    disabled: true,
   },
   {
     id: 'pt-2',
@@ -303,6 +320,7 @@ const PLAYTIME_CARDS: AnecdoteCard[] = [
       'Những ván Bài Mèo đầy kịch tính nhưng không kém phần đáng yêu bên tách trà chiều ấm áp.',
     summaryEN:
       'Lively and endearing rounds of Kitty Cards shared over a warm afternoon cup of tea.',
+    disabled: true,
   },
 ];
 
@@ -475,7 +493,7 @@ export const DatingPage: React.FC<DatingPageProps> = ({
   onBackHome,
 }) => {
   const [internalSubTab, setInternalSubTab] = useState<DatingSubTab>(
-    externalSubTab ?? 'ANECDOTES'
+    externalSubTab ?? 'FALLING FOR YOU'
   );
   const [internalCardId, setInternalCardId] = useState<string | null>(
     externalCardId ?? null
@@ -531,7 +549,7 @@ export const DatingPage: React.FC<DatingPageProps> = ({
 
   // Preload active tab images immediately, then warm up remaining tab images during browser idle time
   useEffect(() => {
-    const activeImages = new Set(ANECDOTE_CARDS.map((c) => c.image));
+    const activeImages = new Set(FALLING_FOR_YOU_CARDS.map((c) => c.image));
     activeImages.forEach((src) => {
       const img = new Image();
       img.decoding = 'async';
@@ -575,7 +593,7 @@ export const DatingPage: React.FC<DatingPageProps> = ({
       : ANECDOTE_CARDS;
 
   const activeTabObj =
-    DATING_TABS.find((t) => t.id === activeSubTab) ?? DATING_TABS[2];
+    DATING_TABS.find((t) => t.id === activeSubTab) ?? DATING_TABS[1];
   const activeTabTitle =
     lang === 'VI' ? activeTabObj.labelVI : activeTabObj.labelEN;
   const activeTabSubtitle =
@@ -669,10 +687,14 @@ export const DatingPage: React.FC<DatingPageProps> = ({
           <div className="grid w-full min-h-0 grid-cols-1 min-[360px]:grid-cols-2 sm:grid-cols-4 sm:grid-rows-[minmax(0,1fr)] gap-3.5 sm:gap-3 md:gap-4 lg:gap-6">
             {activeDeck.map((card, idx) => {
               const cardTitle = lang === 'VI' ? card.titleVI : card.titleEN;
+              const isCardDisabled = Boolean(card.disabled);
               return (
                 <button
                   key={card.id}
                   type="button"
+                  disabled={isCardDisabled}
+                  aria-disabled={isCardDisabled || undefined}
+                  tabIndex={isCardDisabled ? -1 : 0}
                   style={
                     !skipTransition
                       ? {
@@ -681,8 +703,12 @@ export const DatingPage: React.FC<DatingPageProps> = ({
                         }
                       : undefined
                   }
-                  onMouseEnter={() => soundFx.playHover()}
+                  onMouseEnter={() => {
+                    if (isCardDisabled) return;
+                    soundFx.playHover();
+                  }}
                   onClick={() => {
+                    if (isCardDisabled) return;
                     soundFx.playSelect();
                     if (
                       card.id === 'ffy-2' ||
@@ -701,7 +727,11 @@ export const DatingPage: React.FC<DatingPageProps> = ({
                       onNavigate(targetSlug);
                     }
                   }}
-                  className={`group relative flex aspect-[10/14] sm:aspect-auto sm:h-[min(calc(100dvh-228px),35vw,420px)] w-full cursor-pointer flex-col rounded-none border border-[var(--line)] bg-[var(--void)] text-left transition-colors duration-[400ms] ease-in-out hover:border-[var(--accent)] focus:border-[var(--accent)] focus:outline-none ${
+                  className={` relative flex aspect-[10/14] sm:aspect-auto sm:h-[min(calc(100dvh-228px),35vw,420px)] w-full flex-col rounded-none border border-[var(--line)] bg-[var(--void)] text-left transition-colors duration-[400ms] ease-in-out focus:outline-none ${
+                    isCardDisabled
+                      ? 'pointer-events-none cursor-default'
+                      : 'group cursor-pointer hover:border-[var(--accent)] focus:border-[var(--accent)]'
+                  } ${
                     !skipTransition ? 'events-card-reveal-anim' : ''
                   }`}
                 >

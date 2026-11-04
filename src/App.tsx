@@ -59,18 +59,18 @@ interface MenuItem {
 }
 
 const MENU_ITEMS: MenuItem[] = [
-  { id: 'home', slug: 'profile', code: '01', labelVI: 'HỒ SƠ', labelEN: 'PROFILE', disabled: false },
-  { id: 'combat', slug: 'combat', code: '02', labelVI: 'CHIẾN ĐẤU', labelEN: 'BATTLE', disabled: false },
-  { id: 'story', slug: 'story', code: '03', labelVI: 'CỐT TRUYỆN', labelEN: 'STORYLINE', disabled: false },
+  { id: 'home', slug: 'profile', code: '01', labelVI: 'HỒ SƠ', labelEN: 'PROFILE', disabled: true },
+  { id: 'combat', slug: 'combat', code: '02', labelVI: 'CHIẾN ĐẤU', labelEN: 'BATTLE', disabled: true },
+  { id: 'story', slug: 'story', code: '03', labelVI: 'CỐT TRUYỆN', labelEN: 'STORYLINE', disabled: true },
   { id: 'dating', slug: 'dating', code: '04', labelVI: 'HẸN HÒ', labelEN: 'DATING', disabled: false },
   { id: 'gallery', slug: 'gallery', code: '05', labelVI: 'TRIỂN LÃM', labelEN: 'GALLERY', disabled: false },
 ];
 
 const SUB_MENU_ITEMS: MenuItem[] = [
   { id: 'events', slug: 'events', code: '06', labelVI: 'SỰ KIỆN', labelEN: 'EVENTS', disabled: false },
-  { id: 'contact', slug: 'contact', code: '07', labelVI: 'LIÊN LẠC', labelEN: 'CONTACT', disabled: false },
-  { id: 'interact', slug: 'interact', code: '08', labelVI: 'TƯƠNG TÁC', labelEN: 'INTERACTIONS', disabled: false },
-  { id: 'about', slug: 'about', code: '09', labelVI: 'GIỚI THIỆU', labelEN: 'ABOUT', disabled: false },
+  { id: 'contact', slug: 'contact', code: '07', labelVI: 'LIÊN LẠC', labelEN: 'CONTACT', disabled: true },
+  { id: 'interact', slug: 'interact', code: '08', labelVI: 'TƯƠNG TÁC', labelEN: 'INTERACTIONS', disabled: true },
+  { id: 'about', slug: 'about', code: '09', labelVI: 'GIỚI THIỆU', labelEN: 'ABOUT', disabled: true },
 ];
 
 const BOOT_LINES_VI = [
@@ -943,7 +943,7 @@ export default function App() {
               <DatingPage
                 lang={lang}
                 isPhone={isPhoneDevice}
-                activeSubTab={activeRoute.datingSubTab ?? 'ANECDOTES'}
+                activeSubTab={activeRoute.datingSubTab ?? 'FALLING FOR YOU'}
                 activeCardId={activeRoute.datingCardId ?? null}
                 isMemoriaOpen={Boolean(activeRoute.memoriaOpen)}
                 activeMemoriaCardId={activeRoute.memoriaCardId ?? null}
@@ -1076,8 +1076,9 @@ export default function App() {
                   }}
                   aria-expanded={subMenuOpen}
                   aria-label={subMenuOpen ? 'Đóng menu phụ' : 'Mở menu phụ'}
-                  className="menu-sub-tab group absolute right-0 top-[38%] sm:top-[39%] z-30 cursor-pointer focus:outline-none"
+                  className="menu-sub-tab group absolute right-0 z-30 cursor-pointer focus:outline-none"
                   style={{
+                    top: isPhoneDevice ? '54%' : undefined,
                     opacity: isUiRevealed ? 1 : 0,
                     transition: reducedMotion
                       ? 'none'
@@ -1141,10 +1142,11 @@ export default function App() {
                   >
                     {MENU_ITEMS.map((item, idx) => {
                       const isActive =
-                        hoveredIndex === idx ||
-                        (hoveredIndex === null &&
-                          clickedIndex === idx &&
-                          activeModal !== null);
+                        !item.disabled &&
+                        (hoveredIndex === idx ||
+                          (hoveredIndex === null &&
+                            clickedIndex === idx &&
+                            activeModal !== null));
 
                       return (
                         <div
@@ -1161,8 +1163,11 @@ export default function App() {
                         >
                           <button
                             type="button"
-                            tabIndex={isUiRevealed ? 0 : -1}
+                            disabled={item.disabled}
+                            aria-disabled={item.disabled || undefined}
+                            tabIndex={isUiRevealed && !item.disabled ? 0 : -1}
                             onMouseEnter={() => {
+                              if (item.disabled) return;
                               if (hoveredIndex !== idx) {
                                 soundFx.playHover();
                                 setHoveredIndex(idx);
@@ -1176,8 +1181,12 @@ export default function App() {
                             onClick={() => handleTriggerMenu(idx)}
                             className={`game-menu-btn ${
                               isPhoneDevice ? 'game-menu-btn-phone' : ''
-                            } flex items-center gap-3 sm:gap-3.5 h-8 sm:h-10 md:h-11 w-full px-2.5 sm:px-4 text-left whitespace-nowrap cursor-pointer focus:outline-none ${
-                              isActive ? 'game-menu-btn-active' : 'game-menu-btn-idle'
+                            } flex items-center gap-3 sm:gap-3.5 h-8 sm:h-10 md:h-11 w-full px-2.5 sm:px-4 text-left whitespace-nowrap focus:outline-none ${
+                              item.disabled
+                                ? 'pointer-events-none cursor-default opacity-45 game-menu-btn-idle'
+                                : isActive
+                                ? 'cursor-pointer game-menu-btn-active'
+                                : 'cursor-pointer game-menu-btn-idle'
                             }`}
                           >
                             <span className="menu-item-index relative z-10 shrink-0">
@@ -1205,10 +1214,11 @@ export default function App() {
                   >
                     {SUB_MENU_ITEMS.map((subItem, idx) => {
                       const isSubActive =
-                        hoveredSubIndex === idx ||
-                        (hoveredSubIndex === null &&
-                          clickedSubIndex === idx &&
-                          activeModal !== null);
+                        !subItem.disabled &&
+                        (hoveredSubIndex === idx ||
+                          (hoveredSubIndex === null &&
+                            clickedSubIndex === idx &&
+                            activeModal !== null));
 
                       const isSubItemVisible = isUiRevealed && subMenuOpen;
                       const staggerDelay = isSubItemVisible
@@ -1231,8 +1241,11 @@ export default function App() {
                         >
                           <button
                             type="button"
-                            tabIndex={isSubItemVisible ? 0 : -1}
+                            disabled={subItem.disabled}
+                            aria-disabled={subItem.disabled || undefined}
+                            tabIndex={isSubItemVisible && !subItem.disabled ? 0 : -1}
                             onMouseEnter={() => {
+                              if (subItem.disabled) return;
                               if (hoveredSubIndex !== idx) {
                                 soundFx.playHover();
                                 setHoveredSubIndex(idx);
@@ -1248,8 +1261,12 @@ export default function App() {
                             onClick={() => handleTriggerSubMenu(subItem, idx)}
                             className={`game-menu-btn ${
                               isPhoneDevice ? 'game-menu-btn-phone' : ''
-                            } flex items-center justify-end gap-3 sm:gap-3.5 h-8 sm:h-10 md:h-11 w-full px-2.5 sm:px-4 text-right whitespace-nowrap cursor-pointer focus:outline-none ${
-                              isSubActive ? 'game-menu-btn-active' : 'game-menu-btn-idle'
+                            } flex items-center justify-end gap-3 sm:gap-3.5 h-8 sm:h-10 md:h-11 w-full px-2.5 sm:px-4 text-right whitespace-nowrap focus:outline-none ${
+                              subItem.disabled
+                                ? 'pointer-events-none cursor-default opacity-45 game-menu-btn-idle'
+                                : isSubActive
+                                ? 'cursor-pointer game-menu-btn-active'
+                                : 'cursor-pointer game-menu-btn-idle'
                             }`}
                           >
                             <span className="menu-item-index relative z-10 shrink-0">

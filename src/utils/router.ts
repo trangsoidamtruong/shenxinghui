@@ -143,7 +143,7 @@ export const SLUG_MAP: Record<string, RouteConfigEntry> = {
     slug: 'dating',
     domId: 'page-dating',
     page: 'dating',
-    datingSubTab: 'ANECDOTES',
+    datingSubTab: 'FALLING FOR YOU',
     parentSlug: 'home',
     hasTransition: true,
     transitionDurationMs: 380,
@@ -825,6 +825,34 @@ export function cleanRawHash(rawInput: string): string {
  * - If a child segment is invalid (e.g. `/dating/anecdotes/999` or `/dating/unknown`),
  *   falls back to the nearest valid parent page/route (`/dating`), never leaving a blank page.
  */
+const TEMPORARILY_DISABLED_SLUGS = new Set([
+  'profile',
+  'combat',
+  'story',
+  'contact',
+  'interact',
+  'about',
+]);
+
+const TEMPORARILY_DISABLED_DATING_CARDS = new Set([
+  'dating/by-your-side/bys1',
+  'dating/by-your-side/bys2',
+  'dating/falling-for-you/ffy1',
+  'dating/falling-for-you/ffy3',
+  'dating/anecdotes/anec1',
+  'dating/anecdotes/anec2',
+  'dating/anecdotes/anec3',
+  'dating/anecdotes/anec4',
+  'dating/journal/jn1',
+  'dating/journal/jn2',
+  'dating/playtime/pt1',
+  'dating/playtime/pt2',
+  'dating/photo-studio/ps1',
+  'dating/photo-studio/ps2',
+  'dating/photo-studio/ps3',
+  'dating/photo-studio/ps4',
+]);
+
 export function resolveHashRoute(
   rawInput: string,
   pathname = ''
@@ -834,11 +862,21 @@ export function resolveHashRoute(
   const cleanedPath = cleanRawHash(pathname);
   const cleaned = cleanedHash || cleanedPath;
 
-  if (!cleaned) {
+  if (!cleaned || TEMPORARILY_DISABLED_SLUGS.has(cleaned)) {
     return {
       entry: SLUG_MAP.home,
-      didFallback: fromLegacyHash,
+      didFallback: fromLegacyHash || Boolean(cleaned),
       rawSlug: '',
+    };
+  }
+
+  const canonicalCandidate = SLUG_ALIASES[cleaned] || cleaned;
+  if (TEMPORARILY_DISABLED_DATING_CARDS.has(canonicalCandidate)) {
+    const parentSlug = SLUG_MAP[canonicalCandidate]?.parentSlug || 'dating';
+    return {
+      entry: SLUG_MAP[parentSlug] ?? SLUG_MAP.dating,
+      didFallback: true,
+      rawSlug: cleaned,
     };
   }
 
