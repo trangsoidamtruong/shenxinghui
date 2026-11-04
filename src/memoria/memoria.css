@@ -5,11 +5,11 @@
 .memoria::after{content:"";position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(0deg,rgba(255,255,255,.025) 0 1px,transparent 1px 3px)}
 .memoria .hud{font-family:"Chakra Petch",sans-serif;letter-spacing:.14em;font-size:12px;color:var(--dim)}
 
-.memoria .top{padding:10px 5vw 8px;display:flex;align-items:baseline;gap:16px;flex-wrap:wrap}
+.memoria .top{width:min(100% - 2 * var(--gutter, clamp(16px, 4vw, 48px)), 1300px);margin-inline:auto;padding:10px 0 8px;display:flex;align-items:baseline;gap:16px;flex-wrap:wrap;flex-shrink:0}
 .memoria h1{font-family:"Chakra Petch",sans-serif;font-size:clamp(24px,3.2vw,34px);font-weight:600}
 .memoria .sub{color:var(--lilac);font-size:14px}
 
-.memoria main{flex:1;min-height:0;display:grid;grid-template-columns:minmax(280px,360px) 1fr;gap:18px;padding:0 5vw 10px}
+.memoria main{width:min(100% - 2 * var(--gutter, clamp(16px, 4vw, 48px)), 1300px);margin-inline:auto;flex:1;min-height:0;display:grid;grid-template-columns:minmax(280px,360px) 1fr;grid-template-rows:minmax(0,1fr);gap:18px;padding:0 0 10px}
 .memoria .pane{border:1px solid var(--line);background:rgba(14,11,28,.88);position:relative;min-height:0;display:flex;flex-direction:column}
 .memoria .pane::before,.memoria .pane::after{content:"";position:absolute;width:12px;height:12px;border:1px solid var(--dim);pointer-events:none}
 .memoria .pane::before{top:-1px;left:-1px;border-right:0;border-bottom:0}
@@ -64,7 +64,7 @@
 .memoria .go:hover{border-color:var(--vio);background:rgba(169,100,247,.22);color:var(--silver)}
 .memoria .go[disabled]{background:none;border-color:var(--line);color:var(--muted);cursor:not-allowed}
 
-.memoria footer{padding:6px 5vw 8px;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.memoria footer{width:min(100% - 2 * var(--gutter, clamp(16px, 4vw, 48px)), 1300px);margin-inline:auto;padding:6px 0 8px;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
 
 .memoria #boot{position:absolute;inset:0;background:#000;z-index:9;display:flex;align-items:center;justify-content:center;transition:opacity .6s}
 .memoria #boot pre{font-family:"Chakra Petch",monospace;color:var(--lilac);letter-spacing:.14em;font-size:13px;line-height:1.9}

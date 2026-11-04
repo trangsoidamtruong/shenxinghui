@@ -4,10 +4,14 @@
  */
 
 import React, { useEffect, useRef } from 'react';
+import { SiteHeader } from './SiteHeader';
 
 interface GalleryPageProps {
   lang: 'VI' | 'EN';
   isPhone?: boolean;
+  activeItem?: string | null;
+  skipBoot?: boolean;
+  onNavigate?: (slug: string) => void;
   onToggleLang?: () => void;
   onSetLang?: (nextLang: 'VI' | 'EN') => void;
   onBackHome: () => void;
@@ -47,6 +51,8 @@ interface ArchiveEntry {
 
 interface MountOptions {
   initialLang: TermLang;
+  initialItem?: string | null;
+  skipBoot?: boolean;
   onLangChange?: (nextLang: TermLang) => void;
   onBackHome?: () => void;
   onNavigate?: (slug: string, href: string) => void;
@@ -54,6 +60,7 @@ interface MountOptions {
 
 interface MountedTerminal {
   setLang: (nextLang: TermLang, fromExternal?: boolean) => void;
+  selectBySlug: (slug: string | null) => void;
   unmount: () => void;
 }
 
@@ -267,7 +274,7 @@ function mountExhibitionTerminal(
 
   const S = {
     vi: {
-      c: ['TRANG CHỦ', 'TRIỂN LÃM'],
+      c: ['TRĂNG SOI DẶM TRƯỜNG', 'TRIỂN LÃM'],
       idle: 'Chọn một mục bằng ↑ ↓ (Enter để mở).',
       hint: '↑↓ chọn · Enter mở · Esc quay lại',
       tog: '[ màu / đơn sắc ]',
@@ -327,7 +334,7 @@ function mountExhibitionTerminal(
   const cli = $('#cli');
   const list = $('#list');
   const termEl = $<HTMLElement>('.term');
-  const headerEl = $<HTMLElement>('.top');
+  const headerEl = $<HTMLElement>('.site-header');
 
   let mode = 'moon';
   let morph: { t0: number; from: string[]; d: number[] } | null = null;
@@ -864,7 +871,7 @@ function mountExhibitionTerminal(
     const D = S[l];
     $('#c0').textContent = D.c[0];
     $('#c1').textContent = D.c[1];
-    $('#bl').textContent = 'LANG // ' + l.toUpperCase();
+    $('#bl').textContent = l.toUpperCase();
     if (ready) typeInto(descEl, sel === null ? D.idle : I[sel].d[l]);
     cap();
     if (!fromExternal && changed && options.onLangChange) {
@@ -907,11 +914,12 @@ function mountExhibitionTerminal(
       function (entries) {
         const entry = entries[0];
         if (!entry) return;
-        inView = entry.isIntersecting;
+        // Keep drawing if element is in DOM and visible
+        inView = entry.isIntersecting || termEl.offsetParent !== null;
         if (inView) scheduleDraw();
         else stopDraw();
       },
-      { threshold: 0.05 }
+      { threshold: 0.01 }
     );
     intersectionObs.observe(termEl);
   }
@@ -930,31 +938,73 @@ function mountExhibitionTerminal(
 
   scheduleDraw();
 
-  // khởi động: gõ "ls /archive", danh sách hiện lần lượt
+  function applyInitialOrTargetItem(slug: string | null | undefined) {
+    if (!slug) {
+      if (sel !== null) select(null);
+      return;
+    }
+    const idx = I.findIndex(function (item) {
+      return item.r === slug;
+    });
+    if (idx >= 0 && sel !== idx) {
+      select(idx);
+    }
+  }
+
+  // khởi động: gõ "ls /archive", danh sách hiện lần lượt (hoặc hiện ngay nếu skipBoot / reducedMotion)
   (function bootSequence() {
     const s = 'ls /archive';
-    let n = 0;
     const el = $('#cmd0');
+    const fast = Boolean(reduce || options.skipBoot);
+
+    if (fast) {
+      el.textContent = s;
+      for (let k = 0; k < I.length; k++) {
+        const itemEl = I[k].el;
+        if (itemEl) itemEl.classList.add('show');
+      }
+      ready = true;
+      if (options.initialItem) {
+        applyInitialOrTargetItem(options.initialItem);
+      } else {
+        typeInto(descEl, S[lang].idle);
+      }
+      return;
+    }
+
+    let n = 0;
     function t() {
       el.textContent = s.slice(0, n) + (n < s.length ? '▌' : '');
       if (n++ < s.length) {
-        setTrackedTimeout(t, reduce ? 0 : 60);
+        setTrackedTimeout(t, 52);
       } else {
         let k = 0;
         (function nx() {
           if (k < I.length) {
             const itemEl = I[k++].el;
             if (itemEl) itemEl.classList.add('show');
-            setTrackedTimeout(nx, reduce ? 0 : 80);
+            setTrackedTimeout(nx, 70);
           } else {
             ready = true;
-            typeInto(descEl, S[lang].idle);
+            if (options.initialItem) {
+              applyInitialOrTargetItem(options.initialItem);
+            } else {
+              typeInto(descEl, S[lang].idle);
+            }
           }
         })();
       }
     }
-    setTrackedTimeout(t, 500);
+    setTrackedTimeout(t, 280);
   })();
+
+  function selectBySlug(slug: string | null) {
+    if (!ready) {
+      options.initialItem = slug;
+      return;
+    }
+    applyInitialOrTargetItem(slug);
+  }
 
   function unmount() {
     unmounted = true;
@@ -984,23 +1034,43 @@ function mountExhibitionTerminal(
 
   return {
     setLang,
+    selectBySlug,
     unmount,
   };
 }
 
 export const GalleryPage: React.FC<GalleryPageProps> = ({
   lang,
+  activeItem = null,
+  skipBoot = false,
+  onNavigate,
   onToggleLang,
   onSetLang,
   onBackHome,
 }) => {
   const rootRef = useRef<HTMLDivElement | null>(null);
   const terminalRef = useRef<MountedTerminal | null>(null);
-  const callbacksRef = useRef({ onToggleLang, onSetLang, onBackHome, lang });
+  const callbacksRef = useRef({
+    onToggleLang,
+    onSetLang,
+    onBackHome,
+    onNavigate,
+    lang,
+    activeItem,
+    skipBoot,
+  });
 
   useEffect(() => {
-    callbacksRef.current = { onToggleLang, onSetLang, onBackHome, lang };
-  }, [onToggleLang, onSetLang, onBackHome, lang]);
+    callbacksRef.current = {
+      onToggleLang,
+      onSetLang,
+      onBackHome,
+      onNavigate,
+      lang,
+      activeItem,
+      skipBoot,
+    };
+  }, [onToggleLang, onSetLang, onBackHome, onNavigate, lang, activeItem, skipBoot]);
 
   useEffect(() => {
     const container = rootRef.current;
@@ -1010,6 +1080,8 @@ export const GalleryPage: React.FC<GalleryPageProps> = ({
 
     const instance = mountExhibitionTerminal(container, {
       initialLang: initialTermLang,
+      initialItem: callbacksRef.current.activeItem,
+      skipBoot: callbacksRef.current.skipBoot,
       onLangChange: (nextTermLang: TermLang) => {
         const targetAppLang = nextTermLang === 'en' ? 'EN' : 'VI';
         if (callbacksRef.current.onSetLang) {
@@ -1025,16 +1097,8 @@ export const GalleryPage: React.FC<GalleryPageProps> = ({
         callbacksRef.current.onBackHome();
       },
       onNavigate: (slug: string) => {
-        try {
-          if (typeof window !== 'undefined' && window.history) {
-            window.history.pushState(
-              { page: 'gallery', archive: slug },
-              '',
-              '#' + slug
-            );
-          }
-        } catch {
-          // Ignore sandbox history restrictions
+        if (callbacksRef.current.onNavigate) {
+          callbacksRef.current.onNavigate(`gallery/${slug}`);
         }
       },
     });
@@ -1054,26 +1118,33 @@ export const GalleryPage: React.FC<GalleryPageProps> = ({
     instance.setLang(lang === 'EN' ? 'en' : 'vi', true);
   }, [lang]);
 
+  // Đồng bộ khi mục con trong Gallery thay đổi qua URL / Back / Forward
+  useEffect(() => {
+    const instance = terminalRef.current;
+    if (!instance) return;
+    instance.selectBySlug(activeItem ?? null);
+  }, [activeItem]);
+
   return (
-    <div ref={rootRef} className="xt-root">
+    <div id="page-gallery" ref={rootRef} className="xt-root">
       {/* (3i) Tiêu đề trang ẩn trực quan cho SEO / trình đọc màn hình */}
       <h1 className="sr-only">{lang === 'VI' ? 'Triển lãm' : 'Exhibition'}</h1>
 
-      <header className="top">
-        <div className="wrap">
-          <div className="crumb mono">
-            <span
-              id="c0"
-              role="button"
-              tabIndex={0}
-              title={lang === 'VI' ? 'Quay về trang chủ' : 'Back to Home'}
-            ></span>
-            <i>›</i>
-            <b id="c1"></b>
-          </div>
-          <button type="button" className="lang mono" id="bl"></button>
-        </div>
-      </header>
+      <SiteHeader
+        breadcrumbs={[
+          {
+            id: 'c0',
+            label: lang === 'VI' ? 'TRĂNG SOI DẶM TRƯỜNG' : 'MOONSTRIDE',
+            title: lang === 'VI' ? 'Quay về trang chủ' : 'Back to Home',
+          },
+          {
+            id: 'c1',
+            label: lang === 'VI' ? 'TRIỂN LÃM' : 'GALLERY',
+          },
+        ]}
+        langButtonId="bl"
+        langLabel={lang}
+      />
 
       <main className="wrap">
         <section className="term" aria-label="Terminal">

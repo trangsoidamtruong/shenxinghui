@@ -6,16 +6,25 @@ import { MEMORIA_CARDS, type MemoriaCard } from "./data/cards";
 export interface MountedMemoria {
   unmount: () => void;
   setLang: (nextLang: "VI" | "EN") => void;
+  selectCardById: (cardId: number | null) => void;
+}
+
+export interface MemoriaMountOptions {
+  skipBoot?: boolean;
+  initialCardId?: number | null;
+  onSelectCard?: (cardId: number) => void;
 }
 
 export function mountMemoria(
   root: HTMLElement,
-  initialLang: "VI" | "EN" = "VI"
+  initialLang: "VI" | "EN" = "VI",
+  options: MemoriaMountOptions = {}
 ): MountedMemoria {
   if (!root) {
     return {
       unmount: () => {},
       setLang: () => {},
+      selectCardById: () => {},
     };
   }
 
@@ -95,7 +104,7 @@ export function mountMemoria(
     renderView();
   }
 
-  function select(i: number, scroll?: boolean) {
+  function select(i: number, scroll?: boolean, notify = false) {
     if (!list.length) return;
     cur = Math.max(0, Math.min(list.length - 1, i));
     root.querySelectorAll(".row").forEach((r, k) => {
@@ -107,6 +116,9 @@ export function mountMemoria(
       if (r) r.scrollIntoView({ block: "nearest" });
     }
     renderView();
+    if (notify && options.onSelectCard && list[cur]) {
+      options.onSelectCard(list[cur].id);
+    }
   }
 
   function renderView() {
@@ -161,7 +173,7 @@ export function mountMemoria(
     const target = e.target as HTMLElement | null;
     const r = target?.closest<HTMLElement>(".row");
     if (r && r.dataset.i !== undefined) {
-      select(+r.dataset.i, false);
+      select(+r.dataset.i, false, true);
     }
   };
   listEl.addEventListener("click", onListClick);
@@ -171,10 +183,10 @@ export function mountMemoria(
     const typing = document.activeElement === $("#q");
     if (e.key === "ArrowDown") {
       e.preventDefault();
-      select(cur + 1);
+      select(cur + 1, true, true);
     } else if (e.key === "ArrowUp") {
       e.preventDefault();
-      select(cur - 1);
+      select(cur - 1, true, true);
     } else if (
       e.key === "Enter" &&
       (!typing || list.length) &&
@@ -216,24 +228,20 @@ export function mountMemoria(
   // ---- Mở đầu: log khởi động (một lần) ----
   renderList();
 
-  // Check if URL matches /memoria/mem-XX on load
-  const pathMatch =
-    typeof window !== "undefined"
-      ? window.location.pathname.match(/^\/memoria\/mem-(\d+)/)
-      : null;
+  if (options.initialCardId) {
+    const idx = list.findIndex((c) => c.id === options.initialCardId);
+    if (idx >= 0) {
+      select(idx, true, false);
+    }
+  }
 
   let bootRemoveTimeout: number | undefined;
   let tick: number | undefined;
 
-  if (pathMatch) {
-    const targetId = parseInt(pathMatch[1], 10);
-    const idx = list.findIndex((c) => c.id === targetId);
-    if (idx >= 0) {
-      select(idx, true);
-    }
+  if (options.skipBoot || options.initialCardId) {
     const b = $("#boot");
     if (b) b.remove();
-    toast(`> ${window.location.pathname} (chưa có trang bản dịch)`);
+    renderView();
   } else {
     const lines = [
       "> KẾT NỐI KHO KÝ ỨC... OK",
@@ -272,6 +280,13 @@ export function mountMemoria(
       if (currentLang === nextLang) return;
       currentLang = nextLang;
       renderList();
+    },
+    selectCardById: (cardId: number | null) => {
+      if (!cardId) return;
+      const idx = list.findIndex((c) => c.id === cardId);
+      if (idx >= 0 && idx !== cur) {
+        select(idx, true, false);
+      }
     },
   };
 }

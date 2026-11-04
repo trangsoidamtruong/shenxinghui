@@ -147,6 +147,7 @@ export const GameModals: React.FC<GameModalsProps> = ({
 
   return (
     <div
+      id={`page-modal-${activeModal}`}
       className="fixed inset-0 z-30 flex items-center justify-center bg-[var(--void)]/75 p-4 backdrop-blur-xs"
       onClick={handleClose}
     >

@@ -25,6 +25,7 @@
 
     --vig: .82;
     --left: .75;
+    --gutter: clamp(16px, 4vw, 48px);
   }
 
   body {
@@ -33,6 +34,244 @@
     color: var(--text-1);
     overflow: hidden;
   }
+}
+
+/* ==========================================================================
+   SHARED CONTAINER (.wrap), SUBPAGE HEADER (.site-header) & SUB-TABS
+   Matches reference image_40c0b9c0.png across all pages
+   ========================================================================== */
+.wrap {
+  width: min(100% - 2 * var(--gutter), 1300px);
+  max-width: none;
+  margin-inline: auto;
+  padding-inline: 0;
+}
+
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  width: 100%;
+  height: 56px;
+  flex-shrink: 0;
+  background: rgba(7, 6, 15, 0.88);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--line);
+  display: flex;
+  align-items: center;
+}
+
+@media (max-width: 760px) {
+  .site-header {
+    height: 48px;
+  }
+}
+
+.is-phone-frame .site-header {
+  height: 48px;
+}
+
+.site-header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  height: 100%;
+}
+
+.site-crumb {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  flex: 1 1 auto;
+  overflow: hidden;
+  white-space: nowrap;
+  font-family: var(--font-mono);
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 1.2;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+}
+
+.site-crumb-link,
+.xt-root .site-crumb-link {
+  appearance: none;
+  background: transparent;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  font-family: var(--font-mono);
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 1.2;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--text-2);
+  cursor: pointer;
+  transition: color 150ms ease;
+  text-decoration: none;
+  flex-shrink: 0;
+}
+
+.site-crumb-root,
+.xt-root .site-crumb-root {
+  min-width: 0;
+  flex-shrink: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.site-crumb-link:hover,
+.site-crumb-link:focus-visible,
+.xt-root .site-crumb-link:hover,
+.xt-root .site-crumb-link:focus-visible {
+  color: #FFFFFF;
+  outline: none;
+}
+
+.site-crumb-sep {
+  color: var(--violet);
+  margin-inline: 10px;
+  font-style: normal;
+  flex-shrink: 0;
+  user-select: none;
+}
+
+.site-crumb-current,
+.xt-root .site-crumb-current {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 1.2;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: #FFFFFF;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+.site-lang-btn,
+.xt-root .site-lang-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 36px;
+  min-width: 44px;
+  padding-inline: 12px;
+  flex-shrink: 0;
+  background: rgba(14, 11, 28, 0.85);
+  border: 1px solid var(--line);
+  border-radius: 0;
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: 11px;
+  line-height: 1;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--lilac);
+  cursor: pointer;
+  transition: background 150ms ease, color 150ms ease, border-color 150ms ease;
+}
+
+.site-lang-btn:hover,
+.site-lang-btn:focus-visible,
+.xt-root .site-lang-btn:hover,
+.xt-root .site-lang-btn:focus-visible {
+  background: rgba(169, 100, 247, 0.22);
+  border-color: var(--violet);
+  color: #FFFFFF;
+  outline: none;
+}
+
+.site-subtabs {
+  position: sticky;
+  top: 56px;
+  z-index: 95;
+  width: 100%;
+  height: 44px;
+  flex-shrink: 0;
+  background: rgba(7, 6, 15, 0.88);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--line);
+}
+
+@media (max-width: 760px) {
+  .site-subtabs {
+    top: 48px;
+  }
+
+  .site-crumb,
+  .site-crumb-link,
+  .xt-root .site-crumb-link,
+  .site-crumb-current,
+  .xt-root .site-crumb-current {
+    font-size: 11px;
+    letter-spacing: 0.14em;
+  }
+
+  .site-lang-btn,
+  .xt-root .site-lang-btn {
+    height: 32px;
+    min-width: 38px;
+    padding-inline: 10px;
+  }
+}
+
+.is-phone-frame .site-subtabs {
+  top: 48px;
+}
+
+.site-subtabs-nav {
+  display: flex;
+  align-items: stretch;
+  gap: clamp(18px, 2.4vw, 32px);
+  height: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  white-space: nowrap;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.site-subtabs-nav::-webkit-scrollbar {
+  display: none;
+}
+
+.site-subtab-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  height: 100%;
+  padding: 0;
+  margin: 0;
+  background: transparent;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  font-family: 'Be Vietnam Pro', sans-serif;
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 1.2;
+  color: var(--text-2);
+  cursor: pointer;
+  flex-shrink: 0;
+  white-space: nowrap;
+  transition: color 150ms ease, border-color 150ms ease;
+}
+
+.site-subtab-btn:hover,
+.site-subtab-btn:focus-visible {
+  color: #FFFFFF;
+  outline: none;
+}
+
+.site-subtab-btn.is-active {
+  color: #FFFFFF;
+  font-weight: 500;
+  border-bottom-color: var(--violet);
 }
 
 /* ==========================================================================
@@ -748,31 +987,8 @@
 }
 
 /* ==========================================================================
-   GALLERY ARTIFACT ARCHIVE (.room, .wrap, .win)
+   GALLERY ARTIFACT ARCHIVE (.room, .win)
    ========================================================================== */
-.wrap {
-  width: 100%;
-  max-width: 1306px;
-  margin-left: auto;
-  margin-right: auto;
-  padding-left: 1rem;
-  padding-right: 1rem;
-}
-
-@media (min-width: 640px) {
-  .wrap {
-    padding-left: 2rem;
-    padding-right: 2rem;
-  }
-}
-
-@media (min-width: 768px) {
-  .wrap {
-    padding-left: 3rem;
-    padding-right: 3rem;
-  }
-}
-
 .room {
   position: relative;
   width: 100%;
@@ -985,8 +1201,8 @@
   --moon: #F2E6C4;
   --ease: cubic-bezier(.2, .8, .2, 1);
   --gutter: clamp(16px, 4vw, 48px);
-  --page-max: 1400px;
-  --header-h: 78px;
+  --page-max: 1300px;
+  --header-h: 56px;
 
   position: relative;
   z-index: 20;
@@ -994,12 +1210,13 @@
   width: 100%;
   height: 100%;
   min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
   color: var(--ivory);
   font: 300 15px/1.6 'Be Vietnam Pro', sans-serif;
   padding: env(safe-area-inset-top, 0) 0 env(safe-area-inset-bottom, 0);
   overflow-x: hidden;
-  overflow-y: auto;
-  scrollbar-gutter: stable;
+  overflow-y: hidden;
   user-select: text;
   background:
     radial-gradient(60% 70% at 50% 55%, rgba(80, 40, 150, .22), transparent 72%),
@@ -1010,14 +1227,20 @@
     var(--void);
 }
 
+@media (max-width: 760px) {
+  .xt-root {
+    overflow-y: auto;
+  }
+}
+
 .xt-root *,
 .xt-root *::before,
 .xt-root *::after {
   box-sizing: border-box;
 }
 
-.xt-root button,
-.xt-root input {
+.xt-root .term button,
+.xt-root .term input {
   font: inherit;
   color: inherit;
 }
@@ -1033,70 +1256,24 @@
 }
 
 .xt-root .wrap {
-  width: min(100% - 2 * var(--gutter), var(--page-max));
+  width: min(100% - 2 * var(--gutter), 1300px);
   max-width: none;
   padding: 0;
   margin-inline: auto;
 }
 
-.xt-root .top {
-  height: 78px;
+.xt-root main.wrap {
+  flex: 1;
+  min-height: 0;
   display: flex;
-  align-items: center;
-  border-bottom: 1px solid var(--line);
-  background: rgba(15, 11, 31, .85);
-}
-
-.xt-root .top .wrap {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.xt-root .crumb {
-  color: var(--text2);
-}
-
-.xt-root .crumb #c0 {
-  cursor: pointer;
-  transition: color .12s;
-}
-
-.xt-root .crumb #c0:hover {
-  color: var(--ivory);
-}
-
-.xt-root .crumb i {
-  font-style: normal;
-  color: var(--violet);
-  margin: 0 10px;
-}
-
-.xt-root .crumb b {
-  color: var(--ivory);
-  font-weight: 500;
-}
-
-.xt-root .lang {
-  background: rgba(15, 11, 31, .55);
-  border: 1px solid var(--line);
-  padding: 10px 14px;
-  cursor: pointer;
-  color: var(--lilac);
-  clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 0 100%);
-  transition: background .12s, color .12s;
-}
-
-.xt-root .lang:hover,
-.xt-root .lang:focus-visible {
-  outline: 0;
-  background: rgba(130, 60, 221, .4);
-  color: #fff;
+  flex-direction: column;
+  justify-content: center;
+  padding-block: clamp(12px, 2vh, 24px);
 }
 
 .xt-root .term {
   position: relative;
-  margin: 22px 0 36px;
+  margin: 0;
   background: rgba(15, 11, 31, .92);
   border: 1px solid var(--line);
 }
@@ -1154,8 +1331,8 @@
 .xt-root .tbody {
   display: grid;
   grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
-  height: min(700px, calc(100vh - var(--header-h, 78px) - 120px));
-  min-height: 460px;
+  height: min(640px, calc(100dvh - var(--header-h, 56px) - 86px));
+  min-height: 360px;
   position: relative;
 }
 

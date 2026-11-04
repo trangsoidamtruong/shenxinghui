@@ -1,11 +1,14 @@
 import React, { useEffect, useRef } from 'react';
-import { soundFx } from '../utils/soundFx';
 import { mountMemoria, type MountedMemoria } from '../memoria/memoria';
 import '../memoria/memoria.css';
+import { SiteHeader } from './SiteHeader';
 
 interface MemoriaPageProps {
   lang: 'VI' | 'EN';
   isPhone?: boolean;
+  skipBoot?: boolean;
+  selectedCardId?: number | null;
+  onSelectCard?: (cardId: number) => void;
   onToggleLang?: () => void;
   onClose: () => void;
   onBackHome?: () => void;
@@ -14,6 +17,9 @@ interface MemoriaPageProps {
 
 export const MemoriaPage: React.FC<MemoriaPageProps> = ({
   lang,
+  skipBoot = false,
+  selectedCardId = null,
+  onSelectCard,
   onToggleLang,
   onClose,
   onBackHome,
@@ -22,11 +28,21 @@ export const MemoriaPage: React.FC<MemoriaPageProps> = ({
   const memoriaRef = useRef<HTMLDivElement | null>(null);
   const instanceRef = useRef<MountedMemoria | null>(null);
   const initialLangRef = useRef<'VI' | 'EN'>(lang);
+  const initialSkipBootRef = useRef<boolean>(skipBoot);
+  const initialCardIdRef = useRef<number | null>(selectedCardId);
+  const onSelectCardRef = useRef(onSelectCard);
+  onSelectCardRef.current = onSelectCard;
 
   useEffect(() => {
     const el = memoriaRef.current;
     if (!el) return;
-    const mounted = mountMemoria(el, initialLangRef.current);
+    const mounted = mountMemoria(el, initialLangRef.current, {
+      skipBoot: initialSkipBootRef.current,
+      initialCardId: initialCardIdRef.current,
+      onSelectCard: (cardId) => {
+        onSelectCardRef.current?.(cardId);
+      },
+    });
     instanceRef.current = mounted;
     return () => {
       mounted.unmount();
@@ -38,73 +54,47 @@ export const MemoriaPage: React.FC<MemoriaPageProps> = ({
     instanceRef.current?.setLang(lang);
   }, [lang]);
 
+  useEffect(() => {
+    instanceRef.current?.selectCardById(selectedCardId ?? null);
+  }, [selectedCardId]);
+
   return (
-    <div className="relative z-20 flex h-full w-full flex-col bg-[var(--void)] max-[820px]:overflow-y-auto max-[820px]:overflow-x-hidden min-[821px]:overflow-hidden">
-      {/* Header của web (thay cho .fake-nav trong file demo) */}
-      <header className="relative z-10 flex h-[49px] shrink-0 items-center justify-between border-b border-[var(--line)] bg-[var(--void)] px-[5vw]">
-        <div className="flex items-center gap-2.5 min-w-0 font-[var(--font-mono)] text-[10px] sm:text-[11px] tracking-[0.2em] text-[var(--text-2)]">
-          <button
-            type="button"
-            onMouseEnter={() => soundFx.playHover()}
-            onClick={() => {
-              soundFx.playBack();
+    <div
+      id="page-dating-memoria"
+      className="cyber-events-scroll relative z-20 flex h-full w-full flex-col overflow-y-auto min-[821px]:overflow-y-hidden overflow-x-hidden bg-[var(--void)]"
+    >
+      {/* Header dùng chung (.site-header) */}
+      <SiteHeader
+        breadcrumbs={[
+          {
+            label: lang === 'VI' ? 'TRĂNG SOI DẶM TRƯỜNG' : 'MOONSTRIDE',
+            onClick: () => {
               if (onBackHome) onBackHome();
               else onClose();
-            }}
-            className="cursor-pointer font-medium uppercase text-[var(--text-2)] transition-colors duration-150 hover:text-[var(--text-1)] focus:outline-none"
-          >
-            {lang === 'VI' ? 'TRĂNG SOI DẶM TRƯỜNG' : 'MOONSTRIDE'}
-          </button>
-
-          <span className="text-[var(--violet)]" aria-hidden="true">
-            &gt;
-          </span>
-
-          <button
-            type="button"
-            onMouseEnter={() => soundFx.playHover()}
-            onClick={() => {
-              soundFx.playBack();
+            },
+          },
+          {
+            label: lang === 'VI' ? 'HẸN HÒ' : 'DATING',
+            onClick: () => {
               if (onBackToDating) onBackToDating();
               else onClose();
-            }}
-            className="cursor-pointer font-medium uppercase text-[var(--text-2)] transition-colors duration-150 hover:text-[var(--text-1)] focus:outline-none"
-          >
-            {lang === 'VI' ? 'HẸN HÒ' : 'DATING'}
-          </button>
+            },
+          },
+          {
+            label: 'MEMORIA',
+          },
+        ]}
+        langLabel={onToggleLang ? lang : undefined}
+        langTitle={lang === 'VI' ? 'Switch to English' : 'Chuyển sang Tiếng Việt'}
+        langAriaLabel={lang === 'VI' ? 'Switch to English' : 'Chuyển sang Tiếng Việt'}
+        onToggleLang={onToggleLang}
+      />
 
-          <span className="text-[var(--violet)]" aria-hidden="true">
-            &gt;
-          </span>
-
-          <span className="font-bold uppercase text-[var(--text-1)]">
-            MEMORIA
-          </span>
-        </div>
-
-        {onToggleLang && (
-          <div className="flex shrink-0 items-stretch border border-[var(--line)] bg-[var(--deep)]/85">
-            <button
-              type="button"
-              onMouseEnter={() => soundFx.playHover()}
-              onClick={() => {
-                soundFx.playSelect();
-                onToggleLang();
-              }}
-              title={lang === 'VI' ? 'Switch to English' : 'Chuyển sang Tiếng Việt'}
-              aria-label={lang === 'VI' ? 'Switch to English' : 'Chuyển sang Tiếng Việt'}
-              className="hud-mono-text flex h-7 items-center justify-center px-2.5 cursor-pointer rounded-none text-[var(--text-2)] transition-colors duration-200 hover:bg-[var(--violet-d)]/35 hover:text-[var(--text-1)] focus:outline-none"
-            >
-              {lang}
-            </button>
-          </div>
-        )}
-      </header>
-
-      {/* Vùng chứa .memoria có chiều cao xác định trên PC (màn hình trừ header 49px), trên điện thoại tự cao theo nội dung */}
-      <div className="min-[821px]:flex-1 min-[821px]:min-h-0 min-[821px]:h-[calc(100dvh-49px)] max-[820px]:h-auto max-[820px]:flex-none">
+      {/* Vùng chứa .memoria có chiều cao xác định trên PC (màn hình trừ header 56px), trên điện thoại tự cao theo nội dung */}
+      <div className="min-[821px]:flex-1 min-[821px]:min-h-0 min-[821px]:h-[calc(100dvh-56px)] max-[820px]:h-auto max-[820px]:flex-none">
         <div ref={memoriaRef} className="memoria"></div>
       </div>
     </div>
   );
 };
+

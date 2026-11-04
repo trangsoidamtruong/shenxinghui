@@ -1,6 +1,12 @@
-import React, { useState, useEffect, useRef, Suspense, lazy } from 'react';
+import React, { useState, useEffect, useRef, useCallback, Suspense, lazy } from 'react';
 import { X } from 'lucide-react';
 import { soundFx } from '../utils/soundFx';
+import { SiteHeader } from './SiteHeader';
+import {
+  DATING_SUBTAB_TO_SLUG,
+  DATING_CARD_ID_TO_SLUG,
+  type DatingSubTabId,
+} from '../utils/router';
 
 const loadMemoriaPage = () => import('./MemoriaPage');
 const MemoriaPage = lazy(() =>
@@ -10,6 +16,12 @@ const MemoriaPage = lazy(() =>
 interface DatingPageProps {
   lang: 'VI' | 'EN';
   isPhone?: boolean;
+  activeSubTab?: DatingSubTabId;
+  activeCardId?: string | null;
+  isMemoriaOpen?: boolean;
+  activeMemoriaCardId?: number | null;
+  skipTransition?: boolean;
+  onNavigate?: (slug: string) => void;
   onToggleLang?: () => void;
   onBackHome: () => void;
 }
@@ -294,14 +306,16 @@ const PLAYTIME_CARDS: AnecdoteCard[] = [
   },
 ];
 
-const ALL_CARD_IMAGES = [
+const ALL_DATING_CARDS: AnecdoteCard[] = [
   ...ANECDOTE_CARDS,
   ...BY_YOUR_SIDE_CARDS,
   ...FALLING_FOR_YOU_CARDS,
   ...JOURNAL_CARDS,
   ...PHOTO_STUDIO_CARDS,
   ...PLAYTIME_CARDS,
-].map((c) => c.image);
+];
+
+const ALL_CARD_IMAGES = ALL_DATING_CARDS.map((c) => c.image);
 
 /**
  * Subtle Star Particles & Very Light Falling Meteors on #05040f
@@ -451,15 +465,69 @@ const SubtleStarfieldCanvas: React.FC = () => {
 export const DatingPage: React.FC<DatingPageProps> = ({
   lang,
   isPhone = false,
+  activeSubTab: externalSubTab,
+  activeCardId: externalCardId,
+  isMemoriaOpen: externalMemoriaOpen,
+  activeMemoriaCardId = null,
+  skipTransition = false,
+  onNavigate,
   onToggleLang,
   onBackHome,
 }) => {
-  const [activeSubTab, setActiveSubTab] = useState<DatingSubTab>('ANECDOTES');
-  const [selectedCard, setSelectedCard] = useState<AnecdoteCard | null>(null);
-  const [isMemoriaGalleryOpen, setIsMemoriaGalleryOpen] = useState<boolean>(() => {
-    if (typeof window === 'undefined') return false;
-    return window.location.pathname.startsWith('/memoria');
-  });
+  const [internalSubTab, setInternalSubTab] = useState<DatingSubTab>(
+    externalSubTab ?? 'ANECDOTES'
+  );
+  const [internalCardId, setInternalCardId] = useState<string | null>(
+    externalCardId ?? null
+  );
+  const [internalMemoriaOpen, setInternalMemoriaOpen] = useState<boolean>(
+    Boolean(externalMemoriaOpen)
+  );
+
+  const activeSubTab: DatingSubTab = externalSubTab ?? internalSubTab;
+  const currentCardId: string | null =
+    externalCardId !== undefined ? externalCardId : internalCardId;
+  const isMemoriaGalleryOpen: boolean =
+    externalMemoriaOpen !== undefined ? externalMemoriaOpen : internalMemoriaOpen;
+
+  const selectedCard: AnecdoteCard | null = currentCardId
+    ? ALL_DATING_CARDS.find((c) => c.id === currentCardId) ?? null
+    : null;
+
+  const handleSelectSubTab = useCallback(
+    (nextTab: DatingSubTab) => {
+      soundFx.playSelect();
+      setInternalSubTab(nextTab);
+      setInternalCardId(null);
+      setInternalMemoriaOpen(false);
+      if (onNavigate) {
+        onNavigate(DATING_SUBTAB_TO_SLUG[nextTab]);
+      }
+    },
+    [onNavigate]
+  );
+
+  const handleCloseCardModal = useCallback(() => {
+    soundFx.playBack();
+    setInternalCardId(null);
+    if (onNavigate) {
+      onNavigate(DATING_SUBTAB_TO_SLUG[activeSubTab]);
+    }
+  }, [activeSubTab, onNavigate]);
+
+  // Close card modal on Escape before page-level Escape returns home
+  useEffect(() => {
+    if (!selectedCard) return;
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        e.stopPropagation();
+        e.preventDefault();
+        handleCloseCardModal();
+      }
+    };
+    window.addEventListener('keydown', onKeyDown, { capture: true });
+    return () => window.removeEventListener('keydown', onKeyDown, { capture: true });
+  }, [selectedCard, handleCloseCardModal]);
 
   // Preload active tab images immediately, then warm up remaining tab images during browser idle time
   useEffect(() => {
@@ -520,37 +588,27 @@ export const DatingPage: React.FC<DatingPageProps> = ({
           <MemoriaPage
             lang={lang}
             isPhone={isPhone}
-            onToggleLang={onToggleLang}
-            onBackHome={() => {
-              try {
-                if (window.location.pathname !== '/') {
-                  window.history.pushState({ page: 'home' }, '', '/');
-                }
-              } catch {
-                // ignore
+            skipBoot={skipTransition || activeMemoriaCardId !== null}
+            selectedCardId={activeMemoriaCardId}
+            onSelectCard={(cardId) => {
+              if (onNavigate) {
+                onNavigate(`dating/falling-for-you/memoria/mem${cardId}`);
               }
-              onBackHome();
             }}
+            onToggleLang={onToggleLang}
+            onBackHome={onBackHome}
             onBackToDating={() => {
-              try {
-                if (window.location.pathname !== '/') {
-                  window.history.pushState({ page: 'dating' }, '', '/');
-                }
-              } catch {
-                // ignore
+              setInternalMemoriaOpen(false);
+              setInternalSubTab('FALLING FOR YOU');
+              if (onNavigate) {
+                onNavigate('dating/falling-for-you');
               }
-              setIsMemoriaGalleryOpen(false);
-              setActiveSubTab('FALLING FOR YOU');
             }}
             onClose={() => {
-              try {
-                if (window.location.pathname !== '/') {
-                  window.history.pushState({ page: 'dating' }, '', '/');
-                }
-              } catch {
-                // ignore
+              setInternalMemoriaOpen(false);
+              if (onNavigate) {
+                onNavigate('dating/falling-for-you');
               }
-              setIsMemoriaGalleryOpen(false);
             }}
           />
         </Suspense>
@@ -559,126 +617,70 @@ export const DatingPage: React.FC<DatingPageProps> = ({
   }
 
   return (
-    <div className="cyber-events-scroll relative z-20 flex h-full w-full flex-col overflow-y-auto overflow-x-hidden bg-[var(--void)] text-[var(--text-1)]">
+    <div
+      id="page-dating"
+      className="cyber-events-scroll relative z-20 flex h-full w-full flex-col overflow-y-auto sm:overflow-y-hidden overflow-x-hidden bg-[var(--void)] text-[var(--text-1)]"
+    >
       {/* Subtle Star Specks & Very Light Falling Meteors */}
       <SubtleStarfieldCanvas />
 
-      {/* TOP BAR: BREADCRUMB & TAB BAR */}
-      <header className="relative z-10 shrink-0">
-        {/* Row 1: Breadcrumb (left) + Language Toggle Button (right, does not follow scroll) */}
-        <div className="border-b border-[var(--line)]">
-          <div className="mx-auto flex w-full max-w-[1140px] items-center justify-between gap-2.5 px-4 py-2.5 sm:px-8 sm:py-3.5 md:px-12">
-            <div className="flex items-center gap-2.5 min-w-0">
-              <button
-                type="button"
-                onMouseEnter={() => soundFx.playHover()}
-                onClick={() => {
-                  soundFx.playBack();
-                  onBackHome();
-                }}
-                className="cursor-pointer font-[var(--font-mono)] text-[10px] sm:text-[11px] font-medium uppercase tracking-[0.22em] text-[var(--text-2)] transition-colors duration-150 hover:text-[var(--text-1)] focus:outline-none"
-              >
-                {lang === 'VI' ? 'TRĂNG SOI DẶM TRƯỜNG' : 'MOONSTRIDE'}
-              </button>
-
-              <span
-                className="font-[var(--font-mono)] text-[10px] sm:text-[11px] text-[var(--violet)]"
-                aria-hidden="true"
-              >
-                &gt;
-              </span>
-
-              <button
-                type="button"
-                onMouseEnter={() => soundFx.playHover()}
-                onClick={() => {
-                  soundFx.playSelect();
-                  setActiveSubTab('ANECDOTES');
-                }}
-                className="cursor-pointer font-[var(--font-mono)] text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.22em] text-[var(--text-1)] transition-colors duration-150 hover:text-[var(--lilac)] focus:outline-none"
-              >
-                {lang === 'VI' ? 'HẸN HÒ' : 'DATING'}
-              </button>
-            </div>
-
-            {onToggleLang && (
-              <div className="flex shrink-0 items-stretch border border-[var(--line)] bg-[var(--deep)]/85">
-                <button
-                  type="button"
-                  onMouseEnter={() => soundFx.playHover()}
-                  onClick={() => {
-                    soundFx.playSelect();
-                    onToggleLang();
-                  }}
-                  title={lang === 'VI' ? 'Switch to English' : 'Chuyển sang Tiếng Việt'}
-                  aria-label={lang === 'VI' ? 'Switch to English' : 'Chuyển sang Tiếng Việt'}
-                  className="hud-mono-text flex h-7 sm:h-8 items-center justify-center px-2.5 sm:px-3 cursor-pointer rounded-none text-[var(--text-2)] transition-colors duration-200 hover:bg-[var(--violet-d)]/35 hover:text-[var(--text-1)] focus:outline-none"
-                >
-                  {lang}
-                </button>
-              </div>
-            )}
-          </div>
-        </div>
-
-        {/* Row 2: Tab Bar (regular case, active tab only has --violet underline, no box fill) */}
-        <div className="border-b border-[var(--line)]">
-          <nav
-            aria-label="Dating Sub Navigation"
-            className="mx-auto flex w-full max-w-[1140px] flex-wrap items-center gap-x-4 gap-y-0.5 px-4 py-1 sm:gap-x-7 sm:gap-y-1 sm:px-8 sm:py-0 md:gap-x-9 md:px-12"
-          >
-            {DATING_TABS.map((tab) => {
-              const isTabActive = activeSubTab === tab.id;
-              const tabText = lang === 'VI' ? tab.labelVI : tab.labelEN;
-              return (
-                <button
-                  key={tab.id}
-                  type="button"
-                  onMouseEnter={() => {
-                    if (!isTabActive) soundFx.playHover();
-                  }}
-                  onClick={() => {
-                    soundFx.playSelect();
-                    setActiveSubTab(tab.id);
-                    setSelectedCard(null);
-                  }}
-                  className={`relative sm:-mb-[1px] shrink-0 cursor-pointer border-b-2 py-1 sm:py-3 font-[var(--font-mono)] text-[11px] sm:text-[12px] tracking-[0.04em] whitespace-nowrap transition-colors duration-150 focus:outline-none ${
-                    isTabActive
-                      ? 'border-[var(--violet)] font-medium text-[var(--text-1)]'
-                      : 'border-transparent font-normal text-[var(--text-2)] hover:text-[var(--text-1)]'
-                  }`}
-                >
-                  {tabText}
-                </button>
-              );
-            })}
-          </nav>
-        </div>
-      </header>
+      {/* SHARED HEADER & SUB-TAB BAR */}
+      <SiteHeader
+        breadcrumbs={[
+          {
+            label: lang === 'VI' ? 'TRĂNG SOI DẶM TRƯỜNG' : 'MOONSTRIDE',
+            onClick: onBackHome,
+          },
+          {
+            label: lang === 'VI' ? 'HẸN HÒ' : 'DATING',
+          },
+        ]}
+        langLabel={onToggleLang ? lang : undefined}
+        langTitle={lang === 'VI' ? 'Switch to English' : 'Chuyển sang Tiếng Việt'}
+        langAriaLabel={lang === 'VI' ? 'Switch to English' : 'Chuyển sang Tiếng Việt'}
+        onToggleLang={onToggleLang}
+        subTabs={DATING_TABS.map((tab) => ({
+          id: tab.id,
+          label: lang === 'VI' ? tab.labelVI : tab.labelEN,
+        }))}
+        activeSubTabId={activeSubTab}
+        onSelectSubTab={(id) => {
+          handleSelectSubTab(id as DatingSubTab);
+        }}
+        subTabsAriaLabel="Dating Sub Navigation"
+      />
 
       {/* MAIN CONTENT AREA */}
-      <div className="relative z-10 flex flex-1 flex-col">
-        <div className="mx-auto flex flex-1 w-full max-w-[1140px] flex-col justify-center px-4 py-6 sm:px-8 sm:py-8 md:px-12 lg:py-10">
+      <div className="relative z-10 flex flex-1 min-h-0 flex-col">
+        <div className="wrap flex flex-1 min-h-0 flex-col justify-center py-4 sm:py-[clamp(10px,1.8dvh,24px)]">
           {/* Page Title & Command-line Subtitle */}
-          <div className="mb-6 sm:mb-8 lg:mb-10">
-            <h1 className="font-[var(--font-mono)] text-2xl sm:text-3xl md:text-4xl lg:text-[40px] font-bold tracking-[-0.02em] text-[var(--text-1)]">
+          <div className="mb-4 sm:mb-[clamp(10px,1.8dvh,22px)] shrink-0">
+            <h1 className="font-[var(--font-mono)] text-2xl sm:text-[clamp(24px,3.6dvh,38px)] font-bold tracking-[-0.02em] text-[var(--text-1)] leading-tight">
               {activeTabTitle}
             </h1>
-            <p className="mt-2 sm:mt-2.5 font-[var(--font-sans)] text-xs sm:text-[13px] md:text-[14px] tracking-[0.01em] text-[var(--text-2)]">
+            <p className="mt-1 sm:mt-[clamp(3px,0.6dvh,8px)] font-[var(--font-sans)] text-xs sm:text-[13px] md:text-[14px] tracking-[0.01em] text-[var(--text-2)]">
               {activeTabSubtitle}
             </p>
           </div>
 
           {/* Cards Grid:
               - Mobile: 1-2 columns preserving vertical aspect ratio
-              - Tablet & Desktop: 4 columns single row matching reference layout */}
-          <div className="grid w-full grid-cols-1 min-[360px]:grid-cols-2 sm:grid-cols-4 gap-3.5 sm:gap-3 md:gap-4 lg:gap-6">
-            {activeDeck.map((card) => {
+              - Tablet & Desktop: 4 columns single row sized to fit 100% within laptop/desktop viewport height */}
+          <div className="grid w-full min-h-0 grid-cols-1 min-[360px]:grid-cols-2 sm:grid-cols-4 sm:grid-rows-[minmax(0,1fr)] gap-3.5 sm:gap-3 md:gap-4 lg:gap-6">
+            {activeDeck.map((card, idx) => {
               const cardTitle = lang === 'VI' ? card.titleVI : card.titleEN;
               return (
                 <button
                   key={card.id}
                   type="button"
+                  style={
+                    !skipTransition
+                      ? {
+                          animationDuration: '280ms',
+                          animationDelay: `${idx * 65}ms`,
+                        }
+                      : undefined
+                  }
                   onMouseEnter={() => soundFx.playHover()}
                   onClick={() => {
                     soundFx.playSelect();
@@ -687,12 +689,21 @@ export const DatingPage: React.FC<DatingPageProps> = ({
                       (activeSubTab === 'FALLING FOR YOU' &&
                         (card.titleEN === 'Memoria' || card.titleVI === 'Tư Niệm'))
                     ) {
-                      setIsMemoriaGalleryOpen(true);
+                      setInternalMemoriaOpen(true);
+                      if (onNavigate) {
+                        onNavigate('dating/falling-for-you/memoria');
+                      }
                       return;
                     }
-                    setSelectedCard(card);
+                    setInternalCardId(card.id);
+                    const targetSlug = DATING_CARD_ID_TO_SLUG[card.id];
+                    if (onNavigate && targetSlug) {
+                      onNavigate(targetSlug);
+                    }
                   }}
-                  className="group relative flex aspect-[10/14] w-full cursor-pointer flex-col rounded-none border border-[var(--line)] bg-[var(--void)] text-left transition-colors duration-[400ms] ease-in-out hover:border-[var(--accent)] focus:border-[var(--accent)] focus:outline-none [content-visibility:auto] [contain-intrinsic-size:auto_320px]"
+                  className={`group relative flex aspect-[10/14] sm:aspect-auto sm:h-[min(calc(100dvh-228px),35vw,420px)] w-full cursor-pointer flex-col rounded-none border border-[var(--line)] bg-[var(--void)] text-left transition-colors duration-[400ms] ease-in-out hover:border-[var(--accent)] focus:border-[var(--accent)] focus:outline-none ${
+                    !skipTransition ? 'events-card-reveal-anim' : ''
+                  }`}
                 >
                   {/* 2 Corner Brackets: Top-Left & Bottom-Right */}
                   <span
@@ -704,8 +715,8 @@ export const DatingPage: React.FC<DatingPageProps> = ({
                     aria-hidden="true"
                   />
 
-                  {/* Top ~75%: Image Area with Global Dark-Blended Treatment */}
-                  <div className="relative h-[75%] w-full overflow-hidden bg-[var(--void)]">
+                  {/* Top Image Area: Fills remaining card height cleanly */}
+                  <div className="relative min-h-0 flex-1 w-full overflow-hidden bg-[var(--void)]">
                     <img
                       src={card.image}
                       alt={cardTitle}
@@ -733,8 +744,8 @@ export const DatingPage: React.FC<DatingPageProps> = ({
                     />
                   </div>
 
-                  {/* Bottom ~25%: Info Area Inside the Same Card Frame */}
-                  <div className="flex h-[25%] w-full flex-col justify-between border-t border-[var(--line)] bg-[var(--void)] px-3 py-2.5 sm:px-2.5 sm:py-1.5 md:px-3 md:py-2 lg:px-4 lg:py-3">
+                  {/* Bottom Info Area: shrink-0 so text & bottom border are never clipped */}
+                  <div className="flex shrink-0 w-full flex-col justify-between gap-1.5 border-t border-[var(--line)] bg-[var(--void)] px-3 py-2.5 sm:px-2.5 sm:py-2 md:px-3 md:py-2.5 lg:px-4 lg:py-3">
                     {/* Top Info Row: ANECDOTE // 01 (or GIAI THOẠI // 01) + bordered OPEN / MỞ label */}
                     <div className="flex items-center justify-between gap-1.5 lg:gap-2">
                       <span className="truncate font-[var(--font-mono)] text-[9px] md:text-[10px] lg:text-[11px] uppercase tracking-[0.12em] lg:tracking-[0.18em] text-[var(--text-2)]">
@@ -760,11 +771,9 @@ export const DatingPage: React.FC<DatingPageProps> = ({
       {/* Decoded Memory Detail Modal when a card is clicked */}
       {selectedCard && (
         <div
+          id={`view-dating-${selectedCard.id}`}
           className="fixed inset-0 z-40 flex items-center justify-center bg-black/75 p-4 backdrop-blur-xs"
-          onClick={() => {
-            soundFx.playBack();
-            setSelectedCard(null);
-          }}
+          onClick={handleCloseCardModal}
         >
           <div
             className="relative flex w-full max-w-lg flex-col sm:flex-row gap-5 rounded-none border border-[var(--line)] bg-[var(--deep)] p-5 text-[var(--text-1)]"
@@ -782,10 +791,7 @@ export const DatingPage: React.FC<DatingPageProps> = ({
 
             <button
               type="button"
-              onClick={() => {
-                soundFx.playBack();
-                setSelectedCard(null);
-              }}
+              onClick={handleCloseCardModal}
               className="absolute top-3 right-3 flex h-7 w-7 cursor-pointer items-center justify-center rounded-none border border-[var(--line)] bg-[var(--void)] text-[var(--text-2)] transition-colors hover:border-[var(--violet)] hover:text-[var(--text-1)]"
               aria-label="Close detail"
             >

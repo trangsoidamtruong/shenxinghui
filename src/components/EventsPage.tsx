@@ -6,6 +6,7 @@ import {
   X,
 } from 'lucide-react';
 import { soundFx } from '../utils/soundFx';
+import { SiteHeader } from './SiteHeader';
 
 // ═══ TIMING CONSTANTS (Hằng số thời gian hiệu ứng) ═══
 const TYPEWRITER_CHAR_DELAY_MS = 32;
@@ -30,6 +31,10 @@ let hasRadarTypedOnPageLoad = false;
 interface EventsPageProps {
   lang: 'VI' | 'EN';
   isPhone: boolean;
+  activeYear?: '2024' | '2025' | '2026' | null;
+  activeEventId?: string | null;
+  skipTransition?: boolean;
+  onNavigate?: (slug: string, options?: { skipRouterTransition?: boolean }) => void;
   onToggleLang?: () => void;
   onBackHome: () => void;
 }
@@ -92,8 +97,8 @@ const YEAR_ARCHIVES: YearArchiveData[] = [
         date: '2/11/2023',
         typeVI: 'MỞ ĐĂNG KÝ TRƯỚC',
         typeEN: 'PRE-ORDER',
-        titleVI: 'Pre-Order Starts! — Mở Đăng Ký Trước Toàn Cầu',
-        titleEN: 'Pre-Order Starts!',
+        titleVI: 'Mở Đặt Trước Toàn Cầu',
+        titleEN: 'Pre-Order',
         summaryVI:
           'Chính thức mở cổng đăng ký trước toàn cầu cho Love and Deepspace. Thợ Săn Không Gian Sâu tại Thành phố Linkon có thể ghi danh sớm để mở khóa các phần thưởng cột mốc đặc biệt khi trò chơi ra mắt.',
         summaryEN:
@@ -106,8 +111,8 @@ const YEAR_ARCHIVES: YearArchiveData[] = [
         date: '15/12/2023',
         typeVI: 'CLOSED BETA',
         typeEN: 'CLOSED BETA',
-        titleVI: 'Closed Beta Test Starts — Khởi Động Thử Nghiệm Giới Hạn',
-        titleEN: 'Closed Beta Test Starts',
+        titleVI: 'Thử Nghiệm Giới Hạn',
+        titleEN: 'Closed Beta Test',
         summaryVI:
           'Đợt thử nghiệm giới hạn Closed Beta chính thức khởi động, hé lộ những chương cốt truyện đầu tiên tại Thành phố Linkon và cuộc chạm trán định mệnh cùng Xavier.',
         summaryEN:
@@ -120,8 +125,8 @@ const YEAR_ARCHIVES: YearArchiveData[] = [
         date: '29/12/2023',
         typeVI: 'CỘT MỐC ĐĂNG KÝ',
         typeEN: 'PRE-REGISTRATION',
-        titleVI: '10,000,000 Pre-Registrations Achieved — Đạt Mốc 10 Triệu Đăng Ký',
-        titleEN: '10,000,000 Pre-Registrations Achieved',
+        titleVI: 'Đạt Mốc 10 Triệu Đăng Ký',
+        titleEN: '10000000 Pre-Registrations',
         summaryVI:
           'Cột mốc 10.000.000 Thợ Săn đăng ký trước trên toàn cầu đã hoàn thành, mở khóa toàn bộ phần thưởng khởi hành, vé Ước Nguyện và thẻ ký ức kỷ niệm.',
         summaryEN:
@@ -134,8 +139,8 @@ const YEAR_ARCHIVES: YearArchiveData[] = [
         date: '18/1/2024',
         typeVI: 'RA MẮT CHÍNH THỨC',
         typeEN: 'OFFICIAL RELEASE',
-        titleVI: 'All About The Official Release — Chính Thức Ra Mắt Toàn Cầu',
-        titleEN: 'All About The Official Release',
+        titleVI: 'Chính Thức Ra Mắt',
+        titleEN: 'Official Release',
         summaryVI:
           'Love and Deepspace chính thức phát hành toàn cầu vào ngày 18/01/2024. Mở màn hành trình Deepspace Hunter và sát cánh chiến đấu cùng Xavier bằng Evol Ánh Sáng.',
         summaryEN:
@@ -148,7 +153,7 @@ const YEAR_ARCHIVES: YearArchiveData[] = [
         date: '18/1/2024 - 4/2/2024',
         typeVI: 'SỰ KIỆN GIỚI HẠN',
         typeEN: 'LIMITED EVENT',
-        titleVI: 'Heartbeat Ripples — Rung Động Đầu Tiên',
+        titleVI: 'Rung Động Đầu Tiên',
         titleEN: 'Heartbeat Ripples',
         summaryVI:
           'Sự kiện giới hạn mở màn kỷ niệm ra mắt chính thức với ký ức 5 sao đầu tiên của Xavier: Heartstring Symphony — giai điệu violon ngân vang trong đêm tuyết rơi.',
@@ -162,7 +167,7 @@ const YEAR_ARCHIVES: YearArchiveData[] = [
         date: '5/2/2024 - 19/2/2024',
         typeVI: 'ƯỚC NGUYỆN GIỚI HẠN',
         typeEN: 'LIMITED WISH POOL',
-        titleVI: 'Veiled Whispers — Lời Thì Thầm Sau Màn Sương',
+        titleVI: 'Lời Trao Thầm Kín',
         titleEN: 'Veiled Whispers',
         summaryVI:
           'Hồ Ước Nguyện Giới Hạn mùa Lễ Tình Nhân ra mắt ký ức 5 sao Xavier: Tender Night — khoảnh khắc ngọt ngào, ấm áp và lãng mạn trong đêm hội.',
@@ -176,8 +181,8 @@ const YEAR_ARCHIVES: YearArchiveData[] = [
         date: '21/2/2024 - 10/3/2024',
         typeVI: 'LA BÀN CHIÊM TINH',
         typeEN: 'ORACLE OF STARS',
-        titleVI: 'Oracle of Stars: Traversing Deepspace — La Bàn Chiêm Tinh',
-        titleEN: 'Oracle of Stars: Traversing Deepspace',
+        titleVI: 'La Bàn Chiêm Tinh',
+        titleEN: 'Oracle of Stars',
         summaryVI:
           'Sự kiện La Bàn Chiêm Tinh giới hạn xuyên qua Không Gian Sâu, mang đến ký ức 4 sao đặc biệt cùng phụ kiện và vật phẩm nâng cấp quý hiếm.',
         summaryEN:
@@ -190,7 +195,7 @@ const YEAR_ARCHIVES: YearArchiveData[] = [
         date: '11/3/2024 - 23/3/2024',
         typeVI: 'ƯỚC NGUYỆN GIỚI HẠN',
         typeEN: 'LIMITED WISH POOL',
-        titleVI: 'Lingering Gaze — Ánh Nhìn Vương Vấn',
+        titleVI: 'Ánh Nhìn Vấn Vương',
         titleEN: 'Lingering Gaze',
         summaryVI:
           'Sự kiện Ước Nguyện Giới Hạn ra mắt loạt ký ức 5 sao lưu giữ những ánh nhìn dịu dàng và khoảnh khắc gần gũi khó quên bên người thương.',
@@ -204,8 +209,8 @@ const YEAR_ARCHIVES: YearArchiveData[] = [
         date: '17/3/2024 - 14/5/2024',
         typeVI: 'KHẾ ƯỚC BÍ MẬT',
         typeEN: 'SECRET PROMISE',
-        titleVI: 'Promise — Khế Ước Bí Mật Cùng Xavier',
-        titleEN: 'Promise — Xavier',
+        titleVI: 'Đốn Ngã',
+        titleEN: 'Succumb',
         summaryVI:
           'Mùa Khế Ước Bí Mật (Secret Promise) hoàn thành nhiệm vụ định kỳ để mở khóa ký ức 4 sao giới hạn của Xavier cùng vé Ước Nguyện Vàng và tài nguyên giá trị.',
         summaryEN:
@@ -218,7 +223,7 @@ const YEAR_ARCHIVES: YearArchiveData[] = [
         date: '20/3/2024 - 3/4/2024',
         typeVI: 'QUÀ TẶNG CHÂN THÀNH',
         typeEN: 'HEARTFELT GIFT',
-        titleVI: 'Unique Aftertaste — Dư Vị Độc Nhất Cùng Xavier',
+        titleVI: 'Dư Vị Đặc Biệt',
         titleEN: 'Unique Aftertaste',
         summaryVI:
           'Sự kiện Quà Tặng Chân Thành (Heartfelt Gift) đăng nhập tích lũy nhận hoàn toàn miễn phí ký ức 5 sao Xavier: Unique Aftertaste cùng lượng lớn Kim Cương Đỏ.',
@@ -232,8 +237,8 @@ const YEAR_ARCHIVES: YearArchiveData[] = [
         date: '8/4/2024',
         typeVI: 'BIÊN NIÊN SỬ NGẦM',
         typeEN: 'WORLD UNDERNEATH',
-        titleVI: 'World Underneath: The Unseen Side — Góc Khuất Chưa Kể',
-        titleEN: 'World Underneath: The Unseen Side',
+        titleVI: 'Thế Giới Ngầm',
+        titleEN: 'World Underneath',
         summaryVI:
           'Cập nhật chương Biên Niên Sử Ngầm (World Underneath), lật mở những hồ sơ mật về hành tinh Philos, phi đội Backtrackers và lời thề thầm lặng xuyên thế kỷ của Xavier.',
         summaryEN:
@@ -246,8 +251,8 @@ const YEAR_ARCHIVES: YearArchiveData[] = [
         date: '19/4/2024 - 29/4/2024',
         typeVI: 'ƯỚC NGUYỆN GIỚI HẠN',
         typeEN: 'LIMITED WISH POOL',
-        titleVI: 'Xavier: Faint Sensation — Xúc Cảm Mơ Hồ',
-        titleEN: 'Xavier: Faint Sensation',
+        titleVI: 'Xúc Cảm Mơ Hồ',
+        titleEN: 'Faint Sensation',
         summaryVI:
           'Hồ Ước Nguyện Giới Hạn độc quyền của Xavier với ký ức 5 sao Faint Sensation, khắc họa những rung cảm tinh tế, gần gũi và sâu lắng.',
         summaryEN:
@@ -260,7 +265,7 @@ const YEAR_ARCHIVES: YearArchiveData[] = [
         date: '26/4/2024 - 10/5/2024',
         typeVI: 'SỰ KIỆN PHÚC LỢI',
         typeEN: 'WELFARE EVENT',
-        titleVI: 'Heartwork Routine — Nhịp Điệu Thường Ngày',
+        titleVI: 'Nhịp Điệu Thường Ngày',
         titleEN: 'Heartwork Routine',
         summaryVI:
           'Sự kiện phúc lợi hoàn thành nhiệm vụ hàng ngày để nhận miễn phí ký ức 4 sao của Xavier, phụ kiện Photo Studio và nhiều vật phẩm bồi dưỡng.',
@@ -293,7 +298,7 @@ const YEAR_ARCHIVES: YearArchiveData[] = [
         date: '31/12/2024 - 19/1/2025',
         typeVI: 'ƯỚC NGUYỆN GIỚI HẠN',
         typeEN: 'LIMITED WISH POOL',
-        titleVI: 'Nightly Rendezvous — Điểm Hẹn Đêm Khuya',
+        titleVI: 'Điểm Hẹn Đêm Khuya',
         titleEN: 'Nightly Rendezvous',
         summaryVI:
           'Đại sự kiện Ước Nguyện Giới Hạn mở màn kỷ niệm 1 năm ra mắt với chuỗi ký ức 5 sao nồng nhiệt và quyến rũ, bao gồm ký ức giới hạn Xavier: Misty Silhouette.',
@@ -307,7 +312,7 @@ const YEAR_ARCHIVES: YearArchiveData[] = [
         date: '31/12/2024 - 19/1/2025',
         typeVI: 'SỰ KIỆN KỶ NIỆM',
         typeEN: 'ANNIVERSARY EVENT',
-        titleVI: 'Touring In Love — Hành Trình Yêu Thương',
+        titleVI: 'Hành Trình Yêu Thương',
         titleEN: 'Touring In Love',
         summaryVI:
           'Sự kiện lễ hội kỷ niệm đặc biệt Touring In Love với hành trình du ngoạn Chibi, cốt truyện kỷ niệm ngọt ngào và cửa hàng phúc lợi đổi miễn phí ký ức 4 sao cùng nhiều vật phẩm giới hạn.',
@@ -321,8 +326,8 @@ const YEAR_ARCHIVES: YearArchiveData[] = [
         date: '31/12/2024 - 19/1/2025',
         typeVI: 'SỰ KIỆN PHÚC LỢI',
         typeEN: 'WELFARE EVENT',
-        titleVI: 'Xavier: Love Syndrome — Hội Chứng Tương Tư',
-        titleEN: 'Xavier: Love Syndrome',
+        titleVI: 'Hội Chứng Tương Tư',
+        titleEN: 'Love Syndrome',
         summaryVI:
           'Ký ức 4 sao phúc lợi Xavier: Love Syndrome nhận miễn phí trong sự kiện kỷ niệm Touring In Love — khoảnh khắc bình yên khi cùng anh tựa đầu chìm vào giấc ngủ ấm áp.',
         summaryEN:
@@ -354,8 +359,8 @@ const YEAR_ARCHIVES: YearArchiveData[] = [
         date: '18/12/2025 - 2/1/2026',
         typeVI: 'QUÀ TẶNG CHÂN THÀNH',
         typeEN: 'HEARTFELT GIFT',
-        titleVI: 'Xavier: Precious Moment — Khoảnh Khắc Trân Quý',
-        titleEN: 'Xavier: Precious Moment',
+        titleVI: 'Khoảnh Khắc Trân Quý',
+        titleEN: 'Precious Moment',
         summaryVI:
           'Sự kiện phúc lợi Quà Tặng Chân Thành (Heartfelt Gift) mở đầu mùa lễ hội cuối năm, đăng nhập nhận miễn phí ký ức 5 sao Xavier: Precious Moment cùng nhiều phần thưởng kỷ niệm.',
         summaryEN:
@@ -368,7 +373,7 @@ const YEAR_ARCHIVES: YearArchiveData[] = [
         date: '31/12/2025 - 21/1/2026',
         typeVI: 'ƯỚC NGUYỆN GIỚI HẠN',
         typeEN: 'LIMITED WISH POOL',
-        titleVI: 'Throne of Eros — Ngai Vương Thần Tình Ái',
+        titleVI: 'Ngai Thần Tình Ái',
         titleEN: 'Throne of Eros',
         summaryVI:
           'Đại sự kiện Ước Nguyện Giới Hạn kỷ niệm mở màn năm mới với chuỗi ký ức 5 sao chủ đề thần thoại hoàng gia đầy quyến rũ và tráng lệ.',
@@ -382,8 +387,8 @@ const YEAR_ARCHIVES: YearArchiveData[] = [
         date: '31/12/2025 - 21/1/2026',
         typeVI: 'SỰ KIỆN HỢP TÁC',
         typeEN: 'COLLABORATION',
-        titleVI: 'Eternal Love Carved Into Every Papercutting — Nghệ Thuật Cắt Giấy Cổ Truyền',
-        titleEN: 'Eternal Love Carved Into Every Papercutting',
+        titleVI: 'Hình Tượng Thi Ca',
+        titleEN: 'Poetic Figures',
         summaryVI:
           'Sự kiện hợp tác di sản văn hóa phi vật thể, khắc họa hình ảnh Xavier và bạn qua những tác phẩm nghệ thuật cắt giấy thủ công tinh xảo.',
         summaryEN:
@@ -396,7 +401,7 @@ const YEAR_ARCHIVES: YearArchiveData[] = [
         date: '31/12/2025 - 21/1/2026',
         typeVI: 'SỰ KIỆN GIỚI HẠN',
         typeEN: 'LIMITED EVENT',
-        titleVI: 'Illusia Locus — Ảo Cảnh Giao Thoa',
+        titleVI: 'Ảo Cảnh Giao Thoa',
         titleEN: 'Illusia Locus',
         summaryVI:
           'Sự kiện khám phá không gian ảo ảnh đặc biệt đi kèm chuỗi minigame tương tác, cốt truyện lễ hội và cửa hàng quy đổi vật phẩm giới hạn.',
@@ -410,8 +415,8 @@ const YEAR_ARCHIVES: YearArchiveData[] = [
         date: '31/12/2025 - 27/2/2026',
         typeVI: 'KHẾ ƯỚC BÍ MẬT',
         typeEN: 'SECRET PROMISE',
-        titleVI: 'Xavier: Firelit Embrace — Vòng Tay Bên Ánh Lửa',
-        titleEN: 'Xavier: Firelit Embrace',
+        titleVI: 'Vòng Tay Ánh Lửa',
+        titleEN: 'Firelit Embrace',
         summaryVI:
           'Mùa Khế Ước Bí Mật (Secret Promise) đầu năm 2026 với ký ức 4 sao giới hạn Xavier: Firelit Embrace — hơi ấm dịu dàng sưởi ấm đêm đông.',
         summaryEN:
@@ -424,7 +429,7 @@ const YEAR_ARCHIVES: YearArchiveData[] = [
         date: '2/1/2026',
         typeVI: 'CỐT TRUYỆN CHÍNH',
         typeEN: 'MAIN STORY',
-        titleVI: 'To Our Yesterday — Gửi Ngày Hôm Qua Của Chúng Ta',
+        titleVI: 'Gửi Ngày Hôm Qua Của Chúng Ta',
         titleEN: 'To Our Yesterday',
         summaryVI:
           'Cập nhật chương cốt truyện chính mới đầy kịch tính, hé lộ những nút thắt quan trọng nối liền quá khứ xa xôi và thực tại tại Thành phố Linkon.',
@@ -438,7 +443,7 @@ const YEAR_ARCHIVES: YearArchiveData[] = [
         date: '10/2/2026 - 27/2/2026',
         typeVI: 'ƯỚC NGUYỆN GIỚI HẠN',
         typeEN: 'LIMITED WISH POOL',
-        titleVI: "Mortality's Tenderness — Sự Dịu Dàng Nơi Trần Thế",
+        titleVI: 'Sự Dịu Dàng Nơi Trần Thế',
         titleEN: "Mortality's Tenderness",
         summaryVI:
           'Sự kiện Ước Nguyện Giới Hạn mùa Lễ Tình Nhân và Tết Nguyên Đán, tôn vinh những rung động dịu dàng và sợi dây gắn kết vượt qua năm tháng.',
@@ -452,8 +457,8 @@ const YEAR_ARCHIVES: YearArchiveData[] = [
         date: '10/2/2026 - 27/2/2026',
         typeVI: 'SỰ KIỆN PHÚC LỢI',
         typeEN: 'WELFARE EVENT',
-        titleVI: 'Wealth Overflow Chibi — Lộc Xuân Tràn Đầy',
-        titleEN: 'Wealth Overflow Chibi',
+        titleVI: 'Lộc Xuân Tràn Đầy',
+        titleEN: 'Wealth Overflow',
         summaryVI:
           'Sự kiện phúc lợi đầu xuân với tạo hình Chibi đáng yêu, tặng Kim Cương Đỏ, trang phục lễ hội và phụ kiện trang trí đặc sắc.',
         summaryEN:
@@ -466,8 +471,8 @@ const YEAR_ARCHIVES: YearArchiveData[] = [
         date: '9/3/2026 - 18/3/2026',
         typeVI: 'ƯỚC NGUYỆN GIỚI HẠN',
         typeEN: 'LIMITED WISH POOL',
-        titleVI: 'Xavier: Tranquil Moments — Phút Giây Bình Yên',
-        titleEN: 'Xavier: Tranquil Moments',
+        titleVI: 'Phút Giây Bình Yên',
+        titleEN: 'Tranquil Moments',
         summaryVI:
           'Hồ Ước Nguyện Giới Hạn độc quyền của Xavier mang đến ký ức 5 sao Tranquil Moments — khoảng lặng bình yên và ngọt ngào giữa đời thường.',
         summaryEN:
@@ -480,7 +485,7 @@ const YEAR_ARCHIVES: YearArchiveData[] = [
         date: '9/3/2026 - 18/3/2026',
         typeVI: 'SỰ KIỆN GIỚI HẠN',
         typeEN: 'LIMITED EVENT',
-        titleVI: 'Warming Solace Ceremony — Nghi Thức Sưởi Ấm Tâm Hồn',
+        titleVI: 'Sưởi Ấm Tâm Hồn',
         titleEN: 'Warming Solace Ceremony',
         summaryVI:
           'Sự kiện lễ hội lâu đài cổ tích rực rỡ pháo hoa cùng Bunbun và Xavier Chibi, mở khóa nhiều phần thưởng kỷ niệm và nội thất dễ thương.',
@@ -494,8 +499,8 @@ const YEAR_ARCHIVES: YearArchiveData[] = [
         date: '21/4/2026 - 29/4/2026',
         typeVI: 'SỰ KIỆN PHÚC LỢI',
         typeEN: 'WELFARE EVENT',
-        titleVI: 'Tiptap Hop: Whimsical Bounce Toward the Heart — Bước Nhảy Chạm Trái Tim',
-        titleEN: 'Tiptap Hop: Whimsical Bounce Toward the Heart',
+        titleVI: 'Bước Nhảy Tí Tách',
+        titleEN: 'Tiptap Hop',
         summaryVI:
           'Sự kiện phúc lợi minigame vui nhộn tặng 1.000 Kim Cương Đỏ, thiết kế nội thất [Good Meowning] và bộ sưu tập huy hiệu Chibi đáng yêu.',
         summaryEN:
@@ -508,8 +513,8 @@ const YEAR_ARCHIVES: YearArchiveData[] = [
         date: '20/4/2026',
         typeVI: 'BIÊN NIÊN SỬ NGẦM',
         typeEN: 'WORLD UNDERNEATH',
-        titleVI: 'World Underneath: Shadows Underneath — Những Bóng Hình Ẩn Khuất',
-        titleEN: 'World Underneath: Shadows Underneath',
+        titleVI: 'Thế Giới Ngầm',
+        titleEN: 'World Underneath',
         summaryVI:
           "Cập nhật các chương Biên Niên Sử Ngầm (World Underneath) mới từ Chương 25 đến 30: Light into Dust, Good Night Frostmere, và Fairnight's Edge.",
         summaryEN:
@@ -522,7 +527,7 @@ const YEAR_ARCHIVES: YearArchiveData[] = [
         date: '30/4/2026 - 15/5/2026',
         typeVI: 'ƯỚC NGUYỆN GIỚI HẠN',
         typeEN: 'LIMITED WISH POOL',
-        titleVI: 'Lingering Lust — Khát Khao Vương Vấn',
+        titleVI: 'Khát Khao Vương Vấn',
         titleEN: 'Lingering Lust',
         summaryVI:
           'Sự kiện Ước Nguyện Giới Hạn quy tụ loạt ký ức 5 sao với bầu không khí lãng mạn, nồng nhiệt và đầy cuốn hút.',
@@ -536,8 +541,8 @@ const YEAR_ARCHIVES: YearArchiveData[] = [
         date: '31/5/2026 - 18/6/2026',
         typeVI: 'SỰ KIỆN PHÚC LỢI',
         typeEN: 'WELFARE EVENT',
-        titleVI: '10 Days With You: Moments Refined — 10 Ngày Bên Xavier',
-        titleEN: '10 Days With You: Moments Refined',
+        titleVI: 'Trau Chuốt Tháng Năm',
+        titleEN: 'Moments Refined',
         summaryVI:
           'Sự kiện điểm danh 10 Days With You nhận miễn phí ký ức 4 sao của Xavier: Moments Refined — buổi chiều nắng ấm cùng anh tỉ mỉ sửa chữa chiếc loa cổ điển.',
         summaryEN:
@@ -550,7 +555,7 @@ const YEAR_ARCHIVES: YearArchiveData[] = [
         date: '17/6/2026 - 2/7/2026',
         typeVI: 'ƯỚC NGUYỆN GIỚI HẠN',
         typeEN: 'LIMITED WISH POOL',
-        titleVI: 'Once Upon A Frame — Chuyện Kể Trong Từng Khung Hình',
+        titleVI: 'Thuở Ấy Qua Từng Khung Hình',
         titleEN: 'Once Upon A Frame',
         summaryVI:
           'Sự kiện Ước Nguyện Giới Hạn chủ đề điện ảnh cổ điển (Deepspace First Film Festival), nơi Xavier hóa thân trong bộ phim lãng mạn "Runaway Hearts".',
@@ -564,8 +569,8 @@ const YEAR_ARCHIVES: YearArchiveData[] = [
         date: '17/9/2026 - 1/10/2026',
         typeVI: 'SỰ KIỆN HỢP TÁC',
         typeEN: 'COLLABORATION',
-        titleVI: 'A Scented Sachet — A Love That Endures (Túi Thơm Lưu Hương)',
-        titleEN: 'A Scented Sachet — A Love That Endures',
+        titleVI: 'Túi Gấm Đơm Hương',
+        titleEN: 'A Scented Sachet',
         summaryVI:
           'Sự kiện hợp tác văn hóa truyền thống chế tác túi thơm thêu tay, gửi gắm lời chúc bình an và tình cảm gắn bó dài lâu bên Xavier.',
         summaryEN:
@@ -578,7 +583,7 @@ const YEAR_ARCHIVES: YearArchiveData[] = [
         date: '22/9/2026 - 10/10/2026',
         typeVI: 'ƯỚC NGUYỆN GIỚI HẠN',
         typeEN: 'LIMITED WISH POOL',
-        titleVI: 'A Night That Never Ends — Đêm Bất Tận',
+        titleVI: 'Đêm Bất Tận',
         titleEN: 'A Night That Never Ends',
         summaryVI:
           'Sự kiện Ước Nguyện Giới Hạn mùa thu với những ký ức 5 sao huyền ảo trong màn đêm bất tận giữa ánh trăng và tinh tú.',
@@ -592,7 +597,7 @@ const YEAR_ARCHIVES: YearArchiveData[] = [
         date: '11/10/2026 - 18/10/2026',
         typeVI: 'SINH NHẬT XAVIER',
         typeEN: "XAVIER'S BIRTHDAY EVENT",
-        titleVI: 'Lingering Light — Mừng Sinh Nhật Xavier (16/10)',
+        titleVI: 'Vệt Sáng Vấn Vương',
         titleEN: 'Lingering Light',
         summaryVI:
           'Sự kiện đặc biệt mừng sinh nhật Xavier (16/10) với ký ức 5 sao giới hạn Lingering Light, cốt truyện hẹn hò sinh nhật và không gian trang trí ngập tràn ánh sao.',
@@ -606,8 +611,8 @@ const YEAR_ARCHIVES: YearArchiveData[] = [
         date: '19/10/2026 - 5/11/2026',
         typeVI: 'SỰ KIỆN HỢP TÁC',
         typeEN: 'COLLABORATION',
-        titleVI: 'Love and Deepspace × Blade Runner 2049: Love Is Real',
-        titleEN: 'Love and Deepspace × Blade Runner 2049: Love Is Real',
+        titleVI: 'Tình Là Thật',
+        titleEN: 'Love Is Real',
         summaryVI:
           'Sự kiện hợp tác bom tấn giữa Love and Deepspace và tuyệt tác Cyberpunk Blade Runner 2049 với thông điệp "Love is real. All for you." giữa ánh đèn neon tím rực rỡ.',
         summaryEN:
@@ -623,6 +628,10 @@ const YEAR_ARCHIVES: YearArchiveData[] = [
 export const EventsPage: React.FC<EventsPageProps> = ({
   lang,
   isPhone,
+  activeYear: externalYear = null,
+  activeEventId: externalEventId = null,
+  skipTransition = false,
+  onNavigate,
   onToggleLang,
   onBackHome,
 }) => {
@@ -902,6 +911,17 @@ export const EventsPage: React.FC<EventsPageProps> = ({
     return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
   }, []);
 
+  // Đặt lại sạch sẽ vị trí cuộn, tàu Traceback II và các lớp mây mỗi khi vào lại trang Sự kiện
+  useEffect(() => {
+    targetScrollTopRef.current = 0;
+    smoothScrollTopRef.current = 0;
+    cloudsPausedRef.current = false;
+    if (scrollContainerRef.current && !externalYear) {
+      scrollContainerRef.current.scrollTop = 0;
+    }
+    syncSection1DomNodes(0, 0);
+  }, [syncSection1DomNodes, externalYear]);
+
   const syncOrbitDomNodes = useCallback(
     (y: number, appeared: boolean) => {
       if (orbitShipRef.current) {
@@ -1157,17 +1177,26 @@ export const EventsPage: React.FC<EventsPageProps> = ({
     if (scrollContainerRef.current) {
       scrollContainerRef.current.scrollTo({ top: 0, behavior: 'smooth' });
     }
-  }, [clearAllTransitionTimers, clearTypewriterTimers, unlockPageScroll]);
+    if (onNavigate) {
+      onNavigate('events', { skipRouterTransition: true });
+    }
+  }, [clearAllTransitionTimers, clearTypewriterTimers, onNavigate, unlockPageScroll]);
 
   // Mục B: Chuỗi chuyển cảnh 3 bước sau khi bấm một thẻ năm (0 -> 700ms -> 1500ms)
   const handleSelectYearCard = useCallback(
-    (yr: EventYear) => {
+    (yr: EventYear, updateUrl = true) => {
       // Ngay khi bấm (t = 0): Khoá mọi tương tác, bỏ qua bấm thêm
       if (isTransitioningRef.current || transitionPhase !== 'idle') {
         return;
       }
 
-      soundFx.playSelect();
+      if (updateUrl) {
+        soundFx.playSelect();
+        if (onNavigate) {
+          onNavigate(`events/${yr}`, { skipRouterTransition: true });
+        }
+      }
+
       isTransitioningRef.current = true;
       clearAllTransitionTimers();
       clearTypewriterTimers();
@@ -1250,15 +1279,21 @@ export const EventsPage: React.FC<EventsPageProps> = ({
       isReducedMotionPreferred,
       lockPageScroll,
       measureTimelineMetrics,
+      onNavigate,
       transitionPhase,
       unlockPageScroll,
     ]
   );
 
-  // Chuyển nhanh năm hoặc quay về màn chọn năm từ thanh sub-tab bên trong Timeline
+  // Chuyển nhanh năm hoặc quay về màn chọn năm từ thanh sub-tab bên trong Timeline (hoặc từ popstate/hash)
   const handleSelectYearTab = useCallback(
-    (yr: EventYear | null) => {
-      soundFx.playSelect();
+    (yr: EventYear | null, updateUrl = true) => {
+      if (updateUrl) {
+        soundFx.playSelect();
+        if (onNavigate) {
+          onNavigate(yr ? `events/${yr}` : 'events', { skipRouterTransition: true });
+        }
+      }
       clearAllTransitionTimers();
       unlockPageScroll();
       isTransitioningRef.current = false;
@@ -1280,7 +1315,7 @@ export const EventsPage: React.FC<EventsPageProps> = ({
         return;
       }
 
-      const reduced = isReducedMotionPreferred();
+      const reduced = isReducedMotionPreferred() || !updateUrl;
       setSelectedYear(yr);
       setSelectedEventIndex(null);
       eventRowRefs.current = [];
@@ -1319,9 +1354,59 @@ export const EventsPage: React.FC<EventsPageProps> = ({
       computeAndSyncOrbit,
       isReducedMotionPreferred,
       measureTimelineMetrics,
+      onNavigate,
       unlockPageScroll,
     ]
   );
+
+  // Đồng bộ năm và sự kiện con từ URL hash / nút Back-Forward trình duyệt
+  useEffect(() => {
+    if (externalYear !== selectedYear) {
+      if (externalYear === null) {
+        handleSelectYearTab(null, false);
+      } else if (skipTransition) {
+        handleSelectYearTab(externalYear, false);
+      } else if (transitionPhase === 'idle' && !isTransitioningRef.current) {
+        if (scrollContainerRef.current && yearSectionRef.current) {
+          const targetY = yearSectionRef.current.offsetTop;
+          targetScrollTopRef.current = targetY;
+          smoothScrollTopRef.current = targetY;
+          scrollContainerRef.current.scrollTo({ top: targetY, behavior: 'auto' });
+        }
+        handleSelectYearCard(externalYear, false);
+      }
+    }
+  }, [
+    externalYear,
+    selectedYear,
+    skipTransition,
+    transitionPhase,
+    handleSelectYearTab,
+    handleSelectYearCard,
+  ]);
+
+  useEffect(() => {
+    if (!externalEventId) {
+      if (selectedEventIndex !== null) {
+        setSelectedEventIndex(null);
+      }
+      return;
+    }
+    const yrData = YEAR_ARCHIVES.find((y) => y.year === (externalYear ?? selectedYear));
+    if (!yrData) return;
+    const evIdx = yrData.events.findIndex((e) => e.id === externalEventId && e.isClickable);
+    if (evIdx >= 0 && evIdx !== selectedEventIndex) {
+      setSelectedEventIndex(evIdx);
+    }
+  }, [externalEventId, externalYear, selectedYear, selectedEventIndex]);
+
+  const handleCloseEventModal = useCallback(() => {
+    soundFx.playBack();
+    setSelectedEventIndex(null);
+    if (onNavigate && selectedYear) {
+      onNavigate(`events/${selectedYear}`, { skipRouterTransition: true });
+    }
+  }, [onNavigate, selectedYear]);
 
   const CLOUD3_SRC = '/assets/aistudio/cloud3_ca9fa321.webp';
   const TRACEBACK_SRC = '/assets/aistudio/tracebackii_6e3cf5cf.webp';
@@ -1350,8 +1435,7 @@ export const EventsPage: React.FC<EventsPageProps> = ({
       if (e.key === 'Escape') {
         e.stopPropagation();
         e.preventDefault();
-        soundFx.playBack();
-        setSelectedEventIndex(null);
+        handleCloseEventModal();
       } else if (e.key === 'ArrowLeft' && clickableEventIndices.length > 1) {
         e.stopPropagation();
         e.preventDefault();
@@ -1378,7 +1462,7 @@ export const EventsPage: React.FC<EventsPageProps> = ({
 
     window.addEventListener('keydown', handleModalKeyDown, { capture: true });
     return () => window.removeEventListener('keydown', handleModalKeyDown, { capture: true });
-  }, [selectedEventIndex, activeYearData, clickableEventIndices]);
+  }, [selectedEventIndex, activeYearData, clickableEventIndices, handleCloseEventModal]);
 
   // Nội dung câu đầy đủ cho aria-label & khung giữ chỗ (không nhảy bố cục)
   const fullRadarPromptText = `> ${radarBodyText}`;
@@ -1395,7 +1479,10 @@ export const EventsPage: React.FC<EventsPageProps> = ({
   const reducedMotionActive = isReducedMotionPreferred();
 
   return (
-    <div className="relative z-20 flex h-full w-full flex-col overflow-hidden bg-[var(--void)] text-[var(--text-1)]">
+    <div
+      id="page-events"
+      className="relative z-20 flex h-full w-full flex-col overflow-hidden bg-[var(--void)] text-[var(--text-1)]"
+    >
       {/* SVG Duotone Color-Grading Filters for Spaceship & Volumetric Clouds:
           Interpolates shadows (0.04, 0.02, 0.07) to violet highlights (0.85, 0.70, 1.0 -> hue ~270°) */}
       <svg
@@ -1432,63 +1519,23 @@ export const EventsPage: React.FC<EventsPageProps> = ({
         className="cyber-events-scroll relative z-10 flex-1 overflow-y-auto overflow-x-hidden bg-[var(--void)]"
       >
         {/* =====================================================================
-            HEADER (Matches Reference Image & DatingPage)
-             stays at the top of the page so the EN button does not follow scroll.
+            SHARED HEADER (.site-header)
            ===================================================================== */}
-        <header className="relative z-50 w-full bg-[var(--void)]/85 backdrop-blur-xs">
-          {/* Breadcrumb on Left + Flat Rectangular EN/VI Button on Right */}
-          <div className="border-b border-[var(--line)]">
-            <div className="mx-auto flex w-full max-w-[1306px] items-center justify-between gap-2.5 px-4 py-2.5 sm:px-8 sm:py-3.5 md:px-12">
-              <div className="flex items-center gap-2.5 min-w-0">
-                <button
-                  type="button"
-                  onMouseEnter={() => soundFx.playHover()}
-                  onClick={() => {
-                    soundFx.playBack();
-                    onBackHome();
-                  }}
-                  className="cursor-pointer font-[var(--font-mono)] text-[10px] sm:text-[12px] font-medium uppercase tracking-[0.2em] text-[var(--text-2)] transition-colors duration-150 hover:text-[var(--text-1)] focus:outline-none"
-                >
-                  {lang === 'VI' ? 'TRĂNG SOI DẶM TRƯỜNG' : 'MOONSTRIDE'}
-                </button>
-
-                <span
-                  className="font-[var(--font-mono)] text-[10px] sm:text-[12px] text-[var(--violet)]"
-                  aria-hidden="true"
-                >
-                  &gt;
-                </span>
-
-                <button
-                  type="button"
-                  onMouseEnter={() => soundFx.playHover()}
-                  onClick={scrollToTopSection}
-                  className="cursor-pointer font-[var(--font-mono)] text-[10px] sm:text-[12px] font-bold uppercase tracking-[0.2em] text-[var(--text-1)] transition-colors duration-150 hover:text-[var(--lilac)] focus:outline-none"
-                >
-                  {lang === 'VI' ? 'SỰ KIỆN' : 'EVENTS'}
-                </button>
-              </div>
-
-              {onToggleLang && (
-                <div className="flex shrink-0 items-stretch border border-[var(--line)] bg-[var(--deep)]/90">
-                  <button
-                    type="button"
-                    onMouseEnter={() => soundFx.playHover()}
-                    onClick={() => {
-                      soundFx.playSelect();
-                      onToggleLang();
-                    }}
-                    title={lang === 'VI' ? 'Switch to English' : 'Chuyển sang Tiếng Việt'}
-                    aria-label={lang === 'VI' ? 'Switch to English' : 'Chuyển sang Tiếng Việt'}
-                    className="font-[var(--font-mono)] flex h-6 sm:h-8 min-w-[36px] sm:min-w-[44px] items-center justify-center px-2.5 sm:px-3.5 text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.16em] cursor-pointer rounded-none text-[var(--text-2)] transition-colors duration-150 hover:bg-[var(--violet-d)]/35 hover:text-[var(--text-1)] focus:outline-none"
-                  >
-                    {lang}
-                  </button>
-                </div>
-              )}
-            </div>
-          </div>
-        </header>
+        <SiteHeader
+          breadcrumbs={[
+            {
+              label: lang === 'VI' ? 'TRĂNG SOI DẶM TRƯỜNG' : 'MOONSTRIDE',
+              onClick: onBackHome,
+            },
+            {
+              label: lang === 'VI' ? 'SỰ KIỆN' : 'EVENTS',
+            },
+          ]}
+          langLabel={onToggleLang ? lang : undefined}
+          langTitle={lang === 'VI' ? 'Switch to English' : 'Chuyển sang Tiếng Việt'}
+          langAriaLabel={lang === 'VI' ? 'Switch to English' : 'Chuyển sang Tiếng Việt'}
+          onToggleLang={onToggleLang}
+        />
 
         {/* =====================================================================
             SECTION 1: TRACEBACK II, LEFT FLIGHT LOG HUD CARD & PURPLE CLOUD SEA
@@ -1576,7 +1623,7 @@ export const EventsPage: React.FC<EventsPageProps> = ({
             className={`pointer-events-none absolute z-35 will-change-transform ${
               isPhone
                 ? 'inset-x-0 mx-auto top-[3dvh] w-[88vw] max-w-[345px]'
-                : 'inset-x-0 mx-auto top-[3.5dvh] w-[86vw] max-w-[360px] sm:inset-x-auto sm:mx-0 sm:left-[4vw] md:left-[5vw] lg:left-[max(4.5vw,calc((100vw-1306px)/2+3rem))] sm:top-[7dvh] md:top-[8.5dvh] lg:top-[10dvh] sm:w-[42vw] md:w-[40vw] lg:w-[450px]'
+                : 'inset-x-0 mx-auto top-[3.5dvh] w-[86vw] max-w-[360px] sm:inset-x-auto sm:mx-0 sm:left-[max(var(--gutter),calc((100%-1300px)/2))] sm:top-[7dvh] md:top-[8.5dvh] lg:top-[10dvh] sm:w-[42vw] md:w-[40vw] lg:w-[450px]'
             }`}
             style={{
               transform: 'translate3d(0, 0px, 0)',
@@ -1785,11 +1832,11 @@ export const EventsPage: React.FC<EventsPageProps> = ({
         <section
           ref={yearSectionRef}
           aria-label="Events By Year 2024 2025 2026"
-          className="relative z-40 flex w-full flex-col bg-[var(--void)] pb-16 sm:pb-24"
+          className="relative z-40 flex w-full flex-col bg-[var(--void)] pb-10 sm:pb-14"
         >
-          <div className="mx-auto flex w-full max-w-[1306px] flex-col px-4 pt-6 sm:px-8 sm:pt-10 md:px-12">
+          <div className="wrap flex flex-col pt-5 sm:pt-8">
             {/* Left-Aligned Section Title & Subtitle (Mục A & Bước 3) */}
-            <div className="mb-8 sm:mb-10 lg:mb-12">
+            <div className="mb-6 sm:mb-8 lg:mb-10">
               {isTimelineVisible && activeYearData ? (
                 <>
                   <h1
@@ -2002,11 +2049,11 @@ export const EventsPage: React.FC<EventsPageProps> = ({
                  VIEW MODE B: VERTICAL ORBIT TIMELINE FOR SELECTED YEAR (2024 / 2025 / 2026)
                  ================================================================= */
               <div className="relative z-10 flex w-full flex-col">
-                {/* Timeline Sub-Tab Bar (no box around tabs, 2px --violet underline) */}
-                <div className="sticky top-0 z-40 border-b border-[var(--line)] bg-[var(--void)]/85 backdrop-blur-xs">
+                {/* Timeline Sub-Tab Bar (sticky below .site-header, 44px height, 1px var(--line) bottom border) */}
+                <div className="sticky top-[48px] min-[761px]:top-[56px] z-40 h-[44px] border-b border-[var(--line)] bg-[rgba(7,6,15,0.88)] backdrop-blur-[10px]">
                   <nav
                     aria-label="Year Archive Tabs"
-                    className="flex w-full items-center gap-5 overflow-x-auto no-scrollbar sm:gap-8"
+                    className="site-subtabs-nav"
                   >
                     {YEAR_ARCHIVES.map((yr) => {
                       const isCurrent = yr.year === activeYearData.year;
@@ -2018,11 +2065,7 @@ export const EventsPage: React.FC<EventsPageProps> = ({
                             if (!isCurrent) soundFx.playHover();
                           }}
                           onClick={() => handleSelectYearTab(yr.year)}
-                          className={`relative -mb-[1px] shrink-0 cursor-pointer border-b-2 py-2.5 sm:py-3 font-[var(--font-mono)] text-[11px] sm:text-[12px] uppercase tracking-[0.2em] whitespace-nowrap transition-colors duration-150 focus:outline-none ${
-                            isCurrent
-                              ? 'border-[var(--violet)] font-semibold text-[var(--text-1)]'
-                              : 'border-transparent font-normal text-[var(--text-2)] hover:text-[var(--text-1)]'
-                          }`}
+                          className={`site-subtab-btn ${isCurrent ? 'is-active' : ''}`}
                         >
                           {yr.year}
                         </button>
@@ -2033,7 +2076,7 @@ export const EventsPage: React.FC<EventsPageProps> = ({
                       type="button"
                       onMouseEnter={() => soundFx.playHover()}
                       onClick={() => handleSelectYearTab(null)}
-                      className="relative -mb-[1px] shrink-0 cursor-pointer border-b-2 border-transparent py-2.5 sm:py-3 font-[var(--font-mono)] text-[11px] sm:text-[12px] uppercase tracking-[0.2em] whitespace-nowrap text-[var(--text-2)] transition-colors duration-150 hover:text-[var(--text-1)] focus:outline-none"
+                      className="site-subtab-btn"
                     >
                       {lang === 'VI' ? 'Tất cả các năm' : 'All years'}
                     </button>
@@ -2217,6 +2260,11 @@ export const EventsPage: React.FC<EventsPageProps> = ({
                                 ? () => {
                                     soundFx.playSelect();
                                     setSelectedEventIndex(idx);
+                                    if (onNavigate && activeYearData) {
+                                      onNavigate(`events/${activeYearData.year}/${ev.id}`, {
+                                        skipRouterTransition: true,
+                                      });
+                                    }
                                   }
                                 : undefined
                             }
@@ -2227,6 +2275,11 @@ export const EventsPage: React.FC<EventsPageProps> = ({
                                       e.preventDefault();
                                       soundFx.playSelect();
                                       setSelectedEventIndex(idx);
+                                      if (onNavigate && activeYearData) {
+                                        onNavigate(`events/${activeYearData.year}/${ev.id}`, {
+                                          skipRouterTransition: true,
+                                        });
+                                      }
                                     }
                                   }
                                 : undefined
@@ -2307,13 +2360,11 @@ export const EventsPage: React.FC<EventsPageProps> = ({
          ===================================================================== */}
       {activeModalEvent && activeYearData && selectedEventIndex !== null && (
         <div
+          id={`view-events-${activeModalEvent.id}`}
           role="dialog"
           aria-modal="true"
           aria-label={lang === 'VI' ? activeModalEvent.titleVI : activeModalEvent.titleEN}
-          onClick={() => {
-            soundFx.playBack();
-            setSelectedEventIndex(null);
-          }}
+          onClick={handleCloseEventModal}
           className="fixed inset-0 z-50 flex items-center justify-center bg-[var(--void)]/85 p-3 sm:p-5 md:p-8 backdrop-blur-xs"
         >
           <div
@@ -2382,10 +2433,7 @@ export const EventsPage: React.FC<EventsPageProps> = ({
                 <button
                   type="button"
                   onMouseEnter={() => soundFx.playHover()}
-                  onClick={() => {
-                    soundFx.playBack();
-                    setSelectedEventIndex(null);
-                  }}
+                  onClick={handleCloseEventModal}
                   title={lang === 'VI' ? 'Đóng hồ sơ (ESC)' : 'Close dossier (ESC)'}
                   aria-label={lang === 'VI' ? 'Đóng hồ sơ' : 'Close dossier'}
                   className="ml-1 flex h-7 w-7 cursor-pointer items-center justify-center border border-[var(--line)] bg-[var(--void)] text-[var(--text-1)] transition-colors hover:border-[var(--accent)] focus:outline-none"
