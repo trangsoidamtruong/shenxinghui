@@ -95,8 +95,8 @@ const YEAR_ARCHIVES: YearArchiveData[] = [
       {
         id: '2023-0',
         date: '2/11/2023',
-        typeVI: 'MỞ ĐĂNG KÝ TRƯỚC',
-        typeEN: 'PRE-ORDER',
+        typeVI: 'Event',
+        typeEN: 'Event',
         titleVI: 'Mở Đặt Trước Toàn Cầu',
         titleEN: 'Pre-Order',
         summaryVI:
@@ -109,8 +109,8 @@ const YEAR_ARCHIVES: YearArchiveData[] = [
       {
         id: '2023-1',
         date: '15/12/2023',
-        typeVI: 'CLOSED BETA',
-        typeEN: 'CLOSED BETA',
+        typeVI: 'Event',
+        typeEN: 'Event',
         titleVI: 'Thử Nghiệm Giới Hạn',
         titleEN: 'Closed Beta Test',
         summaryVI:
@@ -123,8 +123,8 @@ const YEAR_ARCHIVES: YearArchiveData[] = [
       {
         id: '2023-2',
         date: '29/12/2023',
-        typeVI: 'CỘT MỐC ĐĂNG KÝ',
-        typeEN: 'PRE-REGISTRATION',
+        typeVI: 'Event',
+        typeEN: 'Event',
         titleVI: 'Đạt Mốc 10 Triệu Đăng Ký',
         titleEN: '10000000 Pre-Registrations',
         summaryVI:
@@ -137,8 +137,8 @@ const YEAR_ARCHIVES: YearArchiveData[] = [
       {
         id: '2024-1',
         date: '18/1/2024',
-        typeVI: 'RA MẮT CHÍNH THỨC',
-        typeEN: 'OFFICIAL RELEASE',
+        typeVI: 'Event',
+        typeEN: 'Event',
         titleVI: 'Chính Thức Ra Mắt',
         titleEN: 'Official Release',
         summaryVI:
@@ -151,8 +151,8 @@ const YEAR_ARCHIVES: YearArchiveData[] = [
       {
         id: '2024-2',
         date: '18/1/2024 - 4/2/2024',
-        typeVI: 'SỰ KIỆN GIỚI HẠN',
-        typeEN: 'LIMITED EVENT',
+        typeVI: 'Event',
+        typeEN: 'Event',
         titleVI: 'Rung Động Đầu Tiên',
         titleEN: 'Heartbeat Ripples',
         summaryVI:
@@ -165,8 +165,8 @@ const YEAR_ARCHIVES: YearArchiveData[] = [
       {
         id: '2024-3',
         date: '5/2/2024 - 19/2/2024',
-        typeVI: 'ƯỚC NGUYỆN GIỚI HẠN',
-        typeEN: 'LIMITED WISH POOL',
+        typeVI: 'MULTI',
+        typeEN: 'MULTI',
         titleVI: 'Lời Trao Thầm Kín',
         titleEN: 'Veiled Whispers',
         summaryVI:
@@ -179,8 +179,8 @@ const YEAR_ARCHIVES: YearArchiveData[] = [
       {
         id: '2024-4',
         date: '21/2/2024 - 10/3/2024',
-        typeVI: 'LA BÀN CHIÊM TINH',
-        typeEN: 'ORACLE OF STARS',
+        typeVI: 'Event',
+        typeEN: 'Event',
         titleVI: 'La Bàn Chiêm Tinh',
         titleEN: 'Oracle of Stars',
         summaryVI:
@@ -193,8 +193,8 @@ const YEAR_ARCHIVES: YearArchiveData[] = [
       {
         id: '2024-5',
         date: '11/3/2024 - 23/3/2024',
-        typeVI: 'ƯỚC NGUYỆN GIỚI HẠN',
-        typeEN: 'LIMITED WISH POOL',
+        typeVI: 'MULTI',
+        typeEN: 'MULTI',
         titleVI: 'Ánh Nhìn Vấn Vương',
         titleEN: 'Lingering Gaze',
         summaryVI:
@@ -207,8 +207,8 @@ const YEAR_ARCHIVES: YearArchiveData[] = [
       {
         id: '2024-6',
         date: '17/3/2024 - 14/5/2024',
-        typeVI: 'KHẾ ƯỚC BÍ MẬT',
-        typeEN: 'SECRET PROMISE',
+        typeVI: 'Secret Promise',
+        typeEN: 'Secret Promise',
         titleVI: 'Đốn Ngã',
         titleEN: 'Succumb',
         summaryVI:
@@ -221,8 +221,8 @@ const YEAR_ARCHIVES: YearArchiveData[] = [
       {
         id: '2024-7',
         date: '20/3/2024 - 3/4/2024',
-        typeVI: 'QUÀ TẶNG CHÂN THÀNH',
-        typeEN: 'HEARTFELT GIFT',
+        typeVI: 'Heartfelt Gift',
+        typeEN: 'Heartfelt Gift',
         titleVI: 'Dư Vị Đặc Biệt',
         titleEN: 'Unique Aftertaste',
         summaryVI:
@@ -235,8 +235,8 @@ const YEAR_ARCHIVES: YearArchiveData[] = [
       {
         id: '2024-8',
         date: '8/4/2024',
-        typeVI: 'BIÊN NIÊN SỬ NGẦM',
-        typeEN: 'WORLD UNDERNEATH',
+        typeVI: 'Story',
+        typeEN: 'Story',
         titleVI: 'Thế Giới Ngầm',
         titleEN: 'World Underneath',
         summaryVI:
@@ -249,8 +249,8 @@ const YEAR_ARCHIVES: YearArchiveData[] = [
       {
         id: '2024-9',
         date: '19/4/2024 - 29/4/2024',
-        typeVI: 'ƯỚC NGUYỆN GIỚI HẠN',
-        typeEN: 'LIMITED WISH POOL',
+        typeVI: 'SOLO',
+        typeEN: 'SOLO',
         titleVI: 'Xúc Cảm Mơ Hồ',
         titleEN: 'Faint Sensation',
         summaryVI:
@@ -263,8 +263,8 @@ const YEAR_ARCHIVES: YearArchiveData[] = [
       {
         id: '2024-10',
         date: '26/4/2024 - 10/5/2024',
-        typeVI: 'SỰ KIỆN PHÚC LỢI',
-        typeEN: 'WELFARE EVENT',
+        typeVI: 'Event',
+        typeEN: 'Event',
         titleVI: 'Nhịp Điệu Thường Ngày',
         titleEN: 'Heartwork Routine',
         summaryVI:
@@ -296,8 +296,8 @@ const YEAR_ARCHIVES: YearArchiveData[] = [
       {
         id: '2025-0',
         date: '31/12/2024 - 19/1/2025',
-        typeVI: 'ƯỚC NGUYỆN GIỚI HẠN',
-        typeEN: 'LIMITED WISH POOL',
+        typeVI: 'MULTI',
+        typeEN: 'MULTI',
         titleVI: 'Điểm Hẹn Đêm Khuya',
         titleEN: 'Nightly Rendezvous',
         summaryVI:
@@ -324,8 +324,8 @@ const YEAR_ARCHIVES: YearArchiveData[] = [
       {
         id: '2025-2',
         date: '31/12/2024 - 19/1/2025',
-        typeVI: 'SỰ KIỆN PHÚC LỢI',
-        typeEN: 'WELFARE EVENT',
+        typeVI: 'Event',
+        typeEN: 'Event',
         titleVI: 'Hội Chứng Tương Tư',
         titleEN: 'Love Syndrome',
         summaryVI:
@@ -348,8 +348,8 @@ const YEAR_ARCHIVES: YearArchiveData[] = [
     descEN:
       'Crossing dimensions to continue writing a love story beyond all time and space.',
     coverImg: '/assets/aistudio/2026-0_2827aa15.webp',
-    badgeTextVI: '19 SỰ KIỆN',
-    badgeTextEN: '19 EVENTS',
+    badgeTextVI: '20 SỰ KIỆN',
+    badgeTextEN: '20 EVENTS',
     glowClass: 'from-pink-500/35 via-indigo-900/45 to-[#090414]/95',
     borderClass: 'border-pink-400/55 hover:border-cyan-300',
     accentHex: '#f472b6',
@@ -357,8 +357,8 @@ const YEAR_ARCHIVES: YearArchiveData[] = [
       {
         id: '2026-0',
         date: '18/12/2025 - 2/1/2026',
-        typeVI: 'QUÀ TẶNG CHÂN THÀNH',
-        typeEN: 'HEARTFELT GIFT',
+        typeVI: 'Heartfelt Gift',
+        typeEN: 'Heartfelt Gift',
         titleVI: 'Khoảnh Khắc Trân Quý',
         titleEN: 'Precious Moment',
         summaryVI:
@@ -371,8 +371,8 @@ const YEAR_ARCHIVES: YearArchiveData[] = [
       {
         id: '2026-1',
         date: '31/12/2025 - 21/1/2026',
-        typeVI: 'ƯỚC NGUYỆN GIỚI HẠN',
-        typeEN: 'LIMITED WISH POOL',
+        typeVI: 'MULTI',
+        typeEN: 'MULTI',
         titleVI: 'Ngai Thần Tình Ái',
         titleEN: 'Throne of Eros',
         summaryVI:
@@ -385,8 +385,8 @@ const YEAR_ARCHIVES: YearArchiveData[] = [
       {
         id: '2026-2',
         date: '31/12/2025 - 21/1/2026',
-        typeVI: 'SỰ KIỆN HỢP TÁC',
-        typeEN: 'COLLABORATION',
+        typeVI: 'Collaboration',
+        typeEN: 'Collaboration',
         titleVI: 'Hình Tượng Thi Ca',
         titleEN: 'Poetic Figures',
         summaryVI:
@@ -399,8 +399,8 @@ const YEAR_ARCHIVES: YearArchiveData[] = [
       {
         id: '2026-3',
         date: '31/12/2025 - 21/1/2026',
-        typeVI: 'SỰ KIỆN GIỚI HẠN',
-        typeEN: 'LIMITED EVENT',
+        typeVI: 'Event',
+        typeEN: 'Event',
         titleVI: 'Ảo Cảnh Giao Thoa',
         titleEN: 'Illusia Locus',
         summaryVI:
@@ -413,8 +413,8 @@ const YEAR_ARCHIVES: YearArchiveData[] = [
       {
         id: '2026-4',
         date: '31/12/2025 - 27/2/2026',
-        typeVI: 'KHẾ ƯỚC BÍ MẬT',
-        typeEN: 'SECRET PROMISE',
+        typeVI: 'Secret Promise',
+        typeEN: 'Secret Promise',
         titleVI: 'Vòng Tay Ánh Lửa',
         titleEN: 'Firelit Embrace',
         summaryVI:
@@ -427,8 +427,8 @@ const YEAR_ARCHIVES: YearArchiveData[] = [
       {
         id: '2026-5',
         date: '2/1/2026',
-        typeVI: 'CỐT TRUYỆN CHÍNH',
-        typeEN: 'MAIN STORY',
+        typeVI: 'Story',
+        typeEN: 'Story',
         titleVI: 'Gửi Ngày Hôm Qua Của Chúng Ta',
         titleEN: 'To Our Yesterday',
         summaryVI:
@@ -441,8 +441,8 @@ const YEAR_ARCHIVES: YearArchiveData[] = [
       {
         id: '2026-6',
         date: '10/2/2026 - 27/2/2026',
-        typeVI: 'ƯỚC NGUYỆN GIỚI HẠN',
-        typeEN: 'LIMITED WISH POOL',
+        typeVI: 'MULTI',
+        typeEN: 'MULTI',
         titleVI: 'Sự Dịu Dàng Nơi Trần Thế',
         titleEN: "Mortality's Tenderness",
         summaryVI:
@@ -455,8 +455,8 @@ const YEAR_ARCHIVES: YearArchiveData[] = [
       {
         id: '2026-7',
         date: '10/2/2026 - 27/2/2026',
-        typeVI: 'SỰ KIỆN PHÚC LỢI',
-        typeEN: 'WELFARE EVENT',
+        typeVI: 'Event',
+        typeEN: 'Event',
         titleVI: 'Lộc Xuân Tràn Đầy',
         titleEN: 'Wealth Overflow',
         summaryVI:
@@ -469,8 +469,8 @@ const YEAR_ARCHIVES: YearArchiveData[] = [
       {
         id: '2026-8',
         date: '9/3/2026 - 18/3/2026',
-        typeVI: 'ƯỚC NGUYỆN GIỚI HẠN',
-        typeEN: 'LIMITED WISH POOL',
+        typeVI: 'SOLO',
+        typeEN: 'SOLO',
         titleVI: 'Phút Giây Bình Yên',
         titleEN: 'Tranquil Moments',
         summaryVI:
@@ -483,8 +483,8 @@ const YEAR_ARCHIVES: YearArchiveData[] = [
       {
         id: '2026-9',
         date: '9/3/2026 - 18/3/2026',
-        typeVI: 'SỰ KIỆN GIỚI HẠN',
-        typeEN: 'LIMITED EVENT',
+        typeVI: 'Event',
+        typeEN: 'Event',
         titleVI: 'Sưởi Ấm Tâm Hồn',
         titleEN: 'Warming Solace Ceremony',
         summaryVI:
@@ -497,8 +497,8 @@ const YEAR_ARCHIVES: YearArchiveData[] = [
       {
         id: '2026-10',
         date: '21/4/2026 - 29/4/2026',
-        typeVI: 'SỰ KIỆN PHÚC LỢI',
-        typeEN: 'WELFARE EVENT',
+        typeVI: 'Event',
+        typeEN: 'Event',
         titleVI: 'Bước Nhảy Tí Tách',
         titleEN: 'Tiptap Hop',
         summaryVI:
@@ -511,8 +511,8 @@ const YEAR_ARCHIVES: YearArchiveData[] = [
       {
         id: '2026-11',
         date: '20/4/2026',
-        typeVI: 'BIÊN NIÊN SỬ NGẦM',
-        typeEN: 'WORLD UNDERNEATH',
+        typeVI: 'Story',
+        typeEN: 'Story',
         titleVI: 'Thế Giới Ngầm',
         titleEN: 'World Underneath',
         summaryVI:
@@ -525,8 +525,8 @@ const YEAR_ARCHIVES: YearArchiveData[] = [
       {
         id: '2026-12',
         date: '30/4/2026 - 15/5/2026',
-        typeVI: 'ƯỚC NGUYỆN GIỚI HẠN',
-        typeEN: 'LIMITED WISH POOL',
+        typeVI: 'MULTI',
+        typeEN: 'MULTI',
         titleVI: 'Khát Khao Vương Vấn',
         titleEN: 'Lingering Lust',
         summaryVI:
@@ -539,8 +539,8 @@ const YEAR_ARCHIVES: YearArchiveData[] = [
       {
         id: '2026-13',
         date: '31/5/2026 - 18/6/2026',
-        typeVI: 'SỰ KIỆN PHÚC LỢI',
-        typeEN: 'WELFARE EVENT',
+        typeVI: 'Event',
+        typeEN: 'Event',
         titleVI: 'Trau Chuốt Tháng Năm',
         titleEN: 'Moments Refined',
         summaryVI:
@@ -553,8 +553,8 @@ const YEAR_ARCHIVES: YearArchiveData[] = [
       {
         id: '2026-14',
         date: '17/6/2026 - 2/7/2026',
-        typeVI: 'ƯỚC NGUYỆN GIỚI HẠN',
-        typeEN: 'LIMITED WISH POOL',
+        typeVI: 'MULTI',
+        typeEN: 'MULTI',
         titleVI: 'Thuở Ấy Qua Từng Khung Hình',
         titleEN: 'Once Upon A Frame',
         summaryVI:
@@ -567,8 +567,8 @@ const YEAR_ARCHIVES: YearArchiveData[] = [
       {
         id: '2026-15',
         date: '17/9/2026 - 1/10/2026',
-        typeVI: 'SỰ KIỆN HỢP TÁC',
-        typeEN: 'COLLABORATION',
+        typeVI: 'Collaboration',
+        typeEN: 'Collaboration',
         titleVI: 'Túi Gấm Đơm Hương',
         titleEN: 'A Scented Sachet',
         summaryVI:
@@ -581,8 +581,8 @@ const YEAR_ARCHIVES: YearArchiveData[] = [
       {
         id: '2026-16',
         date: '22/9/2026 - 10/10/2026',
-        typeVI: 'ƯỚC NGUYỆN GIỚI HẠN',
-        typeEN: 'LIMITED WISH POOL',
+        typeVI: 'MULTI',
+        typeEN: 'MULTI',
         titleVI: 'Đêm Bất Tận',
         titleEN: 'A Night That Never Ends',
         summaryVI:
@@ -595,8 +595,8 @@ const YEAR_ARCHIVES: YearArchiveData[] = [
       {
         id: '2026-17',
         date: '11/10/2026 - 18/10/2026',
-        typeVI: 'SINH NHẬT XAVIER',
-        typeEN: "XAVIER'S BIRTHDAY EVENT",
+        typeVI: 'Sinh nhật',
+        typeEN: 'Birthday',
         titleVI: 'Vệt Sáng Vấn Vương',
         titleEN: 'Lingering Light',
         summaryVI:
@@ -609,8 +609,8 @@ const YEAR_ARCHIVES: YearArchiveData[] = [
       {
         id: '2026-18',
         date: '19/10/2026 - 5/11/2026',
-        typeVI: 'SỰ KIỆN HỢP TÁC',
-        typeEN: 'COLLABORATION',
+        typeVI: 'Collaboration',
+        typeEN: 'Collaboration',
         titleVI: 'Tình Là Thật',
         titleEN: 'Love Is Real',
         summaryVI:
@@ -620,6 +620,20 @@ const YEAR_ARCHIVES: YearArchiveData[] = [
         bannerImg: '/assets/aistudio/2026-18_613eacc6.webp',
         accentColor: 'cyan',
         isClickable: true,
+      },
+      {
+        id: '2026-20',
+        date: '11/2026',
+        typeVI: 'MULTI',
+        typeEN: 'MULTI',
+        titleVI: 'Tái Sinh Ước Mộng',
+        titleEN: 'Rebooting Dreams',
+        summaryVI:
+          'Đại sự kiện Ước Nguyện Giới Hạn chủ đề Cyberpunk viễn tưởng, nơi Xavier xuất hiện trong tạo hình chiến thuật tương lai sắc lạnh giữa thế giới công nghệ tái sinh.',
+        summaryEN:
+          'Futuristic Cyberpunk Limited Wish Pool featuring Xavier in a sleek cyber-tactical persona amidst a world of rebooted dreams.',
+        bannerImg: '/assets/aistudio/2026-20_df313ead.webp',
+        accentColor: 'fuchsia',
       },
     ],
   },

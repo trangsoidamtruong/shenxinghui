@@ -4,6 +4,7 @@ import {
   resolveLocalizedText,
   type ContactAppId,
 } from '../data/contactData';
+import { FANFIC_LIST } from '../data/fanficData';
 
 export type DatingSubTabId =
   | 'BY YOUR SIDE'
@@ -13,7 +14,13 @@ export type DatingSubTabId =
   | 'PLAYTIME'
   | 'PHOTO STUDIO';
 
-export type MainPageId = 'home' | 'dating' | 'events' | 'gallery' | 'contact';
+export type MainPageId =
+  | 'home'
+  | 'dating'
+  | 'events'
+  | 'gallery'
+  | 'contact'
+  | 'fanfic';
 
 export interface RouteConfigEntry {
   /** Canonical slug (lowercase, no accents, no spaces, '/' for hierarchy) */
@@ -42,6 +49,8 @@ export interface RouteConfigEntry {
   contactApp?: ContactAppId;
   /** Selected item ID in ContactPage (e.g. 'pub-01', 'sns-01') */
   contactItemId?: string;
+  /** Selected story slug in FanficPage (e.g. 'fanfic/dem-trang') */
+  fanficStorySlug?: string;
   /** Nearest logical parent slug (null for 'home') */
   parentSlug: string | null;
   /**
@@ -554,9 +563,8 @@ export const SLUG_MAP: Record<string, RouteConfigEntry> = {
   },
   'gallery/fanfic': {
     slug: 'gallery/fanfic',
-    domId: 'view-gallery-fanfic',
-    page: 'gallery',
-    galleryItem: 'fanfic',
+    domId: 'page-fanfic',
+    page: 'fanfic',
     parentSlug: 'gallery',
     hasTransition: false,
     transitionDurationMs: 0,
@@ -830,6 +838,34 @@ CONTACT_APPS.forEach((app) => {
       SLUG_ALIASES[`${appSlug}/${noHyphen}`] = itemSlug;
     }
   });
+});
+
+// ── 08. FANFIC: TỰ ĐỘNG TẠO ROUTE ĐỌC TRUYỆN TỪ DỮ LIỆU FANFIC_LIST ──────────
+FANFIC_LIST.forEach((story, idx) => {
+  const cleanUrl = story.url.replace(/^[#/]+|[#/]+$/g, '').toLowerCase();
+  const leafId = cleanUrl.replace(/^fanfic\//, '') || `truyen-${idx + 1}`;
+  const canonicalSlug = `fanfic/${leafId}`;
+
+  SLUG_MAP[canonicalSlug] = {
+    slug: canonicalSlug,
+    domId: `view-fanfic-${leafId}`,
+    page: 'fanfic',
+    fanficStorySlug: canonicalSlug,
+    parentSlug: 'gallery/fanfic',
+    hasTransition: false,
+    transitionDurationMs: 0,
+    titleVI: `${story.t} · Fanfic | ${SITE_TITLE_VI}`,
+    titleEN: `${story.t} · Fanfic | ${SITE_TITLE_EN}`,
+  };
+
+  SLUG_ALIASES[`gallery/fanfic/${leafId}`] = canonicalSlug;
+  SLUG_ALIASES[`exhibition/fanfic/${leafId}`] = canonicalSlug;
+  const num1 = String(idx + 1);
+  const num2 = num1.padStart(2, '0');
+  SLUG_ALIASES[`fanfic/${num1}`] = canonicalSlug;
+  SLUG_ALIASES[`fanfic/${num2}`] = canonicalSlug;
+  SLUG_ALIASES[`gallery/fanfic/${num1}`] = canonicalSlug;
+  SLUG_ALIASES[`gallery/fanfic/${num2}`] = canonicalSlug;
 });
 
 export const DATING_SUBTAB_TO_SLUG: Record<DatingSubTabId, string> = {

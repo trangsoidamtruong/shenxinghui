@@ -42,7 +42,6 @@ export function mountMemoria(
   </section>
   <section class="pane" id="view" aria-live="polite"></section>
 </main>
-<footer class="hud"><span id="stat"></span><span>↑ ↓ duyệt &nbsp; Enter giải mã</span></footer>
 <div id="toast" class="hud"></div>`;
 
   const cards: MemoriaCard[] = window.MEMORIA_CARDS || MEMORIA_CARDS || [];
@@ -95,12 +94,11 @@ export function mountMemoria(
           .map((c, i) => {
             const rowTitle =
               currentLang === "EN" && c.titleEn ? c.titleEn : c.title;
-            return `<div class="row${i === cur ? " on" : ""}" role="option" tabindex="-1" data-i="${i}" aria-selected="${i === cur}"><span class="n">${pad(c.id)}</span><span class="t">${rowTitle}</span><span class="m${c.done ? " d" : ""}" title="${c.done ? "Đã giải mã" : "Chưa giải mã"}"></span></div>`;
+            return `<div class="row${i === cur ? " on" : ""}" role="option" tabindex="-1" data-i="${i}" aria-selected="${i === cur}"><span class="n">${pad(c.id)}</span><span class="t">${rowTitle}</span><span class="m${c.done ? " d" : ""}" title="${c.done ? "Đã dịch" : "Chưa dịch"}"></span></div>`;
           })
           .join("")
       : `<div class="empty">> Không tìm thấy tệp nào khớp.</div>`;
-    $("#count").textContent = `> ${cards.filter((c) => c.done).length}/${N} ký ức đã khôi phục`;
-    $("#stat").textContent = `> ${list.length}/${N} tệp hiển thị`;
+    $("#count").textContent = `> ${list.length}/${N} tệp hiển thị`;
     renderView();
   }
 
@@ -138,7 +136,7 @@ export function mountMemoria(
     v.innerHTML = `<div class="path hud">/memoria/mem_${pad(c.id)}.dat</div>
   <div class="vb"><div class="media"><div class="a">${art(c)}</div><div class="scan"></div></div>
   <div class="txt"><div class="hud">MEM // ${pad(c.id)}</div><h2>${primaryTitle}</h2>${englishSubLine}
-  <dl class="meta"><dt>Trạng thái</dt><dd>${c.done ? "Đã giải mã" : "Chưa giải mã"}</dd><dt>Độ hiếm</dt><dd>${c.type === "video" ? "5★" : "4★"}</dd></dl>
+  <dl class="meta"><dt>Trạng thái</dt><dd>${c.done ? "Đã dịch" : "Chưa dịch"}</dd><dt>Độ hiếm</dt><dd>${c.type === "video" ? "5★" : "4★"}</dd></dl>
   <p>${c.desc}</p><button class="go" ${c.done ? "" : "disabled"}>${c.done ? "&gt; GIẢI MÃ KÝ ỨC" : "[ CHƯA CÓ BẢN DỊCH ]"}</button></div></div>`;
     const b = v.querySelector<HTMLButtonElement>(".go");
     if (c.done && b) b.onclick = open;

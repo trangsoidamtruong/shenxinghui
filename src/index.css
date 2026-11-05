@@ -1636,7 +1636,7 @@
 
 @media (max-width: 760px) {
   .xt-root .fa {
-    font-size: calc(100cqw / (var(--w, 100) * .6) * .85);
+    font-size: calc(100cqw / (var(--w, 100) * .6) * .62);
   }
 
   .xt-root .tbody {
@@ -1647,7 +1647,7 @@
   .xt-root .moonpane {
     border-right: 0;
     border-bottom: 1px solid var(--line);
-    padding: 16px 12px;
+    padding: 12px 10px;
     container-type: inline-size;
   }
 
@@ -1667,6 +1667,43 @@
   .xt-root .prompt input {
     font-size: 16px;
   }
+}
+
+.is-phone-frame .xt-root {
+  overflow-y: auto;
+}
+
+.is-phone-frame .xt-root .fa {
+  font-size: calc(100cqw / (var(--w, 100) * .6) * .62);
+}
+
+.is-phone-frame .xt-root .tbody {
+  grid-template-columns: 1fr;
+  height: auto;
+}
+
+.is-phone-frame .xt-root .moonpane {
+  border-right: 0;
+  border-bottom: 1px solid var(--line);
+  padding: 12px 10px;
+  container-type: inline-size;
+}
+
+.is-phone-frame .xt-root .cli {
+  max-height: 420px;
+  padding: 14px;
+}
+
+.is-phone-frame .xt-root pre {
+  font-size: calc(100cqw / 33.6);
+}
+
+.is-phone-frame .xt-root .it .rt {
+  display: none;
+}
+
+.is-phone-frame .xt-root .prompt input {
+  font-size: 16px;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -2533,5 +2570,448 @@
   }
 }
 
+/* ==========================================================================
+   FANFIC SHELF PAGE (.fanfic-shelf)
+   Scoped strictly under .fanfic-shelf so no other pages are affected
+   ========================================================================== */
+.fanfic-shelf {
+  color-scheme: dark;
+  --bg: #07060f;
+  --line: #2e2560;
+  --vio: #a78bfa;
+  --silver: #e6e2f5;
+  --dim: #8b84b0;
+  --h: clamp(230px, 50dvh, 470px);
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(ellipse at 50% 20%, #171038 0, var(--bg) 65%);
+  color: var(--silver);
+  font-family: "Space Grotesk", system-ui, sans-serif;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-sizing: border-box;
+}
 
+.fanfic-shelf *,
+.fanfic-shelf *::before,
+.fanfic-shelf *::after {
+  box-sizing: border-box;
+}
 
+.fanfic-shelf .hud {
+  font-family: "Chakra Petch", sans-serif;
+  letter-spacing: 0.14em;
+  font-size: 12px;
+  color: var(--dim);
+}
+
+.fanfic-shelf .top {
+  padding: 14px 5vw 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 12px;
+  flex-shrink: 0;
+  position: relative;
+  z-index: 2;
+}
+
+.fanfic-shelf .top h1 {
+  margin: 0;
+  font-family: "Chakra Petch", sans-serif;
+  font-size: clamp(26px, 4vw, 40px);
+  font-weight: 600;
+  line-height: 1.1;
+  color: var(--silver);
+}
+
+.fanfic-shelf .arrows {
+  display: flex;
+  gap: 8px;
+}
+
+.fanfic-shelf .ar {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: none;
+  border: 1px solid var(--line);
+  color: var(--silver);
+  font-size: 16px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
+.fanfic-shelf .ar:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+
+.fanfic-shelf .ar:hover:not(:disabled) {
+  border-color: var(--vio);
+}
+
+.fanfic-shelf .ar:focus-visible,
+.fanfic-shelf .book:focus-visible,
+.fanfic-shelf .go:focus-visible,
+.fanfic-shelf .back:focus-visible {
+  outline: 2px solid var(--vio);
+  outline-offset: 2px;
+}
+
+.fanfic-shelf .stage {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+  z-index: 2;
+}
+
+.fanfic-shelf .shelf {
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: none;
+  padding: 46px 0 0;
+  margin: 0 5vw;
+  perspective: 1400px;
+}
+
+.fanfic-shelf .shelf::-webkit-scrollbar {
+  display: none;
+}
+
+.fanfic-shelf .row {
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+  width: max-content;
+  padding: 0 calc(var(--h) * 0.38);
+}
+
+.fanfic-shelf .floor {
+  position: relative;
+  height: 2px;
+  margin: 0 5vw;
+  flex-shrink: 0;
+  background: linear-gradient(90deg, transparent, #6f5fd0, #cfc6f5, #6f5fd0, transparent);
+  box-shadow: 0 0 22px 4px rgba(167, 139, 250, 0.3);
+}
+
+.fanfic-shelf .floor::after {
+  content: "";
+  position: absolute;
+  left: 5%;
+  right: 5%;
+  top: 2px;
+  height: 30px;
+  background: linear-gradient(rgba(167, 139, 250, 0.14), transparent);
+  pointer-events: none;
+}
+
+.fanfic-shelf .moon {
+  position: fixed;
+  right: 9vw;
+  top: 14vh;
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #fff, #cfc6f5 38%, #5a4fa0 100%);
+  opacity: 0.1;
+  filter: blur(1.5px);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.fanfic-shelf .book {
+  all: unset;
+  box-sizing: border-box;
+  position: relative;
+  flex: none;
+  width: var(--w, 54px);
+  height: calc(var(--h) * var(--k, 1));
+  cursor: pointer;
+  transform: translateX(var(--dx, 0px));
+  transition: transform 0.55s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.fanfic-shelf .spine {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 16px 0 12px;
+  border-radius: 3px 3px 1px 1px;
+  background:
+    linear-gradient(90deg, rgba(255, 255, 255, 0.16), transparent 9%, transparent 68%, rgba(0, 0, 0, 0.5)),
+    linear-gradient(180deg, #32246b, #161133 58%, #07060f);
+  background:
+    linear-gradient(90deg, rgba(255, 255, 255, 0.16), transparent 9%, transparent 68%, rgba(0, 0, 0, 0.5)),
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--c) 42%, #0d0a22),
+      color-mix(in srgb, var(--c) 15%, #0b0919) 58%,
+      #07060f
+    );
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.07),
+    0 22px 26px -14px rgba(167, 139, 250, 0.45);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.07),
+    0 22px 26px -14px color-mix(in srgb, var(--c) 55%, transparent);
+  transition: opacity 0.25s, transform 0.3s;
+}
+
+.fanfic-shelf .book:hover .spine {
+  transform: translateY(-8px);
+}
+
+.fanfic-shelf .tt {
+  position: relative;
+  z-index: 1;
+  writing-mode: vertical-rl;
+  font-family: "Chakra Petch", sans-serif;
+  font-weight: 600;
+  font-size: 15px;
+  letter-spacing: 0.08em;
+  max-height: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: #ffffff;
+  background: linear-gradient(180deg, #fff, var(--c));
+  background: linear-gradient(180deg, #fff, color-mix(in srgb, var(--c) 60%, #fff));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.fanfic-shelf .bt {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.fanfic-shelf .bt b {
+  font: 600 10px "Chakra Petch", sans-serif;
+  letter-spacing: 0.1em;
+  color: #e6e2f5;
+  color: color-mix(in srgb, var(--c) 65%, #fff);
+  opacity: 0.85;
+}
+
+.fanfic-shelf .bt i {
+  font-style: normal;
+  color: var(--c);
+  width: 20px;
+  height: 20px;
+  border: 1px solid var(--c);
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-size: 10px;
+}
+
+.fanfic-shelf .spine em {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--c);
+  box-shadow: 0 0 8px var(--c);
+}
+
+.fanfic-shelf .spine em.on {
+  animation: ff-blink 1.4s infinite;
+}
+
+@keyframes ff-blink {
+  50% {
+    opacity: 0.25;
+  }
+}
+
+.fanfic-shelf .book.act .spine {
+  opacity: 0;
+}
+
+.fanfic-shelf .cover {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: calc(var(--h) * 0.6);
+  height: var(--h);
+  margin-left: calc(var(--h) * -0.3);
+  transform-origin: 20% 100%;
+  transform: scaleX(0.1);
+  opacity: 0;
+  pointer-events: none;
+  transition: transform 0.55s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.2s;
+  z-index: 5;
+  filter: drop-shadow(0 26px 22px rgba(0, 0, 0, 0.65));
+}
+
+.fanfic-shelf .book.act .cover {
+  transform: translateY(-16px) rotateY(-9deg) scaleX(1);
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.fanfic-shelf .art {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  border-radius: 2px 5px 5px 2px;
+  border: 1px solid var(--c);
+  border: 1px solid color-mix(in srgb, var(--c) 60%, #000);
+}
+
+.fanfic-shelf .art img,
+.fanfic-shelf .art svg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.fanfic-shelf .book.act .art img,
+.fanfic-shelf .book.act .art svg {
+  animation: ff-restore 0.48s ease-out;
+}
+
+@keyframes ff-restore {
+  0% {
+    filter: invert(1) grayscale(1) blur(7px) brightness(0.5);
+  }
+  100% {
+    filter: none;
+  }
+}
+
+.fanfic-shelf .hinge {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 9%;
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0.55), rgba(255, 255, 255, 0.12) 55%, rgba(0, 0, 0, 0.35));
+  pointer-events: none;
+}
+
+.fanfic-shelf .pages {
+  position: absolute;
+  right: -6px;
+  top: 4px;
+  bottom: 4px;
+  width: 6px;
+  background: repeating-linear-gradient(90deg, #e4def5 0 1px, #b3aad0 1px 2px);
+  border-radius: 0 2px 2px 0;
+}
+
+.fanfic-shelf .info {
+  height: 78px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  padding: 0 5vw;
+  text-align: center;
+}
+
+.fanfic-shelf .info .n {
+  color: var(--vio);
+  font-family: "Chakra Petch", sans-serif;
+}
+
+.fanfic-shelf .info .t {
+  font-family: "Chakra Petch", sans-serif;
+  font-size: 22px;
+  font-weight: 600;
+}
+
+.fanfic-shelf .info .m {
+  color: var(--dim);
+  font-size: 13px;
+}
+
+.fanfic-shelf .go,
+.fanfic-shelf .back {
+  background: none;
+  border: 1px solid var(--vio);
+  color: var(--silver);
+  padding: 8px 16px;
+  font-family: "Chakra Petch", sans-serif;
+  letter-spacing: 0.12em;
+  font-size: 12px;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.fanfic-shelf .back {
+  border-color: var(--line);
+  color: var(--dim);
+}
+
+.fanfic-shelf .go {
+  background: linear-gradient(135deg, #5b46c9, #8b6cf0);
+  border: 0;
+  color: #fff;
+  box-shadow: 0 0 18px rgba(139, 108, 240, 0.45);
+}
+
+.fanfic-shelf .go:hover:not(:disabled):not(.is-disabled) {
+  filter: brightness(1.08);
+}
+
+.fanfic-shelf .go:disabled,
+.fanfic-shelf .go.is-disabled {
+  cursor: default;
+  pointer-events: none;
+  opacity: 0.65;
+}
+
+.fanfic-shelf .ff-toast {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #1a1440;
+  border: 1px solid var(--vio);
+  padding: 10px 16px;
+  opacity: 0;
+  transition: opacity 0.3s;
+  pointer-events: none;
+  z-index: 90;
+}
+
+@media (max-width: 600px) {
+  .fanfic-shelf .book {
+    width: 46px;
+  }
+}
+
+.is-phone-frame .fanfic-shelf .book {
+  width: 46px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fanfic-shelf *,
+  .fanfic-shelf *::before,
+  .fanfic-shelf *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}

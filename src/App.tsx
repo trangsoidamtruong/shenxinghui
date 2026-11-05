@@ -21,6 +21,7 @@ const loadDatingPage = () => import('./components/DatingPage');
 const loadEventsPage = () => import('./components/EventsPage');
 const loadGalleryPage = () => import('./components/GalleryPage');
 const loadContactPage = () => import('./components/ContactPage');
+const loadFanficPage = () => import('./components/FanficPage');
 
 const GameModals = lazy(() =>
   loadGameModals().then((m) => ({ default: m.GameModals }))
@@ -36,6 +37,9 @@ const GalleryPage = lazy(() =>
 );
 const ContactPage = lazy(() =>
   loadContactPage().then((m) => ({ default: m.ContactPage }))
+);
+const FanficPage = lazy(() =>
+  loadFanficPage().then((m) => ({ default: m.FanficPage }))
 );
 
 const prefetchedAssets = new Set<string>();
@@ -142,7 +146,7 @@ export default function App() {
     return SLUG_MAP.home;
   });
   const [currentPage, setCurrentPage] = useState<
-    'home' | 'dating' | 'events' | 'gallery' | 'contact'
+    'home' | 'dating' | 'events' | 'gallery' | 'contact' | 'fanfic'
   >(() => (reducedMotion ? activeRoute.page : 'home'));
   const [activeModal, setActiveModal] = useState<MenuActionId>(() =>
     reducedMotion ? activeRoute.modal ?? null : null
@@ -355,7 +359,8 @@ export default function App() {
       currentPage === 'dating' ||
       currentPage === 'events' ||
       currentPage === 'gallery' ||
-      currentPage === 'contact';
+      currentPage === 'contact' ||
+      currentPage === 'fanfic';
 
     if (isSubPage || document.hidden) {
       vid.pause();
@@ -462,6 +467,8 @@ export default function App() {
         loadGalleryPage().then((m) => m.fetchArtDataLazy?.());
       } else if (entry.page === 'contact') {
         loadContactPage();
+      } else if (entry.page === 'fanfic') {
+        loadFanficPage();
       } else if (entry.modal) {
         loadGameModals();
       }
@@ -570,6 +577,8 @@ export default function App() {
       loadGalleryPage().then((m) => m.fetchArtDataLazy?.());
     } else if (initialResolved.entry.page === 'contact') {
       loadContactPage();
+    } else if (initialResolved.entry.page === 'fanfic') {
+      loadFanficPage();
     } else if (initialResolved.entry.modal) {
       loadGameModals();
     }
@@ -724,7 +733,11 @@ export default function App() {
         return;
       }
 
-      if (currentPage === 'gallery' || currentPage === 'contact') {
+      if (
+        currentPage === 'gallery' ||
+        currentPage === 'contact' ||
+        currentPage === 'fanfic'
+      ) {
         return;
       }
 
@@ -816,7 +829,8 @@ export default function App() {
             currentPage === 'dating' ||
             currentPage === 'events' ||
             currentPage === 'gallery' ||
-            currentPage === 'contact'
+            currentPage === 'contact' ||
+            currentPage === 'fanfic'
               ? 'hidden'
               : ''
           }`}
@@ -1007,6 +1021,17 @@ export default function App() {
                 onBackHome={() => navigateTo('home')}
               />
             </Suspense>
+          ) : currentPage === 'fanfic' ? (
+            <Suspense fallback={<div className="relative z-20 h-full w-full bg-[var(--void)]" />}>
+              <FanficPage
+                lang={lang}
+                isPhone={isPhoneDevice}
+                activeStorySlug={activeRoute.fanficStorySlug ?? null}
+                onNavigate={(slug) => navigateTo(slug)}
+                onToggleLang={() => setLang((prev) => (prev === 'VI' ? 'EN' : 'VI'))}
+                onBackHome={() => navigateTo('home')}
+              />
+            </Suspense>
           ) : (
             /* MAIN HOME SCREEN */
             !wallpaperMode && (
@@ -1073,15 +1098,6 @@ export default function App() {
                         </span>
                       </h1>
                     )}
-
-                    {/* Subtitle under logo */}
-                    <div className="mt-2 flex flex-col gap-0.5">
-                      <p className="logo-sub-label">
-                        {lang === 'VI'
-                          ? 'THẨM TINH HỒI // TRẠM TIẾP SÓNG'
-                          : 'XAVIER // DEEP SPACE RELAY'}
-                      </p>
-                    </div>
                   </div>
                 </div>
 

@@ -41,7 +41,7 @@ const UI_STRINGS = {
     deniedSub: '> Truy cập bị khoá. Cần xác thực mẫu hình.',
     retryBtn: '[ THỬ LẠI ]',
     lockTitleBar: 'VẼ MẪU HÌNH ĐỂ MỞ KHOÁ',
-    lockStatusIdle: '> vẽ chữ S để mở khoá',
+    lockStatusIdle: 'SYS_AUTH: Ký tự khởi đầu [Shen Xinghui]',
     lockStatusOk: '> mẫu hình khớp // truy cập được cấp',
     lockStatusBad: '> mẫu hình không khớp',
     cancelBtn: '[ HUỶ ]',
@@ -72,7 +72,7 @@ const UI_STRINGS = {
     deniedSub: '> Access locked. Pattern authentication required.',
     retryBtn: '[ RETRY ]',
     lockTitleBar: 'DRAW PATTERN TO UNLOCK',
-    lockStatusIdle: '> draw S pattern to unlock',
+    lockStatusIdle: 'SYS_AUTH: Ký tự khởi đầu [Shen Xinghui]',
     lockStatusOk: '> pattern matched // access granted',
     lockStatusBad: '> pattern mismatch',
     cancelBtn: '[ CANCEL ]',
@@ -516,18 +516,6 @@ export const ContactPage: React.FC<ContactPageProps> = ({
     return items;
   }, [T, lockState, isBootingDevice, currentApp, currentItem, onBackHome, onNavigate]);
 
-  // Precompute S-hint preview points
-  const hintGridCoords = useMemo(() => {
-    const coords = (i: number): [number, number] => [
-      10 + (i % 3) * 20,
-      10 + Math.floor(i / 3) * 20,
-    ];
-    return {
-      squares: Array.from({ length: 9 }, (_, i) => coords(i)),
-      polyline: PATTERN_SEQ.map((i) => coords(i).join(',')).join(' '),
-    };
-  }, []);
-
   const statusText =
     patternStatus === 'ok'
       ? T.lockStatusOk
@@ -841,29 +829,6 @@ export const ContactPage: React.FC<ContactPageProps> = ({
           >
             <div className="ct-tb">
               <span id="ct-lock-title">{T.lockTitleBar}</span>
-            </div>
-
-            {/* Hình xem trước chữ S (62x62) */}
-            <div className="ct-hint" id="hint" aria-hidden="true">
-              <svg width="62" height="62" viewBox="0 0 62 62">
-                {hintGridCoords.squares.map(([x, y], i) => (
-                  <rect
-                    key={i}
-                    x={x - 4}
-                    y={y - 4}
-                    width="8"
-                    height="8"
-                    fill="none"
-                    stroke="#7f77b8"
-                  />
-                ))}
-                <polyline
-                  fill="none"
-                  stroke="#a99cff"
-                  strokeWidth="2"
-                  points={hintGridCoords.polyline}
-                />
-              </svg>
             </div>
 
             {/* Lưới 3x3 nút 56x56px */}
