@@ -13,6 +13,7 @@ export interface MemoriaMountOptions {
   skipBoot?: boolean;
   initialCardId?: number | null;
   onSelectCard?: (cardId: number) => void;
+  onOpenTranslation?: (cardId: number, url: string) => void;
 }
 
 export function mountMemoria(
@@ -133,11 +134,10 @@ export function mountMemoria(
         ? `<div class="en-sub">${c.titleEn}</div>`
         : "";
 
-    v.innerHTML = `<div class="path hud">/memoria/mem_${pad(c.id)}.dat</div>
-  <div class="vb"><div class="media"><div class="a">${art(c)}</div><div class="scan"></div></div>
-  <div class="txt"><div class="hud">MEM // ${pad(c.id)}</div><h2>${primaryTitle}</h2>${englishSubLine}
+    v.innerHTML = `<div class="vb"><div class="media"><div class="a">${art(c)}</div><div class="scan"></div></div>
+  <div class="txt"><h2>${primaryTitle}</h2>${englishSubLine}
   <dl class="meta"><dt>Trạng thái</dt><dd>${c.done ? "Đã dịch" : "Chưa dịch"}</dd><dt>Độ hiếm</dt><dd>${c.type === "video" ? "5★" : "4★"}</dd></dl>
-  <p>${c.desc}</p><button class="go" ${c.done ? "" : "disabled"}>${c.done ? "&gt; GIẢI MÃ KÝ ỨC" : "[ CHƯA CÓ BẢN DỊCH ]"}</button></div></div>`;
+  <p>${c.desc}</p><button class="go" ${c.done ? "" : "disabled"}>${c.done ? "[ ĐỌC THẺ ]" : "[ CHƯA CÓ BẢN DỊCH ]"}</button></div></div>`;
     const b = v.querySelector<HTMLButtonElement>(".go");
     if (c.done && b) b.onclick = open;
   }
@@ -145,8 +145,11 @@ export function mountMemoria(
   function open() {
     const c = list[cur];
     if (c && c.done) {
-      if (c.url) {
-        location.assign(c.url);
+      const targetUrl = c.url || `/memoria/mem_${pad(c.id)}/dich`;
+      if (options.onOpenTranslation) {
+        options.onOpenTranslation(c.id, targetUrl);
+      } else if (targetUrl) {
+        location.assign(targetUrl);
       } else {
         toast("Chưa gắn url cho thẻ này");
       }

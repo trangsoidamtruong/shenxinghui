@@ -613,6 +613,14 @@ export const DatingPage: React.FC<DatingPageProps> = ({
                 onNavigate(`dating/falling-for-you/memoria/mem${cardId}`);
               }
             }}
+            onOpenTranslation={(cardId, url) => {
+              if (onNavigate) {
+                const cleanSlug =
+                  url.replace(/^[#/]+|[#/]+$/g, '') ||
+                  `memoria/mem_${String(cardId).padStart(2, '0')}/dich`;
+                onNavigate(cleanSlug);
+              }
+            }}
             onToggleLang={onToggleLang}
             onBackHome={onBackHome}
             onBackToDating={() => {

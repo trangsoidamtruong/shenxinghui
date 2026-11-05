@@ -5,6 +5,7 @@ import {
   type ContactAppId,
 } from '../data/contactData';
 import { FANFIC_LIST } from '../data/fanficData';
+import { MEMORIA_CARDS } from '../memoria/data/cards';
 
 export type DatingSubTabId =
   | 'BY YOUR SIDE'
@@ -20,7 +21,9 @@ export type MainPageId =
   | 'events'
   | 'gallery'
   | 'contact'
-  | 'fanfic';
+  | 'fanfic'
+  | 'fangame'
+  | 'memoria-dich';
 
 export interface RouteConfigEntry {
   /** Canonical slug (lowercase, no accents, no spaces, '/' for hierarchy) */
@@ -552,9 +555,8 @@ export const SLUG_MAP: Record<string, RouteConfigEntry> = {
   },
   'gallery/fangame': {
     slug: 'gallery/fangame',
-    domId: 'view-gallery-fangame',
-    page: 'gallery',
-    galleryItem: 'fangame',
+    domId: 'page-fangame',
+    page: 'fangame',
     parentSlug: 'gallery',
     hasTransition: false,
     transitionDurationMs: 0,
@@ -866,6 +868,66 @@ FANFIC_LIST.forEach((story, idx) => {
   SLUG_ALIASES[`fanfic/${num2}`] = canonicalSlug;
   SLUG_ALIASES[`gallery/fanfic/${num1}`] = canonicalSlug;
   SLUG_ALIASES[`gallery/fanfic/${num2}`] = canonicalSlug;
+});
+
+// ── 09. MEMORIA & TRANG BẢN DỊCH (/memoria/mem_XX/dich): TỰ ĐỘNG TẠO TỪ MEMORIA_CARDS ──
+MEMORIA_CARDS.forEach((card) => {
+  const num1 = String(card.id);
+  const num2 = num1.padStart(2, '0');
+  const cardSlug = `dating/falling-for-you/memoria/mem${num1}`;
+
+  SLUG_MAP[cardSlug] = {
+    slug: cardSlug,
+    domId: `view-memoria-${num1}`,
+    page: 'dating',
+    datingSubTab: 'FALLING FOR YOU',
+    memoriaOpen: true,
+    memoriaCardId: card.id,
+    parentSlug: 'dating/falling-for-you/memoria',
+    hasTransition: false,
+    transitionDurationMs: 0,
+    titleVI: `${card.title} · Memoria | ${SITE_TITLE_VI}`,
+    titleEN: `${card.titleEn || card.title} · Memoria | ${SITE_TITLE_EN}`,
+  };
+
+  SLUG_ALIASES[`dating/falling-for-you/memoria/${num1}`] = cardSlug;
+  SLUG_ALIASES[`dating/falling-for-you/memoria/${num2}`] = cardSlug;
+  SLUG_ALIASES[`dating/falling-for-you/memoria/mem_${num2}`] = cardSlug;
+  SLUG_ALIASES[`memoria/${num1}`] = cardSlug;
+  SLUG_ALIASES[`memoria/${num2}`] = cardSlug;
+  SLUG_ALIASES[`memoria/mem-${num1}`] = cardSlug;
+  SLUG_ALIASES[`memoria/mem-${num2}`] = cardSlug;
+  SLUG_ALIASES[`memoria/mem_${num1}`] = cardSlug;
+  SLUG_ALIASES[`memoria/mem_${num2}`] = cardSlug;
+  SLUG_ALIASES[`memoria/mem${num1}`] = cardSlug;
+  SLUG_ALIASES[`memoria/mem${num2}`] = cardSlug;
+
+  // Route trang bản dịch (/memoria/mem_01/dich) — chỉ mở cho thẻ đã dịch (card.done === true)
+  if (card.done) {
+    const dichSlug = `memoria/mem_${num2}/dich`;
+    SLUG_MAP[dichSlug] = {
+      slug: dichSlug,
+      domId: `page-memoria-dich-${num2}`,
+      page: 'memoria-dich',
+      memoriaCardId: card.id,
+      parentSlug: cardSlug,
+      hasTransition: false,
+      transitionDurationMs: 0,
+      titleVI: `${card.title} · Bản dịch Memoria | ${SITE_TITLE_VI}`,
+      titleEN: `${card.titleEn || card.title} · Memoria Translation | ${SITE_TITLE_EN}`,
+    };
+
+    SLUG_ALIASES[`memoria/mem_${num1}/dich`] = dichSlug;
+    SLUG_ALIASES[`memoria/mem-${num1}/dich`] = dichSlug;
+    SLUG_ALIASES[`memoria/mem-${num2}/dich`] = dichSlug;
+    SLUG_ALIASES[`memoria/mem${num1}/dich`] = dichSlug;
+    SLUG_ALIASES[`memoria/mem${num2}/dich`] = dichSlug;
+    SLUG_ALIASES[`memoria/${num1}/dich`] = dichSlug;
+    SLUG_ALIASES[`memoria/${num2}/dich`] = dichSlug;
+    SLUG_ALIASES[`dating/falling-for-you/memoria/mem${num1}/dich`] = dichSlug;
+    SLUG_ALIASES[`dating/falling-for-you/memoria/mem_${num2}/dich`] = dichSlug;
+    SLUG_ALIASES[`dating/falling-for-you/memoria/${num1}/dich`] = dichSlug;
+  }
 });
 
 export const DATING_SUBTAB_TO_SLUG: Record<DatingSubTabId, string> = {

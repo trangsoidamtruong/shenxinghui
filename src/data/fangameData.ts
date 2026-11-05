@@ -1,0 +1,169 @@
+export interface FangameItem {
+  /** Tên game */
+  n: string;
+  /** Mảng thể loại */
+  g: string[];
+  /** Màu nhấn của chip (mã hex) */
+  c: string;
+  /** Đường dẫn ảnh xem trước (WebP tỉ lệ 3:4); để rỗng "" nếu dùng hình vẽ tạm */
+  img: string;
+  /** Nền tảng */
+  plat: string;
+  /** Phiên bản */
+  v: string;
+  /** Độ khó từ 1 đến 3 (hiển thị 3 vầng trăng ● / ○) */
+  lv: 1 | 2 | 3;
+  /** Mô tả ngắn */
+  d: string;
+  /** Trạng thái (giữ trong dữ liệu, không hiển thị trên giao diện) */
+  st: 'Đang phát triển' | 'Bản thử' | 'Hoàn thành';
+  /** Đích của nút "> CHƠI" */
+  url: string;
+}
+
+export const FANGAME_LIST: FangameItem[] = [
+  {
+    n: 'Đêm Trăng Gác Kiếm',
+    g: ['Visual novel', 'Lãng mạn'],
+    c: '#a964f7',
+    img: '/assets/aistudio/fangame-1.webp',
+    plat: 'Web / PC',
+    v: 'v1.2',
+    lv: 1,
+    d: 'Một đêm trực gác trên đài quan sát cổ, nơi những ký ức thất lạc dần hiện lại qua từng lựa chọn đối thoại dưới ánh trăng bạc.',
+    st: 'Hoàn thành',
+    url: '#fangame/dem-trang-gac-kiem',
+  },
+  {
+    n: 'Tín Hiệu 214',
+    g: ['Giải đố', 'Bí ẩn'],
+    c: '#cfb1f1',
+    img: '/assets/aistudio/fangame-2.webp',
+    plat: 'Web',
+    v: 'v0.9',
+    lv: 2,
+    d: 'Giải mã chuỗi tín hiệu vô tuyến kỳ lạ phát ra từ tần số 214 MHz và ghép nối những mảnh nhật ký bị nhiễu sóng.',
+    st: 'Bản thử',
+    url: '#fangame/tin-hieu-214',
+  },
+  {
+    n: 'Hành Trình Ánh Sao',
+    g: ['Phiêu lưu', 'RPG'],
+    c: '#823cdd',
+    img: '/assets/aistudio/fangame-3.webp',
+    plat: 'PC / Web',
+    v: 'v1.0',
+    lv: 2,
+    d: 'Điều khiển tàu tuần tra vượt qua vành đai thiên thạch, thu thập mảnh tinh cầu và bảo vệ trạm tiếp sóng khỏi dị biến.',
+    st: 'Hoàn thành',
+    url: '#fangame/hanh-trinh-anh-sao',
+  },
+  {
+    n: 'Tiệm Bánh Thỏ Trắng',
+    g: ['Mô phỏng', 'Đời thường'],
+    c: '#d8b4fe',
+    img: '/assets/aistudio/fangame-4.webp',
+    plat: 'Web / Mobile',
+    v: 'v1.4',
+    lv: 1,
+    d: 'Trông coi tiệm bánh nhỏ lúc nửa đêm, canh lửa lò nướng để bánh không cháy và pha trà hoa cúc ấm đón vị khách quen.',
+    st: 'Hoàn thành',
+    url: '#fangame/tiem-banh-tho-trang',
+  },
+  {
+    n: 'Khúc Nhạc Đêm Đông',
+    g: ['Nhịp điệu', 'Âm nhạc'],
+    c: '#9d72ff',
+    img: '/assets/aistudio/fangame-5.webp',
+    plat: 'Web / Mobile',
+    v: 'v1.1',
+    lv: 3,
+    d: 'Gõ theo những nốt dương cầm rơi xuống như tuyết đầu mùa trên phố vắng, mở khóa các bản hòa tấu ẩn.',
+    st: 'Hoàn thành',
+    url: '#fangame/khuc-nhac-dem-dong',
+  },
+  {
+    n: 'Mật Mã Philos',
+    g: ['Trinh thám', 'Giải đố'],
+    c: '#b78af7',
+    img: '',
+    plat: 'Web',
+    v: 'v0.7',
+    lv: 3,
+    d: 'Lần theo dấu vết các bản thảo cổ trong thư viện hoàng gia và mở khóa chiếc hộp cơ khí bị phong ấn hàng thế kỷ.',
+    st: 'Đang phát triển',
+    url: '#fangame/mat-ma-philos',
+  },
+  {
+    n: 'Chuyến Tàu Cuối Ngày',
+    g: ['Visual novel', 'Đời thường'],
+    c: '#c4a7e7',
+    img: '',
+    plat: 'Web / PC',
+    v: 'v1.0',
+    lv: 1,
+    d: 'Một chuyến tàu điện ngầm muộn chạy xuyên qua thành phố ngủ yên, nơi hai người cùng nghe chung một tai nghe.',
+    st: 'Hoàn thành',
+    url: '#fangame/chuyen-tau-cuoi-ngay',
+  },
+  {
+    n: 'Thợ Săn Dị Biến',
+    g: ['Hành động', 'Arcade'],
+    c: '#8a5cf5',
+    img: '',
+    plat: 'PC / Web',
+    v: 'v0.8',
+    lv: 3,
+    d: 'Phản xạ nhanh cùng lưỡi kiếm ánh sáng trong khu phố đổ nát, né đòn và thanh tẩy các lõi năng lượng bị nhiễm tối.',
+    st: 'Bản thử',
+    url: '#fangame/tho-san-di-bien',
+  },
+  {
+    n: 'Gắp Thú Lúc Nửa Đêm',
+    g: ['Minigame', 'Giải trí'],
+    c: '#d3bdf0',
+    img: '',
+    plat: 'Web / Mobile',
+    v: 'v2.0',
+    lv: 2,
+    d: 'Thử vận may và căn góc chuẩn xác với chiếc càng gắp thú bông phát sáng tại góc khu vui chơi quen thuộc.',
+    st: 'Hoàn thành',
+    url: '#fangame/gap-thu-luc-nua-dem',
+  },
+  {
+    n: 'Nhật Ký Vọng Tinh',
+    g: ['Tương tác', 'Bí ẩn'],
+    c: '#9966cc',
+    img: '',
+    plat: 'Web',
+    v: 'v0.5',
+    lv: 2,
+    d: 'Xoay kính thiên văn tìm kiếm các chòm sao ẩn và lắng nghe những đoạn băng ghi âm để lại từ nhiều năm trước.',
+    st: 'Đang phát triển',
+    url: '#fangame/nhat-ky-vong-tinh',
+  },
+  {
+    n: 'Cờ Mèo Ánh Trăng',
+    g: ['Chiến thuật', 'Thẻ bài'],
+    c: '#b388eb',
+    img: '',
+    plat: 'Web / Mobile',
+    v: 'v1.3',
+    lv: 2,
+    d: 'Đấu trí nhẹ nhàng qua những lá bài mèo số và thẻ chức năng trong quán cà phê nhỏ ấm cúng.',
+    st: 'Hoàn thành',
+    url: '#fangame/co-meo-anh-trang',
+  },
+  {
+    n: 'Bản Giao Hưởng Tinh Hà',
+    g: ['Visual novel', 'Sci-fi'],
+    c: '#a964f7',
+    img: '',
+    plat: 'PC / Web',
+    v: 'v0.6',
+    lv: 1,
+    d: 'Câu chuyện đa nhánh kéo dài qua hai dòng thời gian song song, nơi mỗi lựa chọn làm dịch chuyển quỹ đạo của các vì sao.',
+    st: 'Đang phát triển',
+    url: '#fangame/ban-giao-huong-tinh-ha',
+  },
+];

@@ -22,6 +22,8 @@ const loadEventsPage = () => import('./components/EventsPage');
 const loadGalleryPage = () => import('./components/GalleryPage');
 const loadContactPage = () => import('./components/ContactPage');
 const loadFanficPage = () => import('./components/FanficPage');
+const loadFangamePage = () => import('./components/FangamePage');
+const loadMemoriaTranslationPage = () => import('./components/MemoriaTranslationPage');
 
 const GameModals = lazy(() =>
   loadGameModals().then((m) => ({ default: m.GameModals }))
@@ -40,6 +42,12 @@ const ContactPage = lazy(() =>
 );
 const FanficPage = lazy(() =>
   loadFanficPage().then((m) => ({ default: m.FanficPage }))
+);
+const FangamePage = lazy(() =>
+  loadFangamePage().then((m) => ({ default: m.FangamePage }))
+);
+const MemoriaTranslationPage = lazy(() =>
+  loadMemoriaTranslationPage().then((m) => ({ default: m.MemoriaTranslationPage }))
 );
 
 const prefetchedAssets = new Set<string>();
@@ -146,7 +154,14 @@ export default function App() {
     return SLUG_MAP.home;
   });
   const [currentPage, setCurrentPage] = useState<
-    'home' | 'dating' | 'events' | 'gallery' | 'contact' | 'fanfic'
+    | 'home'
+    | 'dating'
+    | 'events'
+    | 'gallery'
+    | 'contact'
+    | 'fanfic'
+    | 'fangame'
+    | 'memoria-dich'
   >(() => (reducedMotion ? activeRoute.page : 'home'));
   const [activeModal, setActiveModal] = useState<MenuActionId>(() =>
     reducedMotion ? activeRoute.modal ?? null : null
@@ -360,7 +375,9 @@ export default function App() {
       currentPage === 'events' ||
       currentPage === 'gallery' ||
       currentPage === 'contact' ||
-      currentPage === 'fanfic';
+      currentPage === 'fanfic' ||
+      currentPage === 'fangame' ||
+      currentPage === 'memoria-dich';
 
     if (isSubPage || document.hidden) {
       vid.pause();
@@ -469,6 +486,10 @@ export default function App() {
         loadContactPage();
       } else if (entry.page === 'fanfic') {
         loadFanficPage();
+      } else if (entry.page === 'fangame') {
+        loadFangamePage();
+      } else if (entry.page === 'memoria-dich') {
+        loadMemoriaTranslationPage();
       } else if (entry.modal) {
         loadGameModals();
       }
@@ -579,6 +600,10 @@ export default function App() {
       loadContactPage();
     } else if (initialResolved.entry.page === 'fanfic') {
       loadFanficPage();
+    } else if (initialResolved.entry.page === 'fangame') {
+      loadFangamePage();
+    } else if (initialResolved.entry.page === 'memoria-dich') {
+      loadMemoriaTranslationPage();
     } else if (initialResolved.entry.modal) {
       loadGameModals();
     }
@@ -736,7 +761,9 @@ export default function App() {
       if (
         currentPage === 'gallery' ||
         currentPage === 'contact' ||
-        currentPage === 'fanfic'
+        currentPage === 'fanfic' ||
+        currentPage === 'fangame' ||
+        currentPage === 'memoria-dich'
       ) {
         return;
       }
@@ -830,7 +857,9 @@ export default function App() {
             currentPage === 'events' ||
             currentPage === 'gallery' ||
             currentPage === 'contact' ||
-            currentPage === 'fanfic'
+            currentPage === 'fanfic' ||
+            currentPage === 'fangame' ||
+            currentPage === 'memoria-dich'
               ? 'hidden'
               : ''
           }`}
@@ -1027,6 +1056,26 @@ export default function App() {
                 lang={lang}
                 isPhone={isPhoneDevice}
                 activeStorySlug={activeRoute.fanficStorySlug ?? null}
+                onNavigate={(slug) => navigateTo(slug)}
+                onToggleLang={() => setLang((prev) => (prev === 'VI' ? 'EN' : 'VI'))}
+                onBackHome={() => navigateTo('home')}
+              />
+            </Suspense>
+          ) : currentPage === 'fangame' ? (
+            <Suspense fallback={<div className="relative z-20 h-full w-full bg-[var(--void)]" />}>
+              <FangamePage
+                lang={lang}
+                isPhone={isPhoneDevice}
+                onNavigate={(slug) => navigateTo(slug)}
+                onToggleLang={() => setLang((prev) => (prev === 'VI' ? 'EN' : 'VI'))}
+                onBackHome={() => navigateTo('home')}
+              />
+            </Suspense>
+          ) : currentPage === 'memoria-dich' ? (
+            <Suspense fallback={<div className="relative z-20 h-full w-full bg-[var(--void)]" />}>
+              <MemoriaTranslationPage
+                lang={lang}
+                cardId={activeRoute.memoriaCardId ?? 1}
                 onNavigate={(slug) => navigateTo(slug)}
                 onToggleLang={() => setLang((prev) => (prev === 'VI' ? 'EN' : 'VI'))}
                 onBackHome={() => navigateTo('home')}

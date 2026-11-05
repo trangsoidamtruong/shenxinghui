@@ -9,6 +9,7 @@ interface MemoriaPageProps {
   skipBoot?: boolean;
   selectedCardId?: number | null;
   onSelectCard?: (cardId: number) => void;
+  onOpenTranslation?: (cardId: number, url: string) => void;
   onToggleLang?: () => void;
   onClose: () => void;
   onBackHome?: () => void;
@@ -20,6 +21,7 @@ export const MemoriaPage: React.FC<MemoriaPageProps> = ({
   skipBoot = false,
   selectedCardId = null,
   onSelectCard,
+  onOpenTranslation,
   onToggleLang,
   onClose,
   onBackHome,
@@ -32,6 +34,8 @@ export const MemoriaPage: React.FC<MemoriaPageProps> = ({
   const initialCardIdRef = useRef<number | null>(selectedCardId);
   const onSelectCardRef = useRef(onSelectCard);
   onSelectCardRef.current = onSelectCard;
+  const onOpenTranslationRef = useRef(onOpenTranslation);
+  onOpenTranslationRef.current = onOpenTranslation;
 
   useEffect(() => {
     const el = memoriaRef.current;
@@ -41,6 +45,9 @@ export const MemoriaPage: React.FC<MemoriaPageProps> = ({
       initialCardId: initialCardIdRef.current,
       onSelectCard: (cardId) => {
         onSelectCardRef.current?.(cardId);
+      },
+      onOpenTranslation: (cardId, url) => {
+        onOpenTranslationRef.current?.(cardId, url);
       },
     });
     instanceRef.current = mounted;

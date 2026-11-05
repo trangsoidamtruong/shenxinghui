@@ -60,9 +60,9 @@
 .memoria .meta dt{color:var(--dim)}
 .memoria .meta dd{margin:0}
 .memoria .txt p{color:var(--dim);font-size:15px;line-height:1.6;max-width:52ch}
-.memoria .go{margin-top:18px;background:rgba(169,100,247,.1);border:1px solid rgba(169,100,247,.55);color:var(--lilac);padding:10px 20px;font-family:"Chakra Petch",sans-serif;letter-spacing:.14em;font-size:12px;cursor:pointer;transition:border-color .25s,background-color .25s,color .25s}
-.memoria .go:hover{border-color:var(--vio);background:rgba(169,100,247,.22);color:var(--silver)}
-.memoria .go[disabled]{background:none;border-color:var(--line);color:var(--muted);cursor:not-allowed}
+.memoria .go{margin-top:18px;background:rgba(169,100,247,.16);border:1px solid var(--lilac);box-shadow:0 0 14px rgba(169,100,247,.28);color:var(--silver);padding:10px 20px;font-family:"Chakra Petch",sans-serif;letter-spacing:.14em;font-size:12px;cursor:pointer;transition:border-color .25s,background-color .25s,color .25s,box-shadow .25s}
+.memoria .go:hover:not([disabled]){border-color:#fff;background:rgba(169,100,247,.28);box-shadow:0 0 18px rgba(169,100,247,.45);color:#fff}
+.memoria .go[disabled]{background:none;border-color:var(--line);box-shadow:none;color:var(--muted);cursor:not-allowed}
 
 .memoria footer{width:min(100% - 2 * var(--gutter, clamp(16px, 4vw, 48px)), 1300px);margin-inline:auto;padding:6px 0 8px;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
 
