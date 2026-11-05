@@ -22,12 +22,12 @@ interface ContactPageProps {
 const SESSION_UNLOCK_KEY = 'moonstride_contact_unlocked';
 const PATTERN_SEQ = [2, 1, 0, 3, 4, 5, 8, 7, 6];
 const MOON_PHASES = [
-  'inset 0 0 0 16px #05040f',
-  'inset -11px 0 0 #05040f',
-  'inset -6px 0 0 #05040f',
+  'inset 0 0 0 16px #07060f',
+  'inset -11px 0 0 #07060f',
+  'inset -6px 0 0 #07060f',
   'none',
-  'inset 6px 0 0 #05040f',
-  'inset 11px 0 0 #05040f',
+  'inset 6px 0 0 #07060f',
+  'inset 11px 0 0 #07060f',
 ];
 
 const pad2 = (n: number) => String(n).padStart(2, '0');

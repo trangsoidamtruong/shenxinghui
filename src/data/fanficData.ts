@@ -25,7 +25,7 @@ export const FANFIC_LIST: FanficItem[] = [
   {
     t: 'Đêm trăng',
     sub: 'Cưới rồng hái sao',
-    c: '#f3b24c',
+    c: '#CFB1F1',
     done: true,
     ch: 32,
     au: 'Trăng Soi Dặm Trường',
@@ -34,7 +34,7 @@ export const FANFIC_LIST: FanficItem[] = [
   },
   {
     t: 'Tính dâm của loài thỏ',
-    c: '#7dd3fc',
+    c: '#A964F7',
     done: true,
     ch: 18,
     au: 'Trăng Soi Dặm Trường',
@@ -43,7 +43,7 @@ export const FANFIC_LIST: FanficItem[] = [
   },
   {
     t: 'Tiệm sách đường số 17',
-    c: '#a78bfa',
+    c: '#B983FF',
     done: true,
     ch: 24,
     au: 'Trăng Soi Dặm Trường',
@@ -52,7 +52,7 @@ export const FANFIC_LIST: FanficItem[] = [
   },
   {
     t: 'Cùng người chung bữa',
-    c: '#f472b6',
+    c: '#9356E8',
     done: true,
     ch: 20,
     au: 'Trăng Soi Dặm Trường',
