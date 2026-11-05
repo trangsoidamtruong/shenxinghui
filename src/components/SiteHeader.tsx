@@ -50,6 +50,24 @@ export const SiteHeader: React.FC<SiteHeaderProps> = ({
               const isRoot = idx === 0;
 
               if (isCurrent) {
+                if (item.onClick) {
+                  return (
+                    <button
+                      key={item.id || `${idx}-${item.label}`}
+                      type="button"
+                      id={item.id}
+                      title={item.title}
+                      onMouseEnter={() => soundFx.playHover()}
+                      onClick={() => {
+                        soundFx.playBack();
+                        item.onClick?.();
+                      }}
+                      className="site-crumb-link site-crumb-current"
+                    >
+                      {item.label}
+                    </button>
+                  );
+                }
                 return (
                   <span
                     key={item.id || `${idx}-${item.label}`}

@@ -1,4 +1,9 @@
 import type { MenuActionId } from '../components/GameModals';
+import {
+  CONTACT_APPS,
+  resolveLocalizedText,
+  type ContactAppId,
+} from '../data/contactData';
 
 export type DatingSubTabId =
   | 'BY YOUR SIDE'
@@ -8,7 +13,7 @@ export type DatingSubTabId =
   | 'PLAYTIME'
   | 'PHOTO STUDIO';
 
-export type MainPageId = 'home' | 'dating' | 'events' | 'gallery';
+export type MainPageId = 'home' | 'dating' | 'events' | 'gallery' | 'contact';
 
 export interface RouteConfigEntry {
   /** Canonical slug (lowercase, no accents, no spaces, '/' for hierarchy) */
@@ -33,6 +38,10 @@ export interface RouteConfigEntry {
   eventsItemId?: string;
   /** Selected archive item in GalleryPage (e.g. 'fanart') */
   galleryItem?: string;
+  /** Selected app in ContactPage ('public-account' | 'sns' | 'message' | 'video-call' | 'phone-call') */
+  contactApp?: ContactAppId;
+  /** Selected item ID in ContactPage (e.g. 'pub-01', 'sns-01') */
+  contactItemId?: string;
   /** Nearest logical parent slug (null for 'home') */
   parentSlug: string | null;
   /**
@@ -70,7 +79,7 @@ export const SLUG_MAP: Record<string, RouteConfigEntry> = {
     titleEN: SITE_TITLE_EN,
   },
 
-  // ── 01-03 & 07-09. CÁC MỤC TRÊN TRANG CHỦ (MODALS) ─────────────────────────
+  // ── 01-03 & 07-09. CÁC MỤC TRÊN TRANG CHỦ / TRANG RIÊNG ────────────────────
   profile: {
     slug: 'profile',
     domId: 'page-modal-profile',
@@ -106,9 +115,8 @@ export const SLUG_MAP: Record<string, RouteConfigEntry> = {
   },
   contact: {
     slug: 'contact',
-    domId: 'page-modal-contact',
-    page: 'home',
-    modal: 'contact',
+    domId: 'page-contact',
+    page: 'contact',
     parentSlug: 'home',
     hasTransition: true,
     transitionDurationMs: 360,
@@ -751,6 +759,16 @@ export const SLUG_ALIASES: Record<string, string> = {
   // Events aliases
   'events/2026/18': 'events/2026/2026-18',
 
+  // Contact app aliases
+  'contact/pub': 'contact/public-account',
+  'contact/public': 'contact/public-account',
+  'contact/msg': 'contact/message',
+  'contact/messages': 'contact/message',
+  'contact/vid': 'contact/video-call',
+  'contact/video': 'contact/video-call',
+  'contact/tel': 'contact/phone-call',
+  'contact/phone': 'contact/phone-call',
+
   // Legacy /memoria path aliases
   'memoria/mem-1': 'dating/falling-for-you/memoria/mem1',
   'memoria/mem-2': 'dating/falling-for-you/memoria/mem2',
@@ -765,6 +783,54 @@ export const SLUG_ALIASES: Record<string, string> = {
   'memoria/mem5': 'dating/falling-for-you/memoria/mem5',
   'memoria/mem6': 'dating/falling-for-you/memoria/mem6',
 };
+
+// ── 07. LIÊN LẠC (CONTACT): TỰ ĐỘNG TẠO ROUTE 3 TẦNG TỪ DỮ LIỆU ──────────────
+CONTACT_APPS.forEach((app) => {
+  const appSlug = `contact/${app.id}`;
+  SLUG_MAP[appSlug] = {
+    slug: appSlug,
+    domId: `page-contact-${app.id}`,
+    page: 'contact',
+    contactApp: app.id,
+    parentSlug: 'contact',
+    hasTransition: false,
+    transitionDurationMs: 0,
+    titleVI: `${app.name} · Liên lạc | ${SITE_TITLE_VI}`,
+    titleEN: `${app.name} · Contact | ${SITE_TITLE_EN}`,
+  };
+
+  app.items.forEach((item, idx) => {
+    const itemIdClean = item.id.trim().toLowerCase();
+    const itemSlug = `${appSlug}/${itemIdClean}`;
+    const titleVI = resolveLocalizedText(item.title, 'VI');
+    const titleEN = resolveLocalizedText(item.title, 'EN');
+
+    SLUG_MAP[itemSlug] = {
+      slug: itemSlug,
+      domId: `view-contact-${app.id}-${itemIdClean}`,
+      page: 'contact',
+      contactApp: app.id,
+      contactItemId: item.id,
+      parentSlug: appSlug,
+      hasTransition: false,
+      transitionDurationMs: 0,
+      titleVI: `${titleVI} · ${app.name} | ${SITE_TITLE_VI}`,
+      titleEN: `${titleEN} · ${app.name} | ${SITE_TITLE_EN}`,
+    };
+
+    // Convenient numeric and un-hyphenated aliases (e.g. /contact/public-account/1, 01, 001, pub01)
+    const num1 = String(idx + 1);
+    const num2 = num1.padStart(2, '0');
+    const num3 = num1.padStart(3, '0');
+    const noHyphen = itemIdClean.replace(/-/g, '');
+    SLUG_ALIASES[`${appSlug}/${num1}`] = itemSlug;
+    SLUG_ALIASES[`${appSlug}/${num2}`] = itemSlug;
+    SLUG_ALIASES[`${appSlug}/${num3}`] = itemSlug;
+    if (noHyphen !== itemIdClean) {
+      SLUG_ALIASES[`${appSlug}/${noHyphen}`] = itemSlug;
+    }
+  });
+});
 
 export const DATING_SUBTAB_TO_SLUG: Record<DatingSubTabId, string> = {
   'BY YOUR SIDE': 'dating/by-your-side',
@@ -829,7 +895,6 @@ const TEMPORARILY_DISABLED_SLUGS = new Set([
   'profile',
   'combat',
   'story',
-  'contact',
   'interact',
   'about',
 ]);
@@ -878,6 +943,18 @@ export function resolveHashRoute(
       didFallback: true,
       rawSlug: cleaned,
     };
+  }
+
+  const candidateEntry = SLUG_MAP[canonicalCandidate];
+  if (candidateEntry?.contactApp) {
+    const appCfg = CONTACT_APPS.find((a) => a.id === candidateEntry.contactApp);
+    if (appCfg?.disabled) {
+      return {
+        entry: SLUG_MAP.contact,
+        didFallback: true,
+        rawSlug: cleaned,
+      };
+    }
   }
 
   // 1. Direct match in SLUG_MAP

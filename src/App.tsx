@@ -20,6 +20,7 @@ const loadGameModals = () => import('./components/GameModals');
 const loadDatingPage = () => import('./components/DatingPage');
 const loadEventsPage = () => import('./components/EventsPage');
 const loadGalleryPage = () => import('./components/GalleryPage');
+const loadContactPage = () => import('./components/ContactPage');
 
 const GameModals = lazy(() =>
   loadGameModals().then((m) => ({ default: m.GameModals }))
@@ -32,6 +33,9 @@ const EventsPage = lazy(() =>
 );
 const GalleryPage = lazy(() =>
   loadGalleryPage().then((m) => ({ default: m.GalleryPage }))
+);
+const ContactPage = lazy(() =>
+  loadContactPage().then((m) => ({ default: m.ContactPage }))
 );
 
 const prefetchedAssets = new Set<string>();
@@ -68,7 +72,7 @@ const MENU_ITEMS: MenuItem[] = [
 
 const SUB_MENU_ITEMS: MenuItem[] = [
   { id: 'events', slug: 'events', code: '06', labelVI: 'SỰ KIỆN', labelEN: 'EVENTS', disabled: false },
-  { id: 'contact', slug: 'contact', code: '07', labelVI: 'LIÊN LẠC', labelEN: 'CONTACT', disabled: true },
+  { id: 'contact', slug: 'contact', code: '07', labelVI: 'LIÊN LẠC', labelEN: 'CONTACT', disabled: false },
   { id: 'interact', slug: 'interact', code: '08', labelVI: 'TƯƠNG TÁC', labelEN: 'INTERACTIONS', disabled: true },
   { id: 'about', slug: 'about', code: '09', labelVI: 'GIỚI THIỆU', labelEN: 'ABOUT', disabled: true },
 ];
@@ -137,9 +141,9 @@ export default function App() {
     }
     return SLUG_MAP.home;
   });
-  const [currentPage, setCurrentPage] = useState<'home' | 'dating' | 'events' | 'gallery'>(
-    () => (reducedMotion ? activeRoute.page : 'home')
-  );
+  const [currentPage, setCurrentPage] = useState<
+    'home' | 'dating' | 'events' | 'gallery' | 'contact'
+  >(() => (reducedMotion ? activeRoute.page : 'home'));
   const [activeModal, setActiveModal] = useState<MenuActionId>(() =>
     reducedMotion ? activeRoute.modal ?? null : null
   );
@@ -348,7 +352,10 @@ export default function App() {
     const vid = bgVideoRef.current;
     if (!vid || videoFailed) return;
     const isSubPage =
-      currentPage === 'dating' || currentPage === 'events' || currentPage === 'gallery';
+      currentPage === 'dating' ||
+      currentPage === 'events' ||
+      currentPage === 'gallery' ||
+      currentPage === 'contact';
 
     if (isSubPage || document.hidden) {
       vid.pause();
@@ -453,6 +460,8 @@ export default function App() {
       else if (entry.page === 'events') loadEventsPage();
       else if (entry.page === 'gallery') {
         loadGalleryPage().then((m) => m.fetchArtDataLazy?.());
+      } else if (entry.page === 'contact') {
+        loadContactPage();
       } else if (entry.modal) {
         loadGameModals();
       }
@@ -559,6 +568,8 @@ export default function App() {
     else if (initialResolved.entry.page === 'events') loadEventsPage();
     else if (initialResolved.entry.page === 'gallery') {
       loadGalleryPage().then((m) => m.fetchArtDataLazy?.());
+    } else if (initialResolved.entry.page === 'contact') {
+      loadContactPage();
     } else if (initialResolved.entry.modal) {
       loadGameModals();
     }
@@ -685,7 +696,7 @@ export default function App() {
       setClickedSubIndex(index);
       setClickedIndex(null);
       soundFx.playSelect();
-      if (item.slug === 'events') {
+      if (item.slug === 'events' || item.slug === 'contact') {
         setSubMenuOpen(false);
       }
       navigateTo(item.slug);
@@ -713,7 +724,7 @@ export default function App() {
         return;
       }
 
-      if (currentPage === 'gallery') {
+      if (currentPage === 'gallery' || currentPage === 'contact') {
         return;
       }
 
@@ -802,7 +813,12 @@ export default function App() {
             ================================================================= */}
         <div
           className={`bg-video-stage z-0 ${
-            currentPage === 'dating' || currentPage === 'events' || currentPage === 'gallery' ? 'hidden' : ''
+            currentPage === 'dating' ||
+            currentPage === 'events' ||
+            currentPage === 'gallery' ||
+            currentPage === 'contact'
+              ? 'hidden'
+              : ''
           }`}
           style={{
             opacity: isVideoUnblurring ? 1 : 0,
@@ -976,6 +992,18 @@ export default function App() {
                 onNavigate={(slug) => navigateTo(slug)}
                 onToggleLang={() => setLang((prev) => (prev === 'VI' ? 'EN' : 'VI'))}
                 onSetLang={setLang}
+                onBackHome={() => navigateTo('home')}
+              />
+            </Suspense>
+          ) : currentPage === 'contact' ? (
+            <Suspense fallback={<div className="relative z-20 h-full w-full bg-[var(--void)]" />}>
+              <ContactPage
+                lang={lang}
+                isPhone={isPhoneDevice}
+                activeAppId={activeRoute.contactApp ?? null}
+                activeItemId={activeRoute.contactItemId ?? null}
+                onNavigate={(slug) => navigateTo(slug)}
+                onToggleLang={() => setLang((prev) => (prev === 'VI' ? 'EN' : 'VI'))}
                 onBackHome={() => navigateTo('home')}
               />
             </Suspense>
@@ -1256,6 +1284,8 @@ export default function App() {
                                   '/assets/aistudio/tracebackii_6e3cf5cf.webp',
                                   '/assets/aistudio/cloud3_ca9fa321.webp',
                                 ]);
+                              } else if (subItem.id === 'contact') {
+                                loadContactPage();
                               }
                             }}
                             onClick={() => handleTriggerSubMenu(subItem, idx)}
