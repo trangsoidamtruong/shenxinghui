@@ -35,7 +35,7 @@ const pad3 = (n: number) => String(n).padStart(3, '0');
 
 const UI_STRINGS = {
   VI: {
-    crumbRoot: 'TRĂNG SOI DẶM TRƯỜNG',
+    crumbRoot: 'TSDT',
     crumbContact: 'LIÊN LẠC',
     pageTitle: 'Liên lạc',
     deniedSub: '> Truy cập bị khoá. Cần xác thực mẫu hình.',

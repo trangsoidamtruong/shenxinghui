@@ -46,6 +46,7 @@ interface FaRecord {
 interface ArchiveEntry {
   r: string;
   d: { vi: string; en: string };
+  disabled?: boolean;
   el?: HTMLAnchorElement;
 }
 
@@ -253,7 +254,7 @@ function mountExhibitionTerminal(
 
   const I: ArchiveEntry[] = [
     { r: 'fanart', d: { vi: 'Tranh vẽ của người hâm mộ.', en: 'Artwork drawn by fans.' } },
-    { r: 'fangame', d: { vi: 'Những trò chơi do người hâm mộ làm.', en: 'Games made by fans.' } },
+    { r: 'fangame', d: { vi: 'Những trò chơi do người hâm mộ làm.', en: 'Games made by fans.' }, disabled: true },
     {
       r: 'fanfic',
       d: {
@@ -274,11 +275,11 @@ function mountExhibitionTerminal(
 
   const S = {
     vi: {
-      c: ['TRĂNG SOI DẶM TRƯỜNG', 'TRIỂN LÃM'],
-      idle: 'Chọn một mục bằng ↑ ↓ (Enter để mở).',
+      c: ['TSDT', 'TRIỂN LÃM'],
+      idle: '',
       hint: '↑↓ chọn · Enter mở · Esc quay lại',
       tog: '[ màu / đơn sắc ]',
-      capM: '// lõi mặt trăng · đang quay',
+      capM: '',
       capO: '// bản dựng: ',
       nf: ': không tìm thấy lệnh. gõ help để xem danh sách.',
       use: 'cách dùng: open <tên>   vd: open fanfic',
@@ -683,8 +684,13 @@ function mountExhibitionTerminal(
   I.forEach(function (o, i) {
     const li = document.createElement('li');
     const b = document.createElement('a');
-    b.className = 'it';
-    b.href = '/' + o.r + '.html';
+    b.className = 'it' + (o.disabled ? ' is-disabled' : '');
+    if (o.disabled) {
+      b.setAttribute('aria-disabled', 'true');
+      b.tabIndex = -1;
+    } else {
+      b.href = '/' + o.r + '.html';
+    }
     b.innerHTML =
       '<span class="ix">' +
       String(i + 1).padStart(2, '0') +
@@ -694,12 +700,18 @@ function mountExhibitionTerminal(
       o.r +
       '.html</span>';
     b.addEventListener('mouseenter', function () {
+      if (o.disabled) return;
       if (ready && canHover) select(i);
     });
     b.addEventListener('focus', function () {
+      if (o.disabled) return;
       if (ready) select(i);
     });
     b.addEventListener('click', function (e) {
+      if (o.disabled) {
+        e.preventDefault();
+        return;
+      }
       if (e.ctrlKey || e.metaKey || e.shiftKey || e.altKey || e.button !== 0) {
         return;
       }
@@ -763,7 +775,7 @@ function mountExhibitionTerminal(
   }
 
   function openItem(i: number) {
-    if (busy) return;
+    if (busy || !I[i] || I[i].disabled) return;
     busy = true;
     select(i);
     const o = I[i];
@@ -849,11 +861,18 @@ function mountExhibitionTerminal(
       e.preventDefault();
       const n = I.length;
       const d = e.key === 'ArrowDown' ? 1 : -1;
-      select(sel === null ? (d > 0 ? 0 : n - 1) : (sel + d + n) % n);
+      let nextIdx = sel === null ? (d > 0 ? 0 : n - 1) : (sel + d + n) % n;
+      for (let step = 0; step < n; step++) {
+        if (!I[nextIdx]?.disabled) {
+          select(nextIdx);
+          break;
+        }
+        nextIdx = (nextIdx + d + n) % n;
+      }
     } else if (e.key === 'Enter') {
       if (!focusInside && !inView) return;
       const isFocusedItem = !!(active && (active as HTMLElement).classList?.contains('it'));
-      if (!isFocusedItem && sel !== null) {
+      if (!isFocusedItem && sel !== null && !I[sel]?.disabled) {
         e.preventDefault();
         openItem(sel);
       }
@@ -946,7 +965,7 @@ function mountExhibitionTerminal(
     const idx = I.findIndex(function (item) {
       return item.r === slug;
     });
-    if (idx >= 0 && sel !== idx) {
+    if (idx >= 0 && !I[idx]?.disabled && sel !== idx) {
       select(idx);
     }
   }
@@ -1134,7 +1153,7 @@ export const GalleryPage: React.FC<GalleryPageProps> = ({
         breadcrumbs={[
           {
             id: 'c0',
-            label: lang === 'VI' ? 'TRĂNG SOI DẶM TRƯỜNG' : 'MOONSTRIDE',
+            label: lang === 'VI' ? 'TSDT' : 'MOONSTRIDE',
             title: lang === 'VI' ? 'Quay về trang chủ' : 'Back to Home',
           },
           {

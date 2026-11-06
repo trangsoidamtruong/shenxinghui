@@ -1538,7 +1538,7 @@ export const EventsPage: React.FC<EventsPageProps> = ({
         <SiteHeader
           breadcrumbs={[
             {
-              label: lang === 'VI' ? 'TRĂNG SOI DẶM TRƯỜNG' : 'MOONSTRIDE',
+              label: lang === 'VI' ? 'TSDT' : 'MOONSTRIDE',
               onClick: onBackHome,
             },
             {

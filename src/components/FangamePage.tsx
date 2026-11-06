@@ -65,7 +65,7 @@ export const FangamePage: React.FC<FangamePageProps> = ({
   const breadcrumbs = useMemo(
     () => [
       {
-        label: lang === 'VI' ? 'TRĂNG SOI DẶM TRƯỜNG' : 'MOONSTRIDE',
+        label: lang === 'VI' ? 'TSDT' : 'MOONSTRIDE',
         title: lang === 'VI' ? 'Quay về trang chủ' : 'Back to Home',
         onClick: onBackHome,
       },

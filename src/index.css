@@ -1474,6 +1474,14 @@
   transform: none;
 }
 
+.xt-root .it.is-disabled {
+  cursor: not-allowed;
+}
+
+.xt-root .it.is-disabled.show {
+  opacity: 0.42;
+}
+
 .xt-root .it .ix {
   color: var(--dim);
 }

@@ -264,7 +264,7 @@ export const FanficPage: React.FC<FanficPageProps> = ({
   const breadcrumbs = useMemo(() => {
     const items = [
       {
-        label: lang === 'VI' ? 'TRĂNG SOI DẶM TRƯỜNG' : 'MOONSTRIDE',
+        label: lang === 'VI' ? 'TSDT' : 'MOONSTRIDE',
         title: lang === 'VI' ? 'Quay về trang chủ' : 'Back to Home',
         onClick: onBackHome,
       },

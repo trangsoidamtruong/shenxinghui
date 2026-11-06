@@ -1016,6 +1016,10 @@ const TEMPORARILY_DISABLED_DATING_CARDS = new Set([
   'dating/photo-studio/ps4',
 ]);
 
+const TEMPORARILY_DISABLED_GALLERY_ITEMS = new Set([
+  'gallery/fangame',
+]);
+
 export function resolveHashRoute(
   rawInput: string,
   pathname = ''
@@ -1034,6 +1038,14 @@ export function resolveHashRoute(
   }
 
   const canonicalCandidate = SLUG_ALIASES[cleaned] || cleaned;
+  if (TEMPORARILY_DISABLED_GALLERY_ITEMS.has(canonicalCandidate)) {
+    return {
+      entry: SLUG_MAP.gallery,
+      didFallback: true,
+      rawSlug: cleaned,
+    };
+  }
+
   if (TEMPORARILY_DISABLED_DATING_CARDS.has(canonicalCandidate)) {
     const parentSlug = SLUG_MAP[canonicalCandidate]?.parentSlug || 'dating';
     return {
