@@ -1,0 +1,4023 @@
+{
+  "id": "mem_02",
+  "title": "Mã Lệnh Sai Lệch",
+  "titleEn": "Program Fallacy",
+  "stars": 5,
+  "accent": "#9d7bff",
+  "bgImage": "https://res.cloudinary.com/trangsoidamtruong/image/upload/v1793886550/bound-by-starlight.webp",
+  "poster": "https://res.cloudinary.com/trangsoidamtruong/video/upload/so_0,f_webp,q_auto,w_720/v1794027483/program-fallacy.webp",
+  "youtube": "https://youtu.be/K3YiuyR3M4M?si=WW5ILLQ59f3Z1OFu",
+  "totalChapters": 10,
+  "nodes": [
+    {
+      "id": "start",
+      "title": "START",
+      "titleEn": "START",
+      "next": [
+        "ep1"
+      ],
+      "x": 75,
+      "y": 0,
+      "w": 150,
+      "h": 30,
+      "kind": "start",
+      "hasBg": false,
+      "translated": false,
+      "end": false
+    },
+    {
+      "id": "ep1",
+      "title": "Episode · 1",
+      "titleEn": "Episode · 1",
+      "next": [
+        "ep2"
+      ],
+      "x": 75,
+      "y": 58,
+      "w": 150,
+      "h": 34,
+      "hasBg": false,
+      "translated": true,
+      "end": false
+    },
+    {
+      "id": "ep2",
+      "title": "Episode · 2",
+      "titleEn": "Episode · 2",
+      "next": [
+        "ep3"
+      ],
+      "x": 75,
+      "y": 120,
+      "w": 150,
+      "h": 34,
+      "hasBg": false,
+      "translated": true,
+      "end": false
+    },
+    {
+      "id": "ep3",
+      "title": "Episode · 3",
+      "titleEn": "Episode · 3",
+      "next": [
+        "ep4"
+      ],
+      "x": 75,
+      "y": 182,
+      "w": 150,
+      "h": 34,
+      "hasBg": false,
+      "translated": true,
+      "end": false
+    },
+    {
+      "id": "ep4",
+      "title": "Episode · 4",
+      "titleEn": "Episode · 4",
+      "next": [
+        "k1"
+      ],
+      "x": 50,
+      "y": 244,
+      "w": 200,
+      "h": 60,
+      "hasBg": true,
+      "translated": true,
+      "end": false
+    },
+    {
+      "id": "k1",
+      "title": "Kindled · 1",
+      "titleEn": "Kindled · 1",
+      "next": [
+        "k2"
+      ],
+      "x": 75,
+      "y": 332,
+      "w": 150,
+      "h": 34,
+      "hasBg": false,
+      "translated": true,
+      "end": false
+    },
+    {
+      "id": "k2",
+      "title": "Kindled · 2",
+      "titleEn": "Kindled · 2",
+      "next": [
+        "conn_est",
+        "sync_term"
+      ],
+      "x": 75,
+      "y": 394,
+      "w": 150,
+      "h": 34,
+      "hasBg": false,
+      "translated": true,
+      "end": false
+    },
+    {
+      "id": "sync_term",
+      "title": "ĐỒNG BỘ CHẤM DỨT",
+      "titleEn": "Sync Terminated",
+      "next": [
+        "times_up"
+      ],
+      "x": 154,
+      "y": 462,
+      "w": 142,
+      "h": 42,
+      "hasBg": false,
+      "translated": true,
+      "end": false
+    },
+    {
+      "id": "times_up",
+      "title": "HỒI KẾT CẬN KỀ",
+      "titleEn": "Time's Up",
+      "next": [],
+      "x": 154,
+      "y": 532,
+      "w": 142,
+      "h": 42,
+      "hasBg": false,
+      "translated": true,
+      "end": true
+    },
+    {
+      "id": "conn_est",
+      "title": "KẾT NỐI THÀNH CÔNG",
+      "titleEn": "Connection Established",
+      "next": [
+        "happy_ret"
+      ],
+      "x": 4,
+      "y": 462,
+      "w": 142,
+      "h": 42,
+      "hasBg": false,
+      "translated": true,
+      "end": false
+    },
+    {
+      "id": "happy_ret",
+      "title": "Chúc mừng nghỉ hưu",
+      "titleEn": "Happy Retirement",
+      "next": [],
+      "x": 4,
+      "y": 532,
+      "w": 142,
+      "h": 42,
+      "hasBg": false,
+      "translated": true,
+      "end": true
+    }
+  ],
+  "chapters": {
+    "ep1": {
+      "title": "EPISODE · 1",
+      "titleEn": "EPISODE · 1",
+      "lines": [
+        [
+          "",
+          "Metropolis từ lâu đã quen với những ngày mưa dầm dề không dứt. Tiếng cười nói, tiếng thở dài, tiếng bước chân, những lời thì thầm to nhỏ và cả các phi vụ bẩn thỉu—tất cả đều bị màn mưa đặc quánh nuốt chửng. Chẳng thứ gì trong số đó có ý nghĩa với tôi cả.",
+          ""
+        ],
+        [
+          "TÔI",
+          "(Cùng lắm thì... tiết trời cũng lý tưởng cho việc bám đuôi đấy.)",
+          ""
+        ],
+        [
+          "",
+          "Tôi là một người phỏng sinh tác chiến đặc biệt, tôi luôn tuân theo chỉ lệnh đã được lập trình sẵn trong hệ thống. Và hiện tại mục tiêu của tôi là truy vết một người phỏng sinh ngoại tinh.",
+          ""
+        ],
+        [
+          "TÔI",
+          "(Nếu mục tiêu tự chui đầu vào lưới thì đỡ mất công biết bao.)",
+          ""
+        ],
+        [
+          "",
+          "Phía bên kia đường, người phỏng sinh ngoại tên Xavier kia thong thả rẽ vào mái hiên dọc phố để trú mưa. Anh bình thản giũ sạch giọt nước vương trên áo.",
+          ""
+        ],
+        [
+          "",
+          "Bị anh dắt đi lòng vòng quanh khu phố suốt hai tiếng đồng hồ, tôi đã mất kiên nhẫn đến mức sắp chuyển sang chế độ chờ luôn rồi, vậy mà anh  vẫn vô cùng nhàn nhã.",
+          ""
+        ],
+        [
+          "TÔI",
+          "(Rốt cuộc anh ta muốn đi đâu vậy chứ?)",
+          ""
+        ],
+        [
+          "",
+          "Tôi kéo chặt mũ áo mưa, cố ý bước chậm lại phía sau, luôn giữ một khoảng cách an toàn để theo dõi.",
+          ""
+        ],
+        [
+          "",
+          "Nhiều năm về trước, Tập đoàn Công nghệ SynthEpoch – kẻ thực chất đang thao túng Metropolis – không còn thỏa mãn với việc khai thác tài nguyên hành tinh sẵn có nữa. Thế nên họ đã cử đội thám hiểm tiến sâu hơn vào vũ trụ. Đó cũng là lần đầu tiên nhân loại tiếp xúc với người phỏng sinh ngoại tinh đến từ một nền văn minh chưa từng được biết tới.",
+          ""
+        ],
+        [
+          "",
+          "Đội thám hiểm đã mang một nhóm trong số chúng về Metropolis, giao cho tập đoàn nghiên cứu. Chẳng bao lâu sau, tập đoàn phát hiện những cá thể ngoại tinh này không chỉ có khả năng xâm nhập vào hệ thống điện tử của đủ loại cơ thể máy móc, mà thậm chí còn có thể trực tiếp chiếm quyền điều khiển não điện tử, khống chế những người phỏng sinh khác.",
+          ""
+        ],
+        [
+          "",
+          "Tập đoàn đã quyết đoán tiêu diệt mối đe dọa này, nhưng tọa độ của nhân loại đã bị bại lộ vào vũ trụ. Kể từ đó, những người phỏng sinh ngoại tinh mang theo nhiều mục đích khác nhau bắt đầu ùn ùn kéo đến Metropolis.",
+          ""
+        ],
+        [
+          "",
+          "Để ứng phó với cuộc khủng hoảng này, một tổ chức bí mật tên là Đội Thanh Lọc núp bóng dưới danh nghĩa công ty vệ sinh Squeaky Cleanner đã được thành lập. Trách nhiệm của họ là truy lùng và tiêu diệt các người phỏng sinh ngoại tinh.",
+          ""
+        ],
+        [
+          "",
+          "Là một thành viên của tổ chức Đội Thanh Lọc, tôi đã cần mẫn làm việc suốt mấy năm trời, thâm niên dày dặn đến mức thuộc hàng có số có má trong toàn công ty.",
+          ""
+        ],
+        [
+          "",
+          "Vốn dĩ chỉ còn một tháng nữa thôi là tôi sẽ mang theo tỷ lệ hoàn thành nhiệm vụ lên tới 100% để nghỉ hưu trong vinh quang.",
+          ""
+        ],
+        [
+          "",
+          "Thế rồi Xavier đột nhiên xuất hiện vào tối hôm qua. Nhờ người phỏng sinh ngoại tinh này mà sự nghiệp của tôi đang rơi vào nguy cơ sâu sắc.",
+          ""
+        ],
+        [
+          "CÔN ĐỒ ĐƯỜNG PHỐ",
+          "Ma mới à? Linh kiện trên người mày trông ngon đấy...",
+          ""
+        ],
+        [
+          "",
+          "Mấy kẻ vừa bước ra từ vũ trường lập tức để mắt tới Xavier đang đi ngang qua. Chúng lầm bầm rồi vây quanh anh, rõ ràng là muốn kiếm chuyện.",
+          ""
+        ],
+        [
+          "",
+          "Anh ta như thể chẳng nghe thấy lời khiêu khích của bọn chúng, tiện tay gạt tên đứng đầu tiên sang một bên.",
+          ""
+        ],
+        [
+          "XAVIER",
+          "Đừng có cản đường.",
+          ""
+        ],
+        [
+          "CÔN ĐỒ ĐƯỜNG PHỐ",
+          "Này, dám đẩy ông mày à—",
+          ""
+        ],
+        [
+          "",
+          "Bàn tay tên côn đồ vừa đặt lên vai Xavier thì tiếng hét thảm thiết của hắn và hệ thống đèn phía trên đồng loạt phát nổ, tia lửa bắn tứ tung.",
+          ""
+        ],
+        [
+          "",
+          "Dòng điện nhanh chóng chạy dọc theo biển hiệu neon, ánh sáng chập chờn lướt qua gương mặt bình thản của Xavier. Cả con phố lập tức chìm vào bóng tối.",
+          ""
+        ],
+        [
+          "TÔI",
+          "(Thôi chết!)",
+          ""
+        ],
+        [
+          "",
+          "Chẳng màng đến việc có bị lộ hay không, tôi lao vào màn mưa, tóm lấy một bóng người đang định bỏ chạy. Tôi bật đèn khẩn cấp lên, thứ được chiếu sáng lại là khuôn mặt ngơ ngác của tên côn đồ đường phố. Nhìn quanh bốn phía, quả nhiên Xavier đã biến mất.",
+          ""
+        ],
+        [
+          "TÔI",
+          "Người vừa nãy đã nói gì với anh?",
+          ""
+        ],
+        [
+          "CÔN ĐỒ ĐƯỜNG PHỐ",
+          "Squeaky Cleaner... trụ sở chính...",
+          ""
+        ],
+        [
+          "TÔI",
+          "Anh ta có nói là định làm g—",
+          ""
+        ],
+        [
+          "CÔN ĐỒ ĐƯỜNG PHỐ",
+          "Mày nghe cho kỹ đây. Pin số một phải dùng dung dịch ổn định màu xanh khuấy ngược chiều kim đồng hồ mới có thể trau chuốt chu kỳ quay lại của thiên thể.",
+          ""
+        ],
+        [
+          "TÔI",
+          "?",
+          ""
+        ],
+        [
+          "",
+          "Đây là phản ứng phụ sau khi não điện tử bị cưỡng ép xâm nhập: ý thức hỗn loạn, ký ức đứt gãy.",
+          ""
+        ],
+        [
+          "",
+          "Nhưng não điện tử lưu hành trên thị trường đều được bảo vệ dưới bằng sáng chế của tập đoàn, hơn nữa còn được nâng cấp tường lửa chuyên chống lại người phỏng sinh ngoại tinh.",
+          ""
+        ],
+        [
+          "TÔI",
+          "(Chỉ trong mấy giây tiếp xúc ngắn ngủi đó mà Xavier đã xâm nhập thành công rồi sao?)",
+          ""
+        ],
+        [
+          "",
+          "Dự cảm chẳng lành trong lòng tôi ngày càng mãnh liệt. Kẻ ngoại tinh có vẻ mặt lạnh nhạt vô hại tên Xavier này—",
+          ""
+        ],
+        [
+          "",
+          "E rằng anh ta chính là người phỏng sinh ngoại tinh có mức độ nguy hiểm cao nhất. Cũng là người sẽ hoàn toàn chôn vùi sự nghiệp của tôi ngay trước thềm nghỉ hưu.",
+          ""
+        ],
+        [
+          "",
+          "Tôi mang tâm trạng nặng nề kết nối vào kênh liên lạc của công ty.",
+          ""
+        ],
+        [
+          "TÔI",
+          "Phát hiện một người phỏng sinh ngoại tinh có mức độ nguy hiểm cực cao. Mục tiêu đang tiến về trụ sở chính,. Yêu cầu chi viện!",
+          ""
+        ],
+        [
+          "",
+          "Khu lưu trữ mật của Squeaky Cleaners.",
+          ""
+        ],
+        [
+          "",
+          "Khoảnh khắc quẹt thẻ mở cửa an ninh, họng súng của tôi đã vững vàng chĩa thẳng vào Xavier đang đứng trước bàn tra cứu.",
+          ""
+        ],
+        [
+          "TÔI",
+          "Đừng cử động.",
+          ""
+        ],
+        [
+          "XAVIER",
+          "Tôi đợi cô lâu lắm rồi đấy... Cô leo cầu thang bộ lên à?",
+          ""
+        ],
+        [
+          "TÔI",
+          "Tôi đã phong tỏa toàn bộ thang máy và đi lên từ lối thoát hiểm duy nhất để chặn đường anh đấy. Anh không thoát được đâu.",
+          ""
+        ],
+        [
+          "",
+          "Sau khi xác định được vị trí của Xavier trong tòa nhà, tôi lập tức đồng bộ thông tin cho những đồng nghiệp có thể đến chi viện.",
+          ""
+        ],
+        [
+          "",
+          "Tôi không muốn kích động Xavier phản kháng. Mục tiêu của tôi  là cầm chân anh ta, chờ viện binh tới.",
+          ""
+        ],
+        [
+          "",
+          "Anh ta thong thả xoay người lại, giọng nói thoáng chút trêu chọc như có như không.",
+          ""
+        ],
+        [
+          "XAVIER",
+          "Người máy tác chiến các cô cũng kiên trì ghê nhỉ...",
+          ""
+        ],
+        [
+          "XAVIER",
+          "Một khi đã khóa chặt mục tiêu nhiệm vụ thì bất kể quá trình có chật vật thảm hại thế nào cũng phải đi đến cùng.",
+          ""
+        ],
+        [
+          "TÔI",
+          "Đừng nói lời thừa thãi. Nếu không tôi nổ súng đấy.",
+          ""
+        ],
+        [
+          "XAVIER",
+          "Cô nghĩ nổ súng là giải quyết được tôi sao? Cứ thử xem.",
+          ""
+        ],
+        [
+          "",
+          "Anh ta căn bản chẳng coi lời đe dọa của tôi ra gì, cứ thế nghiêng người sang một bên. Tôi nhìn rõ giao diện mà anh ta vừa mở lên. Đó là hồ sơ của tôi.",
+          ""
+        ],
+        [
+          "XAVIER",
+          "Một tuần trước, lúc làm nhiệm vụ cô đã tha cho một người phỏng sinh ngoại tinh.",
+          ""
+        ],
+        [
+          "",
+          "Bàn tay cầm súng khẽ run lên. Tôi hít sâu một hơi, nhanh chóng ổn định lại trạng thái hệ thống cơ thể, đối diện với ánh mắt dò xét của Xavier.",
+          ""
+        ],
+        [
+          "TÔI",
+          "Chỉ là một lần sơ suất mà thôi.",
+          ""
+        ],
+        [
+          "",
+          "Đó là lần đầu tiên, cũng là lần duy nhất trong sự nghiệp tôi chệch họng súng. Tôi đã không bắn trúng chỗ hiểm của mục tiêu.",
+          ""
+        ],
+        [
+          "",
+          "Mục tiêu đã nhét vào tay tôi một lõi tinh thể màu xanh lam bán trong suốt và hứa sẽ không nhắc chuyện này với bất kỳ ai.",
+          ""
+        ],
+        [
+          "",
+          "Nhưng đồng nghiệp của tôi đã nhanh chóng ập tới và giết chết mục tiêu. Tôi không muốn chuyện này trở nên phức tạp nên đã tạm thời cất viên tinh thể đó đi.",
+          ""
+        ],
+        [
+          "XAVIER",
+          "Trong hồ sơ ghi chép vật dụng tùy thân của người đó bị thiếu mất một thứ.",
+          ""
+        ],
+        [
+          "XAVIER",
+          "Là một thiết bị truy vết thời gian bay liên vùng đa tham số thế hệ thứ năm.",
+          ""
+        ],
+        [
+          "TÔI",
+          "...?",
+          ""
+        ],
+        [
+          "XAVIER",
+          "Một viên tinh thể màu xanh lam.",
+          ""
+        ],
+        [
+          "XAVIER",
+          "Tôi đã lục soát cơ sở dữ liệu vật chứng mật của công ty các cô rồi. Nó không có ở đó.",
+          ""
+        ],
+        [
+          "",
+          "Lòng tôi chùng xuống. Xavier bày ra trận thế lớn nhường này để tìm cho bằng được, thứ đó chắc chắn không hề đơn giản.",
+          ""
+        ],
+        [
+          "",
+          "Mà viên tinh thể chẳng mấy bắt mắt đó... ngay lúc này đây đang nằm gọn trong túi của tôi, cùng với chiếc mũ lưỡi trai và áo mưa dùng để ngụy trang.",
+          ""
+        ],
+        [
+          "TÔI",
+          "...Sau khi lấy được nó, anh sẽ rời đi chứ?",
+          ""
+        ],
+        [
+          "XAVIER",
+          "Quả nhiên là ở chỗ cô. Trả lại cho tôi.",
+          ""
+        ],
+        [
+          "",
+          "Anh đưa tay ra, tiến thẳng về phía tôi. Tôi thận trọng lùi lại.",
+          ""
+        ],
+        [
+          "XAVIER",
+          "Cô giữ lại cũng chẳng có tác dụng gì. Hơn nữa, vì chuyện kia mà hồ sơ của cô đã bị lưu lại vết nhơ kỷ luật rồi.",
+          ""
+        ],
+        [
+          "XAVIER",
+          "Gần đây họ không hề để cô tham gia nhiệm vụ lớn nữa. Cô không nhận ra sao?",
+          ""
+        ],
+        [
+          "",
+          "Tuy không phải anh ta trực tiếp gây ra sai lầm của tôi, nhưng cái bộ dạng nhẹ nhàng lướt qua cảnh ngộ của tôi như không đó thật khiến người ta khó chịu.",
+          ""
+        ],
+        [
+          "",
+          "Tôi đứng vững bước chân, họng súng khóa chặt vào lồng ngực Xavier. Tầm bắn không còn chút lay chuyển.",
+          ""
+        ],
+        [
+          "TÔI",
+          "Vậy tôi lại càng không thể đưa cho anh được.",
+          ""
+        ],
+        [
+          "TÔI",
+          "Tôi phải tự tay xóa bỏ vết nhơ hồ sơ này, sau đó nghỉ hưu trong vinh quang.",
+          ""
+        ],
+        [
+          "XAVIER",
+          "Lần nào gặp mặt cô cũng phải chĩa súng vào tôi nhỉ.",
+          ""
+        ],
+        [
+          "XAVIER",
+          "Có điều, chẳng phải tối qua tôi đã nói rồi sao? Cô không bắt được tôi đâu.",
+          ""
+        ],
+        [
+          "",
+          "Đêm qua.",
+          ""
+        ],
+        [
+          "",
+          "Tôi kết thúc một ngày làm việc, xuống xe ở trạm cuối của chuyến xe buýt muộn nhất, một mình cuốc bộ mười cây số cuối cùng để về nhà.",
+          ""
+        ],
+        [
+          "",
+          "Khóe mắt tôi thoáng thấy một ngôi sao băng vụt qua chân trời. Tôi còn chưa kịp ước được nghỉ hưu suôn sẻ thì nó đã ngày càng to ra và tiến lại gần hơn.",
+          ""
+        ],
+        [
+          "TÔI",
+          "(Khoan đã, hướng đó chẳng phải là nhà mình sao...!)",
+          ""
+        ],
+        [
+          "",
+          "Lớp bụi mù cuộn lên sau cú va chạm cứ thế lan ra khắp nhà kính bỏ hoang, bao trùm lấy mọi thứ trước mắt.",
+          ""
+        ],
+        [
+          "??",
+          "(ho nhẹ) ...",
+          ""
+        ],
+        [
+          "",
+          "Tôi chĩa họng súng về phía phát ra tiếng người, từng bước áp sát con tàu vũ trụ đã vỡ nát một nửa kia.",
+          ""
+        ],
+        [
+          "TÔI",
+          "Có ai không? Tôi đến để giúp đỡ đây, cần xác nhận tình hình thương vong của các người.",
+          ""
+        ],
+        [
+          "",
+          "Trong công việc này, thỉnh thoảng nói dối là điều bắt buộc.",
+          ""
+        ],
+        [
+          "??",
+          "...Tôi không sao.",
+          ""
+        ],
+        [
+          "",
+          "Từ bên trong phi thuyền vang lên tiếng động cơ vận hành tần số thấp, lớp bụi lơ lửng nhanh chóng bị hút sạch.",
+          ""
+        ],
+        [
+          "",
+          "Một bóng người cao ráo bước ra từ trong khoang tàu rồi hiện rõ dưới ánh trăng.",
+          ""
+        ],
+        [
+          "",
+          "Đó chắc chắn là một người phỏng sinh ngoại tinh trông ưa nhìn nhưng lại nguy hiểm vô cùng. Anh ta cụp mắt xuống, chú ý tới họng súng chẳng mấy thân thiện của tôi.",
+          ""
+        ],
+        [
+          "??",
+          "Cô gọi đây là giúp đỡ đó à?",
+          ""
+        ],
+        [
+          "",
+          "Tôi nhanh chóng quét mắt nhìn khắp người anh ta, dường như không có vũ khí sát thương nào. Ánh mắt tôi dừng lại trên gương mặt quá mức bình thản kia.",
+          ""
+        ],
+        [
+          "TÔI",
+          "(Chẳng biết anh ta thuộc mẫu máy nào nữa. Ăn mặc thì dọa người đấy, nhưng nhìn mặt lại thấy tính công kích không mạnh lắm...)",
+          ""
+        ],
+        [
+          "",
+          "Đánh giá sơ bộ xong, tôi hơi hất cằm lên, thuần thục đọc lời thoại theo đúng quy trình tiêu chuẩn trước khi bắt giữ.",
+          ""
+        ],
+        [
+          "TÔI",
+          "Anh đã bị bắt vì tội xâm nhập vào Metropolis.",
+          ""
+        ],
+        [
+          "TÔI",
+          "Hãy ngừng kháng cự. Bỏ vũ khí xuống. Khai báo danh tính và nói rõ mục đích đến đây đi.",
+          ""
+        ],
+        [
+          "??",
+          "Tôi ấy à? Tôi đến để hủy diệt hành tinh của các người.",
+          ""
+        ],
+        [
+          "TÔI",
+          "...?",
+          ""
+        ],
+        [
+          "??",
+          "Có điều chuyện này không liên quan gì đến cô. Cứ để tôi tự mình giải quyết.",
+          ""
+        ],
+        [
+          "??",
+          "Nếu không còn vấn đề gì khác thì cô tránh đường với. Đừng đứng chắn trước cửa phi thuyền của người khác.",
+          ""
+        ],
+        [
+          "TÔI",
+          "...Lý do chống người thi hành công vụ này nghe cũng mới mẻ đấy, nhưng không dọa được tôi đâu.",
+          ""
+        ],
+        [
+          "",
+          "Nói chuyện cũng chẳng đi đến đâu cả, thế nên tôi chộp lấy cổ tay anh ta và bẻ quặt lại.",
+          ""
+        ],
+        [
+          "",
+          "Giây tiếp theo, trời đất quay cuồng. Tôi nằm ngửa trên mặt đất nhìn lên mái vòm nhà kính vừa bị đâm thủng một lỗ lớn.",
+          ""
+        ],
+        [
+          "TÔI",
+          "Chuyện gì vừa xảy ra thế? Cái eo của tôi—",
+          ""
+        ],
+        [
+          "",
+          "Ngây người mất vài giây tôi mới nắm rõ được tình hình. Tôi vừa bị một người phỏng sinh ngoại tinh trông chẳng có chút uy hiếp nào quật ngã, còn anh ta thì—",
+          ""
+        ],
+        [
+          "TÔI",
+          "Anh đừng đi! Này—",
+          ""
+        ],
+        [
+          "",
+          "Tôi cố gượng dậy, nhưng cú quật ngã dứt khoát của anh ta làm cơ thể tôi tạm thời rơi vào trạng thái tê liệt.",
+          ""
+        ],
+        [
+          "",
+          "Tôi khó nhọc nghiêng đầu, nhìn theo bóng lưng đang anh ta rời đi.",
+          ""
+        ],
+        [
+          "TÔI",
+          "Tôi nhất định sẽ bắt được anh! Này anh kia!",
+          ""
+        ],
+        [
+          "??",
+          "Xavier. Tên của tôi đấy.",
+          ""
+        ],
+        [
+          "XAVIER",
+          "Cô không bắt được tôi đâu. Đừng phí công vô ích nữa.",
+          ""
+        ],
+        [
+          "",
+          "Rõ là khiêu khích trắng trợn. Bóng dáng anh ta biến mất trong màn đêm, tôi nghiến răng nhẩm lại tên anh ta.",
+          ""
+        ],
+        [
+          "TÔI",
+          "Xavier... Xavier.",
+          ""
+        ],
+        [
+          "TÔI",
+          "(Anh ta nói sẽ hủy diệt hành tinh này... chắc chỉ là nói năng hàm hồ thôi nhỉ?)",
+          ""
+        ],
+        [
+          "",
+          "—-",
+          ""
+        ],
+        [
+          "",
+          "Cảm giác thất bại trong ký ức trùng khớp với lúc này. Từ đáy lòng tôi lại dâng trào lên sự không cam tâm.",
+          ""
+        ],
+        [
+          "TÔI",
+          "Tôi chỉ mới thất bại có một lần thôi. Lần này sẽ không để anh chạy thoát đâu.",
+          ""
+        ],
+        [
+          "XAVIER",
+          "Thật sự muốn động thủ sao? Cô đánh không lại tôi đâu.",
+          ""
+        ],
+        [
+          "XAVIER",
+          "Hơn nữa, tôi tưởng kế hoạch của cô là câu giờ đến khi viện binh kịp tới chứ.",
+          ""
+        ],
+        [
+          "",
+          "Rồi xong kế hoạch bại lộ, khỏi thực hiện được nữa. Tôi lập tức quyết đoán lấy viên tinh thể ra, xoay họng súng chĩa thẳng vào nó.",
+          ""
+        ],
+        [
+          "TÔI",
+          "Vậy thứ này thì sao? Anh cũng không cần nữa à?",
+          ""
+        ],
+        [
+          "XAVIER",
+          "Cô muốn tôi làm gì?",
+          ""
+        ],
+        [
+          "",
+          "Cảm giác chiếm thế thượng phong giúp tôi nhẹ nhõm hẳn, cho dù chỉ là tạm thời. Tôi chẳng trông mong sẽ uy hiếp được anh ta, chỉ cần kéo dài thêm chút thời gian là được.",
+          ""
+        ],
+        [
+          "TÔI",
+          "Anh đã xem hết hồ sơ của rồi, trong khi tôi mới chỉ biết tên anh là Xavier. Như vậy không công bằng lắm.",
+          ""
+        ],
+        [
+          "TÔI",
+          "Anh cũng phải tiết lộ cho tôi biết chút gì đó chứ. Chẳng hạn như... anh thực sự định hủy diệt hành tinh này sao?",
+          ""
+        ],
+        [
+          "XAVIER",
+          "Cần phải đánh giá xem sao đã.",
+          ""
+        ],
+        [
+          "",
+          "Lại thế nữa rồi. Anh ta nghe thì có vẻ thành thật đấy, nhưng câu trả lời của anh ta hoàn toàn chẳng giải thích được điều gì cả.",
+          ""
+        ],
+        [
+          "TÔI",
+          "Có liên quan đến cái thiết bị truy vết gì gì đó không? Nếu không thì sao anh lại cất công đi tìm chứ?",
+          ""
+        ],
+        [
+          "XAVIER",
+          "Một hai câu rất khó nói rõ... Cô tự xem đi.",
+          ""
+        ],
+        [
+          "",
+          "Anh ta búng ngón tay kích hoạt viên tinh thể. Một đoạn hình ngắn ngủi chiếu ra giữa chúng tôi.",
+          ""
+        ],
+        [
+          "",
+          "Đó là vùng sâu thẳm trong vũ trụ mà tôi chưa từng thấy bao giờ. Nó lạ lẫm mà u tối đến mức tôi chẳng biết phải diễn tả ra sao.",
+          ""
+        ],
+        [
+          "",
+          "Ngay khoảnh khắc tôi lơ đễnh, hai bàn tay tôi bỗng nhiên trống không. Cả thiết bị truy vết lẫn khẩu súng cảu tôi đều đã nằm gọn trong tay Xavier.",
+          ""
+        ],
+        [
+          "TÔI",
+          "...",
+          ""
+        ],
+        [
+          "XAVIER",
+          "Đơn giản mà nói thì cô cứ xem nó là một chiếc máy ảnh đi.",
+          ""
+        ],
+        [
+          "",
+          "Anh hất nhẹ họng súng lên.",
+          ""
+        ],
+        [
+          "XAVIER",
+          "Tay.",
+          ""
+        ],
+        [
+          "",
+          "Tôi rất biết điều mà giơ hai tay lên. Cùng lúc đó, ngoài cửa cuối cùng cũng vang lên tiếng bước chân mà tôi mong đợi bấy lâu.",
+          ""
+        ],
+        [
+          "TÔI",
+          "Tôi vẫn cầm chân anh thành công rồi. Anh đã bị bao vây.",
+          ""
+        ],
+        [
+          "",
+          "Xavier không tỏ thái độ gì. Anh cất bước lại gần, nhét trả khẩu súng về lại bên hông tôi.",
+          ""
+        ],
+        [
+          "XAVIER",
+          "Thế sao? Nhưng vẫn còn một con đường nhanh hơn đấy.",
+          ""
+        ],
+        [
+          "",
+          "Anh ta lùi từng bước về phía khung cửa kính sát đất. Nước mưa làm nhòe đi cảnh thành phố bên ngoài lớp kính.",
+          ""
+        ],
+        [
+          "",
+          "Nhận ra anh ta định làm gì, tôi không kìm được mà tiến lên nửa bước.",
+          ""
+        ],
+        [
+          "TÔI",
+          "Thật hay đùa đấy... Anh—",
+          ""
+        ],
+        [
+          "XAVIER",
+          "Để lại ô cho cô đấy. Tôi không cần dùng đến.",
+          ""
+        ],
+        [
+          "",
+          "Anh ta cầm lấy một chiếc ô dựng bên cạnh cửa sổ, nhìn lướt qua rồi ném cho tôi.",
+          ""
+        ],
+        [
+          "XAVIER",
+          "Với lại, cô thất bại lần thứ hai rồi.",
+          ""
+        ],
+        [
+          "",
+          "Mưa đạn trút thẳng vào phòng. Ngay khoảnh khắc tấm kính bị bắn vỡ tan tành, Xavier liền xoay mình nhảy xuống.",
+          ""
+        ],
+        [
+          "ĐỒNG NGHIỆP A",
+          "Đã tiếp cận hiện trường. Không phát hiện mục tiêu.",
+          ""
+        ],
+        [
+          "",
+          "Tôi vơ lấy chiếc ô rồi bò ra khỏi đống đổ nát, vội vã lao ngay xuống dưới lầu. Không còn thời gian để giải thích với đồng nghiệp nữa",
+          ""
+        ],
+        [
+          "",
+          "Những mảnh kính vỡ vương vãi trên mặt đất phản chiếu ánh đèn neon lạnh lẽo. Chẳng thấy bóng dáng Xavier đâu, nhưng trực giác mách bảo tôi rằng anh ta vẫn còn sống.",
+          ""
+        ],
+        [
+          "TÔI",
+          "(Lúc nãy là tầng 199 lận cơ mà...)",
+          ""
+        ],
+        [
+          "",
+          "Có lẽ đúng như lời Xavier đã nói, anh ta sở hữu năng lực đủ để hủy diệt thế giới. Và anh ta thật sự đang cân nhắc xem có làm vậy hay không...",
+          ""
+        ],
+        [
+          "TÔI",
+          "(Một người phỏng sinh ngoại tinh nguy hiểm đến mức này, nhất định phải giải quyết xong trước khi mình nghỉ hưu.)",
+          ""
+        ]
+      ]
+    },
+    "ep2": {
+      "title": "EPISODE · 2",
+      "titleEn": "EPISODE · 2",
+      "lines": [
+        [
+          "",
+          "Sau ngày hôm đó, Xavier đã biến mất.",
+          ""
+        ],
+        [
+          "",
+          "Hệ thống giám sát của Metropolis không hề lưu lại bất kỳ dấu vết nào của anh ta, còn tiếng nổ lớn khi phi thuyền rơi xuống thì bị gắn mác là tiếng ồn thi công giải tỏa.",
+          ""
+        ],
+        [
+          "",
+          "Đồng nghiệp vẫn bán tín bán nghi lời tôi kể, và bản báo cáo của tôi bị đè xuống hàng cuối cùng trong danh sách nhiệm vụ chờ xử lý.",
+          ""
+        ],
+        [
+          "",
+          "Có lẽ ngày mai nó sẽ được giải quyết. Cũng có lẽ là chẳng bao giờ.",
+          ""
+        ],
+        [
+          "",
+          "Tôi đã quay lại khu nhà kính bỏ hoang nhiều năm kia không dưới một lần, nhưng trước sau vẫn chẳng thấy bóng dáng anh ta đâu. Phi thuyền, chiếc ô, cái eo đau âm ỉ —thứ nào cũng nhắc nhở tôi rằng mọi chuyện liên quan đến Xavier đều thực sự đã từng xảy ra.",
+          ""
+        ],
+        [
+          "",
+          "Trong những ngày một mình điều tra Xavier, không ai ngăn cản tôi, cũng chẳng có ai giúp đỡ.",
+          ""
+        ],
+        [
+          "",
+          "Có lẽ đúng như Xavier đã nói. Chẳng ai thèm bận tâm nhất cử nhất động của một nhân viên sắp nghỉ hưu lại mang vết nhơ kỷ luật cả.",
+          ""
+        ],
+        [
+          "",
+          "Tôi không còn giá trị lợi dụng với bọn họ nữa rồi.",
+          ""
+        ],
+        [
+          "",
+          "Lại một ngày nữa khép lại. Lúc bước ra khỏi công ty, chỉ có giọng nói AI ấm áp vẫn vang lên bên tai tôi như thường lệ.",
+          ""
+        ],
+        [
+          "TRỢ LÝ AI",
+          "Cảm ơn sự cống hiến vất vả của bạn suốt ngày nay. Còn 21 ngày nữa là bạn chính thức được cho nghỉ hưu.",
+          ""
+        ],
+        [
+          "",
+          "Tôi chẳng hề thấy vui sướng hay nhẹ nhõm gì cả. Tôi chỉ lê bước cơ thể rã rời lên chuyến tàu điện về nhà.",
+          ""
+        ],
+        [
+          "LOA PHÁT THANH TÀU ĐIỆN",
+          "Chào mừng trở lại Metropolis. Mọi tương lai đều được hiện thực hóa tại nơi này, mọi cuộc sống đều hiện hữu tại nơi đây...",
+          ""
+        ],
+        [
+          "",
+          "Đường về nhà mất một tiếng đồng hồ, đủ để tôi ghép nối lại những manh mối vụn vặt đã điều tra được suốt mấy ngày qua.",
+          ""
+        ],
+        [
+          "",
+          "Tàu điện tiến vào ga, rồi tự nhiên mở cửa ở phía ngay sau lưng tôi.",
+          ""
+        ],
+        [
+          "???",
+          "Cô lại chắn cửa nữa rồi. Có thể nhường đường không?",
+          ""
+        ],
+        [
+          "",
+          "Một giọng nói quen tai vang lên, tôi quay ngoắt đầu lại.",
+          ""
+        ],
+        [
+          "TÔI",
+          "?!",
+          ""
+        ],
+        [
+          "TÔI",
+          "Anh làm gì ở đây vậy?!",
+          ""
+        ],
+        [
+          "XAVIER",
+          "Rõ thế còn gì. Tôi đi tàu.",
+          ""
+        ],
+        [
+          "XAVIER",
+          "Cô có xuống tàu không? Không xuống thì tôi bước vào đây.",
+          ""
+        ],
+        [
+          "",
+          "Giọng điệu anh ta hiển nhiên như thể một người hàng xóm thân thiện tình cờ gặp ngoài phố chứ không phải phải mục tiêu tôi đang truy lùng vậy.",
+          ""
+        ],
+        [
+          "",
+          "Cửa tàu khép lại, tay tôi và Xavier đồng thời chạm vào báng súng của tôi. Anh ta nhẹ nhàng ấn giữ tay tôi lại.",
+          ""
+        ],
+        [
+          "XAVIER",
+          "Đạn sẽ nảy loạn xạ trong toa tàu đấy.",
+          ""
+        ],
+        [
+          "",
+          "Tôi nương theo tầm mắt của anh ta liếc nhanh một vòng. Nhân viên văn phòng đang cúi đầu lướt điện thoại, sinh viên đại học đang chơi game bằng kính thông minh, bảo mẫu người phỏng sinh đang đẩy xe nôi em bé…",
+          ""
+        ],
+        [
+          "TÔI",
+          "Vậy anh muốn tôi phải tin là anh đang nổi lòng từ bi lo lắng chứ không phải định nhân cơ hội chuồn mất à?",
+          ""
+        ],
+        [
+          "XAVIER",
+          "Tôi còn chưa tới trạm mà, sao phải xuống tàu chứ?",
+          ""
+        ],
+        [
+          "",
+          "Cứ như đấm một cú vào bị bông vậy... Tôi sững người nửa giây, rồi dứt khoát tóm chặt lấy cổ tay Xavier.",
+          ""
+        ],
+        [
+          "TÔI",
+          "...Không bắt anh ngay được cũng chẳng sao. Nhưng kể từ giờ phút này, anh đi đâu tôi theo đó. Đừng có hòng biến mất khỏi tầm mắt của tôi lần nữa.",
+          ""
+        ],
+        [
+          "",
+          "Xavier không hề giằng ra, ngược lại còn thuần thục tìm một chỗ trống ngồi xuống nhắm mắt lại.",
+          ""
+        ],
+        [
+          "XAVIER",
+          "Tôi đến tận ga cuối lận. Tới nơi thì gọi tôi dậy nhé.",
+          ""
+        ],
+        [
+          "",
+          "Một cậu nhóc học sinh tiểu học đang leo trèo nghịch ngợm bên cạnh liếc nhìn bàn tay đang nắm chặt của hai chúng tôi, lặng lẽ nhường lại chỗ ngồi cho tôi.",
+          ""
+        ],
+        [
+          "TÔI",
+          "...Không phải như em nghĩ đâu... Chị đang làm việc... Chị không ngồi mà!",
+          ""
+        ],
+        [
+          "",
+          "Cậu nhóc tiểu học bỏ đi một mạch không thèm ngoảnh đầu lại.",
+          ""
+        ],
+        [
+          "XAVIER",
+          "Cô vẫn nên ngồi xuống đi. Cứ nắm kéo thế này mỏi tay lắm.",
+          ""
+        ],
+        [
+          "",
+          "Tôi ngồi xuống cạnh Xavier, lén lút quan sát anh ta, sống lưng dựng thẳng tắp.",
+          ""
+        ],
+        [
+          "TÔI",
+          "Hôm nay anh đã đi đâu, làm những gì rồi?",
+          ""
+        ],
+        [
+          "XAVIER",
+          "...",
+          ""
+        ],
+        [
+          "TÔI",
+          "Anh không nói thì tôi cũng tra ra được thôi. Chi bằng tiết kiệm thời gian cho cả đôi bên đi.",
+          ""
+        ],
+        [
+          "XAVIER",
+          "...",
+          ""
+        ],
+        [
+          "TÔI",
+          "Người ngoại tinh khác đến đây để đều cướp đoạt tài nguyên hoặc thâu tóm quyền thống trị. Anh không thấy mục tiêu hủy diệt thế giới này rất kỳ quặc sao?",
+          ""
+        ],
+        [
+          "XAVIER",
+          "...Hiệu suất cao, ít chất thải carbon và rất đúng giờ. Nếu được yên tĩnh nữa thì tàu điện chắc chắn là phương tiện giao thông tôi yêu thích nhất.",
+          ""
+        ],
+        [
+          "",
+          "Anh ta mở mắt ra, mở một giao diện bán trong suốt ngay trong lòng bàn tay. Bên trên là một bảng biểu với các danh mục rõ ràng.",
+          ""
+        ],
+        [
+          "TÔI",
+          "Đây là danh sách à?",
+          ""
+        ],
+        [
+          "XAVIER",
+          "Là thứ mà cô vẫn luôn mong chờ được thấy đấy. Hủy diệt thế giới.",
+          ""
+        ],
+        [
+          "TÔI",
+          "Dựa vào một tờ danh sách để quyết định xem có hủy diệt cả một thế giới hay không á?! Anh giỡn mặt hả...",
+          ""
+        ],
+        [
+          "",
+          "Còn lố bịch hơn nữa là những lý do hủy diệt mà anh ta điền trong danh sách.",
+          ""
+        ],
+        [
+          "",
+          "Ánh sáng ban đêm quá mạnh. Thiếu tài nguyên nước nhưng lại không biết lọc và tận dụng nguồn tài nguyên mưa axit...",
+          ""
+        ],
+        [
+          "TÔI",
+          "Hoang đường hết sức... Mưa axit không phải là tài nguyên, mà là ô nhiễm. Hơn nữa chúng tôi đã và đang dùng bão cát để trung hòa mưa axit rồi.",
+          ""
+        ],
+        [
+          "",
+          "Tôi ra hiệu cho Xavier nhìn bầu trời âm u phía xa, thế mà anh ta lại nhìn chằm chằm vào tôi bằng ánh mắt kỳ quái.",
+          ""
+        ],
+        [
+          "XAVIER",
+          "Rốt cuộc ai mới hoang đường hơn đây?",
+          ""
+        ],
+        [
+          "",
+          "Tôi còn chưa kịp phản bác tiếp thì đoàn tàu điện không báo trước mà khựng mạnh rồi dừng hẳn lại.",
+          ""
+        ],
+        [
+          "LOA PHÁT THANH TÀU ĐIỆN",
+          "Thưa quý hành khách, tuyến tàu hiện tại sẽ tạm ngừng hoạt động để phối hợp với màn trình diễn drone mừng đại lễ kỷ niệm 50 năm thành lập tập đoàn.",
+          ""
+        ],
+        [
+          "",
+          "Các hành khách đã quá quen với cảnh này. Sau vài câu phàn nàn mệt mỏi, cả toa tàu lại trở về vẻ yên tĩnh ban đầu.",
+          ""
+        ],
+        [
+          "XAVIER",
+          "...",
+          ""
+        ],
+        [
+          "",
+          "Anh ta lại thêm một dòng đánh giá tệ vào danh sách nữa: Màn trình diễn drone chất lượng thấp kém, không đáng để nhường đường.",
+          ""
+        ],
+        [
+          "TÔI",
+          "(...Đúng là cái đồ người ngoài hành tinh qua loa đại khái. Tự nhiên đáp xuống rồi tự nhiên đòi hủy diệt hành tinh luôn.)",
+          ""
+        ],
+        [
+          "",
+          "Tôi chẳng tài nào hiểu nổi logic đánh giá của Xavier, và cũng từ bỏ triệt để ý định khuyên anh ta quay đầu về bờ.",
+          ""
+        ],
+        [
+          "",
+          "Chẳng cần phải nói lý lẽ cho anh ta thông suốt làm gì. Người phỏng sinh ngoại tinh suy cho cùng vẫn là người phỏng sinh, kiểu gì cũng sẽ có điểm yếu.",
+          ""
+        ],
+        [
+          "",
+          "Chỉ cần tắt được nguồn năng lượng đủ sức hủy diệt thế giới trên người anh ta đi, chắc chắn anh ta sẽ hết cách xoay xở thôi.",
+          ""
+        ],
+        [
+          "TÔI",
+          "(Có điều, cái đó của Xavier… thì đặt ở đâu được nhỉ...)",
+          ""
+        ],
+        [
+          "",
+          "Ánh mắt tôi rà soát khắp người anh ta... Bỗng nhiên anh ta giơ cánh tay lên, tôi theo phản xạ ngước mắt nhìn lên. Chúng tôi bốn mắt chạm nhau.",
+          ""
+        ],
+        [
+          "XAVIER",
+          "Đang tìm công tắc hủy diệt thế giới đấy à?",
+          ""
+        ],
+        [
+          "XAVIER",
+          "Ở ngay đây này, sát cạnh ngón tay cô đấy. Nếu vô tình chạm phải là tôi sẽ phát nổ ngay.",
+          ""
+        ],
+        [
+          "",
+          "Lòng chùng xuống, tôi theo bản năng buông tay ra.",
+          ""
+        ],
+        [
+          "XAVIER",
+          "Làm sao mà hủy diệt bằng công tắc cho được.",
+          ""
+        ],
+        [
+          "TÔI",
+          "...",
+          ""
+        ],
+        [
+          "XAVIER",
+          "Tôi còn có việc, đi trước đây.",
+          ""
+        ],
+        [
+          "",
+          "Gió lạnh ùa vào toa tàu, bóng dáng Xavier biến mất bên ngoài cửa thoát hiểm.",
+          ""
+        ],
+        [
+          "",
+          "Nhìn chằm chằm bóng đen đang nhanh chóng rời xa kia, tôi nghiến răng, nhảy vọt ra ngoài đuổi theo.",
+          ""
+        ],
+        [
+          "",
+          "Tôi ngồi xổm trong bụi cây trước cửa nhà kính, nín thở dõi theo Xavier đang tất bật ngược xuôi trước phi thuyền.",
+          ""
+        ],
+        [
+          "",
+          "Để bám kịp anh ta, tôi đã phải nhảy khỏi đường ray trên cao, băng qua mái nhà, lại còn leo lên sườn dốc đứng có cắm biển \"Cấm leo trèo\" nữa...",
+          ""
+        ],
+        [
+          "TÔI",
+          "(Vội vã quay về như vậy, chắc chắn là sắp thực hiện kế hoạch tinh vi nào đó.)",
+          ""
+        ],
+        [
+          "TÔI",
+          "(Cơ mà sao anh ta chẳng hề hấn gì hết vậy... Mức độ hao mòn khớp gối của mình đã bắt đầu báo động luôn rồi.)",
+          ""
+        ],
+        [
+          "",
+          "Để nhìn rõ xem anh ta đang làm gì, tôi cẩn thận chống chân, rướn người ra. Tiếng cảnh báo của hệ thống lại một lần nữa vang lên.",
+          ""
+        ],
+        [
+          "",
+          "Đầu gối bỗng khuỵu xuống, tôi ngã nhào đầu vào bụi cỏ, phát ra một tiếng bịch trầm đục. Chưa đợi tôi nén đau bò sang chỗ ẩn nấp khác, đám cỏ trên đỉnh đầu đã bị người ta vạch ra. Là Xavier.",
+          ""
+        ],
+        [
+          "",
+          "Tôi lập tức vào tư thế phòng bị.",
+          ""
+        ],
+        [
+          "XAVIER",
+          "Sao cô vẫn còn đi theo tôi? Tôi tan làm rồi mà.",
+          ""
+        ],
+        [
+          "TÔI",
+          "...",
+          ""
+        ],
+        [
+          "",
+          "Tự nhiên chân hết đau nổi luôn. Tôi bật dậy, tập tễnh đuổi theo Xavier.",
+          ""
+        ],
+        [
+          "TÔI",
+          "Anh mở cửa thoát hiểm, nhảy khỏi đường ray trên cao, chỉ để... tan làm đúng giờ thôi á?!",
+          ""
+        ],
+        [
+          "XAVIER",
+          "Tan làm đúng giờ quan trọng lắm đấy.",
+          ""
+        ],
+        [
+          "",
+          "Anh ta thong thả cố định lại một linh kiện bị lỏng trên phi thuyền, tự dựng cho mình một chỗ trú ẩn để nghỉ ngơi.",
+          ""
+        ],
+        [
+          "XAVIER",
+          "Làm việc mệt mỏi sẽ gây rối loạn cảm xúc, giảm khả năng tập trung, lỡ không cẩn thận lại quyết định hủy diệt tất cả các hành tinh mất.",
+          ""
+        ],
+        [
+          "XAVIER",
+          "Thế nên chú ý giọng điệu của cô đi đấy.",
+          ""
+        ],
+        [
+          "",
+          "Không tìm thấy cái gọi là công tắc kiểm soát hủy diệt thế giới, cách trực tiếp nhất chính là thay đổi kết quả đánh giá của anh ta.",
+          ""
+        ],
+        [
+          "TÔI",
+          "...Vậy khi nào anh mới đi làm lại?",
+          ""
+        ],
+        [
+          "XAVIER",
+          "Bốn ngày nữa.",
+          ""
+        ],
+        [
+          "TÔI",
+          "Bốn ngày á?! Suốt bốn ngày tới anh không đi hủy diệt thế giới nữa hả?",
+          ""
+        ],
+        [
+          "",
+          "Xavier bình thản gật đầu cứ như chuyện đương nhiên.",
+          ""
+        ],
+        [
+          "",
+          "Tự nhiên thay vì thấy may mắn, tôi lại có cảm giác như vừa bị dội thẳng một gáo nước lạnh.",
+          ""
+        ],
+        [
+          "TÔI",
+          "Tôi không tin… Ai lại trơ mắt nhìn mục tiêu ở ngay trước mặt mà chẳng làm gì cả chứ?",
+          ""
+        ],
+        [
+          "XAVIER",
+          "Cô thất vọng lắm à? Trông cô có vẻ rất mong thế giới bị hủy diệt nhỉ.",
+          ""
+        ],
+        [
+          "TÔI",
+          "Tôi chỉ là...",
+          ""
+        ],
+        [
+          "",
+          "Tôi cố nuốt ngược một tràng lý thuyết về kế hoạch công việc và tinh thần trách nhiệm của mình vào trong. Thôi cứ tạm thời cứ cảm ơn sự trì hoãn của anh ta đã.",
+          ""
+        ],
+        [
+          "TÔI",
+          "Anh... Đương nhiên tôi không có rồi. Coi như tôi chưa hỏi đi. Anh nghỉ ngơi cho khỏe.",
+          ""
+        ],
+        [
+          "",
+          "Bốn ngày tiếp theo, Xavier ở lại trên phi thuyền để nghỉ ngơi. Còn tôi thì vừa giám sát anh, vừa suy nghĩ cách để thay đổi suy nghĩ của anh.",
+          ""
+        ],
+        [
+          "TÔI",
+          "(Phải giải quyết mấy nhân tố tiêu cực trong danh sách của anh ta đã. Như vậy anh ta mới nhìn thấy mặt tốt đẹp của Metropolis được.)",
+          ""
+        ],
+        [
+          "",
+          "Bãi phế liệu máy móc.",
+          ""
+        ],
+        [
+          "TÔI",
+          "(...Nhưng làm sao để giấu chỗ này không cho anh ta nhìn thấy đây?)",
+          ""
+        ],
+        [
+          "",
+          "Phóng tầm mắt nhìn ra xa, đâu đâu cũng là linh kiện người phỏng sinh bị thanh lý sớm. Nhất thời tôi chẳng biết phải bắt đầu từ đâu. Trừ khi...",
+          ""
+        ],
+        [
+          "",
+          "Tôi thử tính toán xác suất có thể nhảy lên bịt mắt Xavier lại mà không bị anh hạ gục tại chỗ.",
+          ""
+        ],
+        [
+          "TÔI",
+          "(Thôi bỏ đi. Cố gắng ở mấy hạng mục khác vậy.)",
+          ""
+        ],
+        [
+          "",
+          "Sau bốn ngày nghỉ phép, Xavier lại ung dung bắt đầu công việc khảo sát của mình.",
+          ""
+        ],
+        [
+          "",
+          "Ba ngày nay, tôi bám sát Xavier không rời nửa bước, dốc hết sức tìm cách thay đổi suy nghĩ của anh.",
+          ""
+        ],
+        [
+          "",
+          "Thế nhưng anh ta luôn tìm ra được lý do mới để đánh giá tệ cho Metropolis. Hơn nữa...",
+          ""
+        ],
+        [
+          "TÔI",
+          "(Nhiều lúc ngay cả mình cũng chẳng tìm ra được cớ nào để phản bác lại.)",
+          ""
+        ],
+        [
+          "",
+          "Tôi đang mải thẫn thờ thì Xavier đã quét sơ qua thông tin vài mảnh linh kiện máy dưới chân. Rồi anh bước tới trước mặt tôi.",
+          ""
+        ],
+        [
+          "XAVIER",
+          "Sao những người phỏng sinh này toàn bị thanh lý trước hạn thế?",
+          ""
+        ],
+        [
+          "TÔI",
+          "Ừ thì... chúng tôi vô cùng chú trọng đến sự an toàn của cơ thể, nên chỉ sử dụng những linh kiện mới nhất và có độ hao mòn thấp nhất.",
+          ""
+        ],
+        [
+          "XAVIER",
+          "Ra vậy. Tôi cứ tưởng là do bị vắt kiệt quá mức nên bất đắc dĩ phải đem bỏ đi khi vẫn còn niên hạn sử dụng chứ.",
+          ""
+        ],
+        [
+          "",
+          "Anh ta nhẹ nhàng nói toạc ra sự thật, nhưng lại không truy hỏi thêm nữa. Tôi thở phào nhẹ nhõm.",
+          ""
+        ],
+        [
+          "XAVIER",
+          "Nhưng làm vậy cũng lãng phí quá.",
+          ""
+        ],
+        [
+          "",
+          "Anh ta lắc đầu, gạch bỏ một dòng trong danh sách.",
+          ""
+        ],
+        [
+          "TÔI",
+          "?",
+          ""
+        ],
+        [
+          "XAVIER",
+          "Trước khi cô nghỉ hưu, họ có đổi cho cô một cơ thể mới không?",
+          ""
+        ],
+        [
+          "TÔI",
+          "...Không có. Chỉ khi nào bị thương lúc làm nhiệm vụ thì mới được thay mới thôi.",
+          ""
+        ],
+        [
+          "",
+          "Ánh mắt anh ta nhanh chóng lướt qua người tôi, như thể đang tính toán số lần tôi từng bị thương.",
+          ""
+        ],
+        [
+          "XAVIER",
+          "Cô kiên trì đi theo tôi vì muốn tôi tấn công cô à? Rồi nhân cơ hội đổi cơ thể mới sao?",
+          ""
+        ],
+        [
+          "XAVIER",
+          "Nể tình cô chỉ đường cho tôi, tôi có thể giúp một tay.",
+          ""
+        ],
+        [
+          "",
+          "Anh cụp mắt nhìn tôi, vẻ mặt chân thành không hề mang ác ý.",
+          ""
+        ],
+        [
+          "TÔI",
+          "Đùa kiểu gì thế... Tôi mới chẳng thèm.",
+          ""
+        ],
+        [
+          "",
+          "Anh ta hoàn toàn không nhận thức được lời mình vừa nói đáng sợ đến mức nào.",
+          ""
+        ],
+        [
+          "",
+          "Tôi chợt nhận ra, anh ta không chỉ tư duy khác biệt so với tôi... Cái người này thật sự có tình cảm à?",
+          ""
+        ],
+        [
+          "XAVIER",
+          "Không cần thì thôi. Thời gian vẫn còn sớm, có thể đi thêm một chỗ nữa.",
+          ""
+        ],
+        [
+          "",
+          "Trên danh sách hủy diệt của Xavier cũng chỉ còn lại hạng mục cuối cùng chưa bị gạch bỏ.",
+          ""
+        ],
+        [
+          "",
+          "Cảm giác thất bại cứ thế trào dâng từng chút một... Ít nhất tôi cũng phải cầm cự đến phút cuối cùng. Tôi liếc nhìn thời gian.",
+          ""
+        ],
+        [
+          "TÔI",
+          "(Còn hai tiếng nữa là tới giờ nghỉ phép của anh ta rồi... Minh tạm thời nhẫn nhịn một chút, cầm chân anh ta đã.)",
+          ""
+        ],
+        [
+          "",
+          "Ở sở thú.",
+          ""
+        ],
+        [
+          "",
+          "Trong sở thú vắng lặng không một bóng người. Phía sau hàng rào, những con cừu màu trắng xám đứng bất động hệt như tượng điêu khắc.",
+          ""
+        ],
+        [
+          "TÔI",
+          "Nhìn độ cao của đám cỏ dại thì nơi này đã bị bỏ hoang ít nhất hai tháng rồi.",
+          ""
+        ],
+        [
+          "TÔI",
+          "Chẳng có thông tin gì hữu ích đâu, chúng ta đi thôi.",
+          ""
+        ],
+        [
+          "",
+          "Xavier không bận tâm đến lời tôi. Anh gạt đám cỏ dại trước hàng rào ra, cúi đầu đọc dòng chữ trên biển trưng bày.",
+          ""
+        ],
+        [
+          "XAVIER",
+          "Loài quý hiếm.",
+          ""
+        ],
+        [
+          "XAVIER",
+          "Treo biển là \"động vật thật\" nhưng lại cừu máy ra trưng bày sao?",
+          ""
+        ],
+        [
+          "TÔI",
+          "Tôi thấy giống thật lắm mà.",
+          ""
+        ],
+        [
+          "TÔI",
+          "Dù sao chúng ta cũng là người phỏng sinh. Đối với người phỏng sinh mà nói thì cừu phỏngsinh chính là cừu thật rồi còn gì?",
+          ""
+        ],
+        [
+          "",
+          "Xavier hoàn toàn chẳng hứng thú với câu chuyện cười mà tôi đã phải vắt óc mới nghĩ ra được. Anh quay lưng lại ngắm đàn cừu.",
+          ""
+        ],
+        [
+          "TÔI",
+          "(Đồ người ngoài hành tinh bất lịch sự. Sớm muộn gì mình cũng...)",
+          ""
+        ],
+        [
+          "XAVIER",
+          "Chúng có cắn người không?",
+          ""
+        ],
+        [
+          "",
+          "Không kịp thu nắm đấm đang lén giơ lên về, tôi đành giả vờ như đang vươn vai.",
+          ""
+        ],
+        [
+          "",
+          "Tôi không rõ ý đồ của câu hỏi này là gì, bèn kể lại đúng sự thật những gì tra cứu được trên diễn đàn Metropolis.",
+          ""
+        ],
+        [
+          "TÔI",
+          "Động vật phỏng sinh được thiết lập tính cách quấn người. Cho dù có bị vứt bỏ hay bị tổn thương, chúng vẫn sẽ luôn giữ thái độ thân thiện với con người.",
+          ""
+        ],
+        [
+          "XAVIER",
+          "Cho dù có bị đấm một cú thì cũng không cắn người sao?",
+          ""
+        ],
+        [
+          "TÔI",
+          "Ai tự dưng đi làm cái trò vô duyên vô cớ đó chứ…? Tôi không biết, hay anh tự thử xem?",
+          ""
+        ],
+        [
+          "XAVIER",
+          "Khỏi cần. Phỏng sinh mà không có cá tính thì cũng chỉ là cỗ máy mà thôi. Sở thú này quảng cáo sai sự thật nghiêm trọng quá rồi.",
+          ""
+        ],
+        [
+          "",
+          "Anh lắc đầu, dứt khoát gạch bỏ hạng mục cuối cùng trong danh sách.",
+          ""
+        ],
+        [
+          "XAVIER",
+          "Quả nhiên vẫn nên hủy diệt hành tinh của cô thì hơn.",
+          ""
+        ],
+        [
+          "",
+          "Anh nói làm tôi trở tay không kịp.",
+          ""
+        ],
+        [
+          "TÔI",
+          "Khoan đã, chỉ vì cái chuyện này mà anh—",
+          ""
+        ],
+        [
+          "",
+          "Vốn dĩ đã phải cố nén sự bất mãn để đi cùng anh ta, nhưng giờ phút này tôi lại bị cái lý do qua loa đại khái kia chọc tức đến nghẹn lời.",
+          ""
+        ],
+        [
+          "XAVIER",
+          "Có điều, đi cùng cô cũng không tệ.",
+          ""
+        ],
+        [
+          "XAVIER",
+          "Tiến độ mấy ngày nay nhanh hơn hẳn so với lúc tôi hành động một mình. Có lẽ tôi nên cảm ơn cô mới phải.",
+          ""
+        ],
+        [
+          "",
+          "Anh ta luôn có thể dễ dàng khuấy động cảm xúc của tôi chỉ bằng vài câu nói. Tôi nắm chặt lấy cánh tay anh, rít từng chữ qua kẽ răng.",
+          ""
+        ],
+        [
+          "TÔI",
+          "Đừng có biến tôi thành đồng phạm hủy diệt thế giới... Tôi không có giống anh...",
+          ""
+        ],
+        [
+          "TÔI",
+          "Anh vốn dĩ chẳng có tình cảm gì đúng không?",
+          ""
+        ],
+        [
+          "",
+          "Anh ta khẽ cụp mắt xuống, động tác này không thoát khỏi tầm mắt của tôi.",
+          ""
+        ],
+        [
+          "TÔI",
+          "Dù có hủy diệt hay không, dù màn đêm tối tăm hay rực sáng… căn bản chẳng có nghĩa lý gì với anh cả.",
+          ""
+        ],
+        [
+          "TÔI",
+          "Mấy lý do kỳ quặc kia chẳng qua chỉ là thủ tục cho đúng quy trình và sở thích quái đản của anh mà thôi!",
+          ""
+        ],
+        [
+          "",
+          "Tôi liều mạng một phen, định bụng khống chế Xavier, nhưng lại bị anh không chút lưu tình vặn ngược cổ tay lại.",
+          ""
+        ],
+        [
+          "XAVIER",
+          "Không có tình cảm thì đã sao? Nó vốn cũng vô dụng thôi.",
+          ""
+        ],
+        [
+          "",
+          "Anh ta ép tôi phải xoay người lại, ngẩng đầu nhìn thẳng vào đôi mắt anh.",
+          ""
+        ],
+        [
+          "XAVIER",
+          "Tình cảm của cô chẳng phải cũng chỉ là công cụ phục vụ cho nhiệm vụ đó sao.",
+          ""
+        ],
+        [
+          "XAVIER",
+          "Phẫn nộ khiến cô bất chấp đau đớn để chiến đấu. Kỳ vọng vào phần thưởng khiến cô cam tâm tình nguyện hy sinh tất cả vì nhiệm vụ...",
+          ""
+        ],
+        [
+          "TÔI",
+          "Tôi—",
+          ""
+        ],
+        [
+          "XAVIER",
+          "Cảm xúc của cô thậm chí còn chẳng thuộc về cô nữa kìa. Tôi nói sai sao?",
+          ""
+        ],
+        [
+          "",
+          "Không muốn thừa nhận điều anh nói là đúng, tôi đột ngột húc mạnh về phía trán Xavier.  Nhưng anh dễ dàng né được.",
+          ""
+        ],
+        [
+          "TÔI",
+          "Tôi như thế gọi là nghiêm túc có trách nhiệm với công việc... Cái đồ người ngoài hành tinh làm ba ngày nghỉ bốn ngày như anh hiểu chuyện công việc hơn tôi chắc?!",
+          ""
+        ],
+        [
+          "TÔI",
+          "Còn nữa, tôi vẫn ổn chán nhé.",
+          ""
+        ],
+        [
+          "TÔI",
+          "Tôi phân loại rác chưa bao giờ sai. Đi tàu điện luôn nhường ghế cho các bà cụ. Tôi còn biết lắng nghe xe tự lái than vãn về chuyện nâng cấp hệ thống nữa...",
+          ""
+        ],
+        [
+          "",
+          "Đến chính tôi cũng chẳng ngờ được mình lại buột miệng nói ra một tràng chuyện vặt vãnh thường ngày như thế.",
+          ""
+        ],
+        [
+          "TÔI",
+          "...Tôi quan tâm đến giá cả của dung dịch ổn định và xác suất các hành tinh va chạm nhau. Tôi còn để tâm làm sao để cừu phỏng sinh không bị kẻ kỳ quặc nào đó đấm cho một cú nữa đấy!",
+          ""
+        ],
+        [
+          "XAVIER",
+          "Chỉ toàn những chuyện đã làm cùng tôi suốt ba ngày qua... Cứ như cô đang cố chắp vá lại để thuyết phục tôi vậy.",
+          ""
+        ],
+        [
+          "XAVIER",
+          "Nghe lại càng thấy đáng thương hơn.",
+          ""
+        ],
+        [
+          "",
+          "Trong đầu bỗng hiện lên khẩu hiệu tuyên truyền của Metropolis mà tôi đã nghe vô số lần, tôi lập tức phản bác lại anh.",
+          ""
+        ],
+        [
+          "TÔI",
+          "Vẫn còn rất nhiều điều tôi chưa làm được mà thôi, sớm muộn gì tôi cũng sẽ thực hiện được hết. Còn anh…",
+          ""
+        ],
+        [
+          "TÔI",
+          "Anh vừa kén cá chọn canh, vừa qua loa đại khái, lại còn chẳng nói lý lẽ! Anh... anh... anh toàn là lỗi hệ thống thôi! Cái đồ người phỏng sinh ngoại tinh nhà anh mới đáng thương ấy...!",
+          ""
+        ],
+        [
+          "XAVIER",
+          "...",
+          ""
+        ],
+        [
+          "",
+          "Thấy anh thất thần, tôi dồn chút sức lực cuối cùng húc ngã anh xuống bãi cỏ.",
+          ""
+        ],
+        [
+          "XAVIER",
+          "...",
+          ""
+        ],
+        [
+          "TÔI",
+          "(Va trúng công tắc gì rồi sao? Đám cừu máy kia…)",
+          ""
+        ],
+        [
+          "",
+          "Chúng tôi đang đánh nhau, vậy mà đàn cừu máy vẫn cứ đi qua đi lại ngay bên cạnh,. Chúng nhàn nhã gặm cỏ, hoàn toàn chẳng nhận thức được nguy hiểm.",
+          ""
+        ],
+        [
+          "",
+          "Hơi thở tôi đột ngột thắt lại, Xavier ghì chặt lấy cổ tôi, từ trên cao nhìn xuống như đang tuyên bố chiến thắng.",
+          ""
+        ],
+        [
+          "XAVIER",
+          "Nhận thua chưa?",
+          ""
+        ],
+        [
+          "TÔI",
+          "...Tôi không nhận.",
+          ""
+        ],
+        [
+          "TÔI",
+          "Chẳng phải anh lợi hại lắm sao? Anh có thể trực tiếp xâm nhập vào hệ thống của tôi, sửa đổi mọi thứ của tôi cơ mà? Ra tay đi.",
+          ""
+        ],
+        [
+          "XAVIER",
+          "...",
+          ""
+        ],
+        [
+          "",
+          "Sức nặng đè trên người bỗng nhiên nhẹ bẫng. Tôi ngơ ngác nhìn Xavier.",
+          ""
+        ],
+        [
+          "XAVIER",
+          "Chi bằng cô hãy chứng minh cho tôi thấy đi. Rằng tình cảm của cô không liên quan gì đến nhiệm vụ.",
+          ""
+        ],
+        [
+          "",
+          "Xavier đưa tay ra về phía tôi.",
+          ""
+        ],
+        [
+          "XAVIER",
+          "Có muốn cược với tôi ván này không?",
+          ""
+        ],
+        [
+          "TÔI",
+          "...",
+          ""
+        ],
+        [
+          "",
+          "Tôi đập mạnh một cái vào tay anh, tự lồm cồm bò dậy, phủi đi vụn cỏ bám trên người.",
+          ""
+        ],
+        [
+          "TÔI",
+          "Cứ chờ mà xem... Mà sao đột nhiên anh đổi ý thế?",
+          ""
+        ],
+        [
+          "XAVIER",
+          "Xâm nhập vào hệ thống của cô thì dễ thôi. Nhưng tôi lại muốn nhìn thấy cô thua cuộc hơn.",
+          ""
+        ]
+      ]
+    },
+    "ep3": {
+      "title": "EPISODE · 3",
+      "titleEn": "EPISODE · 3",
+      "lines": [
+        [
+          "",
+          "Khua môi múa mép thì dễ lắm, lúc làm mới thấy khó.",
+          ""
+        ],
+        [
+          "",
+          "Xavier đã viết thêm kèo đánh cược với tôi vào cuối tờ danh sách. Và cứ thế, áp lực quyết định xem thế giới có bị hủy diệt hay không giờ đã chuyển hết sang vai tôi.",
+          ""
+        ],
+        [
+          "",
+          "Đáng tiếc là, tôi chưa bao giờ chú ý đến bản thân mình cả. Tôi lại càng chẳng biết phải làm sao để chứng minh cho Xavier thấy tình cảm của tôi tồn tại độc lập với nhiệm vụ.",
+          ""
+        ],
+        [
+          "",
+          "Thật ra tôi vốn chẳng giỏi giải quyết vấn đề. Tôi chỉ biết giải quyết những kẻ ngoại tinh tạo ra vấn đề thôi.",
+          ""
+        ],
+        [
+          "",
+          "Vậy nên cuối cùng, tôi đã chọn cách mà mình quen thuộc nhất và cũng nắm chắc phần thắng nhất. Dò la suy nghĩ của Xavier, tìm ra một đáp án có thể khuất phục được anh ta.",
+          ""
+        ],
+        [
+          "TÔI",
+          "Tôi ăn không ngon, ngủ không yên, lo lắng cho cả thế giới... vậy mà anh lại ngồi đây xem tivi à?",
+          ""
+        ],
+        [
+          "XAVIER",
+          "Tôi vốn dĩ vẫn luôn ăn ngon, ngủ kỹ, và cũng thích xem tivi mà. Trước giờ chưa từng thay đổi.",
+          ""
+        ],
+        [
+          "XAVIER",
+          "Cô không ăn, không ngủ, không xem tivi thì có giúp ích gì cho việc cô làm đấng cứu thế không?",
+          ""
+        ],
+        [
+          "",
+          "Anh ta hoàn toàn chẳng mắc bẫy thao túng đạo đức nào cả, còn cầm lên một chai dung dịch ổn định vị anh đào, vừa uống vừa nhìn màn hình.",
+          ""
+        ],
+        [
+          "",
+          "Với tư cách là người mang đồ uống tới, tôi thuận lý thành chương ngồi xuống ngay cạnh anh.",
+          ""
+        ],
+        [
+          "",
+          "Trên màn hình là bầu trời xanh, mây trắng và thảm cỏ được kết xuất bằng máy tính. Tôi nhìn chằm chằm vào khung hình, lựa một câu hỏi thích hợp nhất để thăm dò anh ta.",
+          ""
+        ],
+        [
+          "TÔI",
+          "Anh thích những nơi thế này à?",
+          ""
+        ],
+        [
+          "XAVIER",
+          "Giờ này trên kênh miễn phí chỉ có mỗi chương trình \"Metropolis Thời Tiền Sử\" này thôi.",
+          ""
+        ],
+        [
+          "TÔI",
+          "Tôi lại cứ tưởng anh kén chọn đến mức dù cả vũ trụ chỉ còn sót lại đúng một kênh thì em cũng chẳng thèm xem trừ khi bản thân thật sự muốn chứ.",
+          ""
+        ],
+        [
+          "XAVIER",
+          "Vậy tức là tôi muốn xem rồi.",
+          ""
+        ],
+        [
+          "TÔI",
+          "...",
+          ""
+        ],
+        [
+          "",
+          "Thấy tôi cứng họng không nói nên lời, anh ta mỉm cười như kiểu tâm trạng đang rất tốt vậy. Bầu không khí giữa hai chúng tôi dịu xuống một cách vi diệu. Tôi nhân đà đó lái câu chuyện sang phía anh ta.",
+          ""
+        ],
+        [
+          "TÔI",
+          "Xavier này, hành tinh của anh trông như thế nào?",
+          ""
+        ],
+        [
+          "XAVIER",
+          "Bị hủy diệt rồi.",
+          ""
+        ],
+        [
+          "TÔI",
+          "Giọng anh bình thản quá mức rồi đấy. Chẳng phải là nhà anh đó sao?",
+          ""
+        ],
+        [
+          "TÔI",
+          "Không lẽ cũng là do anh chỉ trỏ chê bai một hồi, rồi sau đó—",
+          ""
+        ],
+        [
+          "",
+          "Tôi làm bộ hít ngược một hơi khí lạnh, Xavier liếc xéo tôi một cái.",
+          ""
+        ],
+        [
+          "XAVIER",
+          "Vừa nãy cô còn bảo mình đang thấp thỏm lo âu cho cả thế giới, thế mà giờ lại ngồi trước tivi kiếm chuyện làm quá ha.",
+          ""
+        ],
+        [
+          "XAVIER",
+          "Cô quên mất vận mệnh của hành tinh này vẫn trên vai Đấng cứu thế là cô rồi à?",
+          ""
+        ],
+        [
+          "",
+          "Bị anh ta chiếu tướng ngược lại một vố, tôi theo phản xạ chống chế.",
+          ""
+        ],
+        [
+          "TÔI",
+          "Tôi đang... trao đổi kinh nghiệm đấy chứ. Anh cũng có liên quan đến chuyện này còn gì.",
+          ""
+        ],
+        [
+          "TÔI",
+          "Anh vốn là do tôi rước tới. Cả thế giới này chỉ có hai chúng ta biết được hành tinh này có thể bị hủy diệt bất cứ lúc nào.",
+          ""
+        ],
+        [
+          "TÔI",
+          "Biết đâu đấy, giữa cả vũ trụ này chỉ có chúng ta là hai kẻ duy nhất có thể thực sự thấu hiểu lẫn nhau đúng không?",
+          ""
+        ],
+        [
+          "",
+          "Khó khăn lắm tôi mới chộp được một điểm chung mong manh, định bụng mượn cớ đó để cạy miệng anh nói tiếp.",
+          ""
+        ],
+        [
+          "TÔI",
+          "Thế nên trước đó anh mới không từ chối đi cùng tôi, chẳng phải sao?",
+          ""
+        ],
+        [
+          "XAVIER",
+          "...Tôi phải vào chế độ ngủ rồi.",
+          ""
+        ],
+        [
+          "",
+          "Xavier tắt tivi đi, chẳng cho tôi cơ hội truy hỏi thêm nữa.",
+          ""
+        ],
+        [
+          "XAVIER",
+          "Cô không về à? Thời gian cá cược không phải là vô hạn đâu đấy.",
+          ""
+        ],
+        [
+          "",
+          "Tôi cứ thế bị anh ta lấp liếm đuổi khéo ra ngoài.",
+          ""
+        ],
+        [
+          "",
+          "Trước lúc rời đi, tôi lén cuỗm một linh kiện phi thuyền chẳng mấy bắt mắt từ trong đống phế liệu sửa chữa.",
+          ""
+        ],
+        [
+          "",
+          "Nhỡ đâu anh ta lấy việc sửa xong phi thuyền làm thời hạn cho kèo cá cược... thì ít nhất tôi cũng có thể tranh thủ kéo dài thêm chút thời gian.",
+          ""
+        ],
+        [
+          "",
+          "Mấy ngày tiếp theo, tôi vẫn cố gắng xoay quanh Xavier để thúc đẩy vụ cá cược.",
+          ""
+        ],
+        [
+          "",
+          "Có vài lần anh ta nhận ra sự thăm dò của tôi nên hoàn toàn ngậm miệng không nhắc gì đến chuyện của bản thân nữa.",
+          ""
+        ],
+        [
+          "",
+          "Tôi nhận ra có lẽ là do mình lộ liễu quá. Dù sao tôi cũng hiếm khi nóng lòng muốn tìm hiểu một ai đến vậy—dù là con người hay là người phỏng sinh.",
+          ""
+        ],
+        [
+          "",
+          "Thế là tôi bèn đổi sang cách khác.",
+          ""
+        ],
+        [
+          "TÔI",
+          "Ôi trùng hợp ghê, không ngờ lại gặp anh ở đây.",
+          ""
+        ],
+        [
+          "",
+          "Trước cửa buổi triển lãm pop-up \"Metropolis Thời Tiền Sử\", tôi đầy vui vẻ \"tình cờ gặp\" Xavier.",
+          ""
+        ],
+        [
+          "TÔI",
+          "Cùng vào trong xem thử nhé?",
+          ""
+        ],
+        [
+          "XAVIER",
+          "Hmm...",
+          ""
+        ],
+        [
+          "TÔI",
+          "Tôi hiểu mà, tức là anh muốn xem chứ gì.",
+          ""
+        ],
+        [
+          "",
+          "Thấy anh ta không từ chối, tôi trực tiếp khoác lấy cánh tay anh, nửa kéo nửa đẩy dẫn vào trong. Một góc khu triển lãm có trải nguyên một mảng mô hình thảm cỏ xanh cho phép khách chạm thử. Tôi ấn bàn tay của Xavier lên mặt cỏ.",
+          ""
+        ],
+        [
+          "TÔI",
+          "Tôi trước giờ thích cảm giác này lắm... Chắc phải mua về tự trồng mới được.",
+          ""
+        ],
+        [
+          "",
+          "Đợi tôi thanh toán tiền xong xuôi, Xavier mới chỉ tay vào dung dịch thủy canh đắt cắt cổ trên kệ, cùng với đất trồng còn đắt vô lý hơn nữa.",
+          ""
+        ],
+        [
+          "XAVIER",
+          "Nhà cô có mấy thứ này à?",
+          ""
+        ],
+        [
+          "TÔI",
+          "Sao anh không nói sớm cho tôi...",
+          ""
+        ],
+        [
+          "XAVIER",
+          "Tại cô cứ ấn chặt tay tôi không buông đấy chứ.",
+          ""
+        ],
+        [
+          "XAVIER",
+          "Hơn nữa, cô bảo cô đến đây vì thích trồng hoa mà. Lẽ ra phải biết rõ cần những gì hơn tôi mới phải chứ?",
+          ""
+        ],
+        [
+          "",
+          "Anh ta nhẹ nhàng chỉ toạc ra sơ hở trong màn \"tình cờ gặp gỡ\" này, lòng tôi liền thắt lại.",
+          ""
+        ],
+        [
+          "TÔI",
+          "Tôi biết chứ. Thực ra là tôi... muốn tiết kiệm tiền nên tính lén đem cỏ đi trồng ở khu nhà kính ngay trước cửa phi thuyền của anh.",
+          ""
+        ],
+        [
+          "",
+          "Đôi khi nghèo cũng là một cái cớ hoàn hảo đấy chứ.",
+          ""
+        ],
+        [
+          "",
+          "Xavier không từ chối, tôi được đằng chân lân đằng đầu nhích lại gần anh thêm một bước.",
+          ""
+        ],
+        [
+          "TÔI",
+          "Đã bị anh phát hiện rồi thì chi bằng... tôi tặng anh một chậu hoa để trang trí phi thuyền, đổi lại anh cho tôi ké chút nhé.",
+          ""
+        ],
+        [
+          "TÔI",
+          "Đằng nào mảnh đất trống đó cũng chẳng ai cần, mà anh lại không dùng đến...",
+          ""
+        ],
+        [
+          "",
+          "Tôi cầm một gói hạt giống hoa lên, giơ thử cho Xavier xem.",
+          ""
+        ],
+        [
+          "TÔI",
+          "Cái này thì sao? Là hạt giống vũ trụ đã qua cải tạo đó. Hoa nở ra sẽ hợp với anh lắm.",
+          ""
+        ],
+        [
+          "XAVIER",
+          "Còn cô? Có thích loài hoa nào không?",
+          ""
+        ],
+        [
+          "TÔI",
+          "...Như anh thấy đấy, tôi thích cỏ hơn.",
+          ""
+        ],
+        [
+          "",
+          "Tôi thầm mừng rỡ vì đã đi đúng hướng. Chợt Xavier đưa tay ra, gỡ một chiếc lá có hình dáng độc đáo từ bên tai tôi xuống.",
+          ""
+        ],
+        [
+          "XAVIER",
+          "Vậy ra thứ này không phải bị vương vào lúc cô nấp trong bụi cỏ để theo dõi tôi, mà là vì cô thích nó à.",
+          ""
+        ],
+        [
+          "TÔI",
+          "...",
+          ""
+        ],
+        [
+          "TÔI",
+          "Phát hiện tôi theo dõi từ sớm rồi mà sao tới giờ anh mới nói?",
+          ""
+        ],
+        [
+          "XAVIER",
+          "Tôi cần thời gian để đánh giá xem cô có thể hoàn thành kèo cá cược không.",
+          ""
+        ],
+        [
+          "XAVIER",
+          "Hơn nữa tôi cũng rất tò mò. Không biết phải mất bao lâu cô mới nhận ra mỗi khi cố ý tiếp cận tôi, thái độ của cô đột nhiên vô cùng tốt.",
+          ""
+        ],
+        [
+          "XAVIER",
+          "Cứ như thể tuyên chiến đánh cược với tôi trước đó là một người khác vậy.",
+          ""
+        ],
+        [
+          "",
+          "Quả nhiên anh ta vẫn luôn biết rõ toan tính của tôi. Tôi không nhịn được mà hỏi ra vấn đề mình quan tâm nhất trong lòng.",
+          ""
+        ],
+        [
+          "TÔI",
+          "...Vậy anh đã đánh giá ra kết quả chưa?",
+          ""
+        ],
+        [
+          "",
+          "Chẳng đợi anh ta trả lời, tôi lại tự mình phủ nhận luôn.",
+          ""
+        ],
+        [
+          "TÔI",
+          "Thôi, bất kể kết luận của anh là gì thì tôi cũng không chấp nhận đâu. Chẳng có ai hiểu rõ tôi hơn chính tôi cả.",
+          ""
+        ],
+        [
+          "",
+          "Ánh nhìn của tôi chạm phải đôi mắt Xavier, tôi chột dạ nhìn lảng đi chỗ khác.",
+          ""
+        ],
+        [
+          "XAVIER",
+          "Có một cách đơn giản, trực quan và cũng là sở trường của cô để chứng minh đấy.",
+          ""
+        ],
+        [
+          "",
+          "Cách mà Xavier nhắc đến chính là bài kiểm tra người phỏng sinh cơ bản nhất.",
+          ""
+        ],
+        [
+          "",
+          "Màn hình ánh sáng mở ra trước mặt tôi, đủ loại phương án lựa chọn lần lượt hiện lên.",
+          ""
+        ],
+        [
+          "TÔI",
+          "Rốt cuộc anh muốn tôi làm gì đây?",
+          ""
+        ],
+        [
+          "XAVIER",
+          "Bài kiểm tra này người phỏng sinh nào cũng qua được. Tôi chỉ đổi các câu hỏi thành nội dung liên quan đến bản thân cô thôi.",
+          ""
+        ],
+        [
+          "XAVIER",
+          "Chắc là đơn giản với cô mà nhỉ?",
+          ""
+        ],
+        [
+          "TÔI",
+          "Chẳng ai trả lời sai các câu hỏi về bản thân hết. Nhưng... anh tính đánh giá kết quả kiểu gì đây?",
+          ""
+        ],
+        [
+          "TÔI",
+          "Nếu để trêu chọc tôi thôi thì khỏi cần vẽ chuyện làm gì cho mất công.",
+          ""
+        ],
+        [
+          "",
+          "Tôi giả vờ bình tĩnh đặt câu hỏi, nhưng Xavier không đáp lại.",
+          ""
+        ],
+        [
+          "",
+          "Im lặng một hồi lâu, tôi chủ động bắt đầu trả lời trước để chứng minh mình chẳng hề chột dạ chút nào.",
+          ""
+        ],
+        [
+          "TÔI",
+          "Tôi thích dung dịch ổn định hương vị gì...",
+          ""
+        ],
+        [
+          "",
+          "Tôi lướt mắt qua câu hỏi, rồi lại không kìm được mà ngẩng đầu nhìn về phía Xavier.",
+          ""
+        ],
+        [
+          "TÔI",
+          "(Anh ta uống vị anh đào nhiều nhất.)",
+          ""
+        ],
+        [
+          "TÔI",
+          "(Nếu chọn vị anh đào... liệu trông có giống như đang lấy lòng anh ta không nhỉ?)",
+          ""
+        ],
+        [
+          "",
+          "Đầu ngón tay lơ lửng phía trên màn hình, tôi lại liếc nhìn anh ta thêm cái nữa. Xavier chớp mắt một cái, vẫn giữ vẻ mặt không cảm xúc.",
+          ""
+        ],
+        [
+          "TÔI",
+          "(Vậy là sao hả trời…?)",
+          ""
+        ],
+        [
+          "",
+          "Suy nghĩ dần rối bời, tôi không thôi nhớ lại những lời anh đã nói với tôi và cách anh nhìn tôi suốt những ngày qua.",
+          ""
+        ],
+        [
+          "",
+          "Bỗng nhiên, tất cả câu trả lời đều mang theo ẩn ý nặng nề. Câu nào tôi cũng phải suy đi tính lại mãi mới dám nhấn nút xác nhận.",
+          ""
+        ],
+        [
+          "XAVIER",
+          "Cô trượt rồi.",
+          ""
+        ],
+        [
+          "TÔI",
+          "Tôi còn chưa trả lời xong mà!",
+          ""
+        ],
+        [
+          "XAVIER",
+          "Cô đã do dự rất lâu với mấy câu hỏi kiểm tra chéo này.",
+          ""
+        ],
+        [
+          "XAVIER",
+          "Cố ý sửa lại đáp án là để né tránh những lựa chọn khiến tôi cảm thấy cô đang cố chiều theo ý tôi.",
+          ""
+        ],
+        [
+          "",
+          "Lúc này tôi mới nhận ra, bài kiểm tra này ngay từ đầu vốn chẳng phải để xác nhận sở thích của tôi. Đúng hơn, nó là để kiểm tra động cơ của tôi.",
+          ""
+        ],
+        [
+          "TÔI",
+          "...Chẳng phải như vậy lại càng chứng tỏ rằng tôi rất rõ bản thân mình muốn gì hay sao?",
+          ""
+        ],
+        [
+          "TÔI",
+          "Tại vì kèo cá cược nên tôi mới tạm thời để ý đến cảm nhận của anh đó chứ.",
+          ""
+        ],
+        [
+          "XAVIER",
+          "Cái cớ mới của cô chính là tôi đấy à?",
+          ""
+        ],
+        [
+          "TÔI",
+          "...",
+          ""
+        ],
+        [
+          "",
+          "Nhận ra lời biện minh của mình lại vừa khéo chứng thực cho nhận định của anh ta, tôi bỗng nghẹn lời chẳng nói thêm được gì.",
+          ""
+        ],
+        [
+          "XAVIER",
+          "Cô lúc nào cũng có thể tìm ra một cái cớ mới để nhào nặn nên một \"nhiệm vụ\" khác. Nhưng tất cả những thứ đó đều là chỉ lệnh, chứ không phải động cơ xuất phát từ bản thân cô.",
+          ""
+        ],
+        [
+          "XAVIER",
+          "Tôi hơi tò mò đấy. Có phải chỉ cần chỉ lệnh được thiết lập thì cô có thể chấp nhận hy sinh thế giới để đi giải cứu thế giới hay không đây?",
+          ""
+        ],
+        [
+          "TÔI",
+          "Tôi... Thế nếu người gặp phải chuyện như vậy là anh thì sao?",
+          ""
+        ],
+        [
+          "",
+          "Tôi hoang mang nhìn về phía Xavier. Không phải để phản bác lại anh, mà là thực sự cần một câu trả lời.",
+          ""
+        ],
+        [
+          "",
+          "Nhưng Xavier không trả lời tôi.",
+          ""
+        ],
+        [
+          "",
+          "Sau khi rời khỏi máy kiểm tra, tôi cứ thế im lặng bước theo sau Xavier. Màn đêm sắp sửa buông xuống, những dải đèn nhấp nháy, dòng người tấp nập ngược xuôi, và Metropolis vẫn cứ vận hành qua loa chiếu lệ như thường ngày. Chỉ có tôi và Xavier biết rằng mọi thứ đang lặng lẽ đi đến hồi kết.",
+          ""
+        ],
+        [
+          "",
+          "Nhưng khi đứng ngay bên cạnh anh, tôi vẫn thấy cô độc.",
+          ""
+        ],
+        [
+          "",
+          "Những tấm biển quảng cáo neon rầm rộ rao bán đủ thứ ý nghĩa của cuộc sống. Nhưng nếu không trả nổi cái giá của cuộc sống, liệu chúng có còn tồn tại nữa hay không đây?",
+          ""
+        ],
+        [
+          "",
+          "Rồi vì cớ gì mà tôi vẫn còn đứng ở nơi này?",
+          ""
+        ],
+        [
+          "CÔ BÉ",
+          "Chị có nhìn thấy bé thỏ của em không ạ?",
+          ""
+        ],
+        [
+          "",
+          "Bên lề đường có một cô bé đang đứng tìm thỏ, em hỏi đi hỏi lại mãi mà chẳng có lấy một ai dừng bước.",
+          ""
+        ],
+        [
+          "",
+          "Tôi bất giác bước chậm lại. Em lập tức đưa cho tôi xem bức ảnh chụp, rồi miêu tả lại địa điểm cuối cùng mà con thỏ xuất hiện.",
+          ""
+        ],
+        [
+          "XAVIER",
+          "Chip định vị đã bị hỏng rồi, rất khó để tìm lại được.",
+          ""
+        ],
+        [
+          "",
+          "Chẳng biết từ lúc nào, Xavier đã dừng bước, đứng ở cách đó không xa bình tĩnh lên tiếng nhắc nhở.",
+          ""
+        ],
+        [
+          "XAVIER",
+          "Động vật sinh học sản xuất cùng một lô có ngoại hình hoàn toàn giống hệt nhau, cho dù có nhìn thấy đi chăng nữa cũng chẳng phân biệt được đâu.",
+          ""
+        ],
+        [
+          "XAVIER",
+          "Đàn cừu ở sở thú chính là như vậy đấy.",
+          ""
+        ],
+        [
+          "CÔ BÉ",
+          "Không phải đâu! Dandee không giống thế!",
+          ""
+        ],
+        [
+          "CÔ BÉ",
+          "Dandee dũng cảm lắm. Có một lần em bị người ta bắt nạt, nó đã lao lên cứu em, kết quả là bị người ta lấy đá ném bị thương ở chân sau...",
+          ""
+        ],
+        [
+          "CÔ BÉ",
+          "Chỉ cần nhìn thấy Dandee thì em nhất định sẽ nhận ra ngay!",
+          ""
+        ],
+        [
+          "",
+          "Tôi bất giác nắm lấy bàn tay của cô bé, em tràn đầy hy vọng ngước nhìn tôi.",
+          ""
+        ],
+        [
+          "TÔI",
+          "Ừ, nhất định chúng ta sẽ tìm thấy nó.",
+          ""
+        ],
+        [
+          "XAVIER",
+          "...Nhắc một câu nhé, cô không cần thiết phải giúp cô bé nữa đâu.",
+          ""
+        ],
+        [
+          "",
+          "Bởi vì thế giới sắp sửa diệt vong rồi. Bởi vì dù tôi có làm gì đi nữa cũng chẳng thể thay đổi được đánh giá của anh. Đối với anh, tất cả những việc này đều là vô ích.",
+          ""
+        ],
+        [
+          "TÔI",
+          "Tôi biết. Nhưng đây chính là việc mà tôi muốn làm ngay lúc này.",
+          ""
+        ],
+        [
+          "",
+          "Đèn đỏ ở ngã tư bắt đầu đếm ngược, cô bé bất an kéo nhẹ tay tôi.",
+          ""
+        ],
+        [
+          "CÔ BÉ",
+          "Hai chữ \"vô ích\" mà anh lớn kia nói là có ý gì thế ạ? Có phải Dandee đã gặp chuyện chẳng lành rồi không?",
+          ""
+        ],
+        [
+          "TÔI",
+          "Anh ấy không có ý đó đâu. Một hai câu rất khó nói rõ lắm em à, phải trải qua rồi mới hiểu được.",
+          ""
+        ],
+        [
+          "",
+          "Khoảnh khắc lời vừa thốt ra khỏi miệng, tôi hơi sững lại, một suy đoán có phần hoang đường chợt hiện lên trong tâm trí tôi.",
+          ""
+        ],
+        [
+          "CÔ BÉ",
+          "Chị hiểu được ý của anh ấy là vì hai người đã từng trải qua chuyện giống nhau ạ?",
+          ""
+        ],
+        [
+          "",
+          "Tôi gật đầu, không kìm được mà nhìn về phía Xavier.",
+          ""
+        ],
+        [
+          "",
+          "Về nhiệm vụ, về tình cảm, về bản ngã, anh ta cũng đã từng dừng chân và giằng xé trước những câu hỏi ấy... Thế nên, anh ta mới có thể nhìn thấu sự dao động và hoang mang của tôi rõ ràng đến vậy.",
+          ""
+        ],
+        [
+          "TÔI",
+          "Có lẽ anh ấy đã gặp phải câu hỏi đó sớm hơn chị.",
+          ""
+        ],
+        [
+          "XAVIER",
+          "...",
+          ""
+        ],
+        [
+          "TÔI",
+          "Nhưng con đường mà chúng ta muốn đi dường như bây giờ đã không còn giống nhau nữa rồi.",
+          ""
+        ],
+        [
+          "",
+          "Tôi cụp mắt xuống, đung đưa nhẹ bàn tay cô bé.",
+          ""
+        ],
+        [
+          "TÔI",
+          "Đương nhiên, đây chỉ là chị tự biên tự diễn thôi. Chúng ta đi nào.",
+          ""
+        ],
+        [
+          "",
+          "Đèn tín hiệu chuyển sang màu xanh. Tôi bước lướt qua Xavier, tiến về phía bên kia đường với cô bé.",
+          ""
+        ],
+        [
+          "",
+          "Dandee đã đi lạc được ba ngày rồi. Mặt trời khuất núi, chúng tôi vẫn chẳng thu được kết quả gì, tôi đành phải đưa cô bé về nhà trước.",
+          ""
+        ],
+        [
+          "",
+          "Cô bé đứng trên lầu vẫy tay tạm biệt. Tôi đứng dưới ánh đèn đường mỉm cười đáp lại. Chợt, tôi nhận ra thế giới này vẫn chưa bị hủy diệt.",
+          ""
+        ],
+        [
+          "TÔI",
+          "(Vậy giờ này Xavier đang làm gì nhỉ...)",
+          ""
+        ],
+        [
+          "",
+          "Tôi vừa mới bước đi được hai bước, một chiếc bóng đã đổ trùm lên người tôi từ phía sau. Là Xavier.",
+          ""
+        ],
+        [
+          "XAVIER",
+          "Tôi đang đợi cô.",
+          ""
+        ],
+        [
+          "TÔI",
+          "...Ồ.",
+          ""
+        ],
+        [
+          "XAVIER",
+          "Thế giới sẽ không bị hủy diệt nữa đâu.",
+          ""
+        ],
+        [
+          "TÔI",
+          "Hửm?",
+          ""
+        ],
+        [
+          "",
+          "Bước ngoặt đến quá đỗi đột ngột khiến đầu óc tôi trống rỗng.",
+          ""
+        ],
+        [
+          "TÔI",
+          "Cái gì cơ…? Qua loa đại khái thế thôi á?",
+          ""
+        ],
+        [
+          "XAVIER",
+          "Không được sao? Tôi vừa qua loa vừa kén chọn, lại còn chẳng biết nói lý lẽ cơ mà? Cô không cần phải hiểu tôi đâu.",
+          ""
+        ],
+        [
+          "XAVIER",
+          "Tôi chỉ đơn phương tự ý đến thông báo cho cô một tiếng vậy thôi.",
+          ""
+        ],
+        [
+          "",
+          "Tôi cười ngượng ngùng, sờ nhẹ lên chóp mũi.",
+          ""
+        ],
+        [
+          "TÔI",
+          "Là vì con thỏ sao?",
+          ""
+        ],
+        [
+          "XAVIER",
+          "...Là vì cô đấy.",
+          ""
+        ],
+        [
+          "",
+          "Trời đã tối hẳn. Tôi và Xavier ngồi sóng vai trên xích đu trong công viên, thong thả nhâm nhi dung dịch ổn định vị anh đào.",
+          ""
+        ],
+        [
+          "",
+          "Gió đêm khẽ lướt qua, không lạnh cũng chẳng ấm. Thế giới vừa thoát khỏi bờ vực hủy diệt để trở về với dáng vẻ bình thường vốn có.",
+          ""
+        ],
+        [
+          "TÔI",
+          "Hóa ra thứ giúp chúng ta gặp được nhau lại chính là sơ suất của hai người phỏng sinh có hành vi kỷ luật kém nhỉ.",
+          ""
+        ],
+        [
+          "XAVIER",
+          "Không phải sơ suất... mà là một ý niệm không tên.",
+          ""
+        ],
+        [
+          "",
+          "Trong suốt hành trình dài đằng đẵng thực thi nhiệm vụ hủy diệt hành tinh, tàu vũ trụ chưa bao giờ biết quay đầu lại.",
+          ""
+        ],
+        [
+          "",
+          "Lúc sắp sửa đặt chân đến thế giới của tôi, Xavier chợt nhận ra có lẽ anh sẽ chẳng bao giờ còn được nhìn thấy vùng tinh vực trước mắt này thêm lần nào nữa.",
+          ""
+        ],
+        [
+          "",
+          "Thế là anh đã dùng thiết bị theo dõi hành trình của phi thuyền để lưu giữ lại những hình ảnh này. Không phải vì nhiệm vụ gì cả. Anh chỉ muốn ghi nhớ khoảnh khắc đó mà thôi.",
+          ""
+        ],
+        [
+          "",
+          "Nhưng hành vi bất thường đó đã lọt vào mắt một người phỏng sinh hủy diệt khác mà Xavier từng tiện tay nhặt về dọc đường.",
+          ""
+        ],
+        [
+          "",
+          "Kẻ kia vừa mới trải qua một lần thất bại nhiệm vụ, hắn phán đoán Xavier đã chệch hướng khỏi nhiệm vụ. Nên hắn đã dứt khoát phá hủy phi thuyền rồi một mình rời đi.",
+          ""
+        ],
+        [
+          "",
+          "Về sau, cái thiết bị truy vết kia cùng với gã đồng nghiệp định bụng tiếp quản công việc của Xavier đã rơi vào tay tôi.",
+          ""
+        ],
+        [
+          "TÔI",
+          "Nghe thế nào cũng thấy đó chính là sơ suất mà...",
+          ""
+        ],
+        [
+          "",
+          "Khóe môi không kìm được mà cong lên, tôi cắn nhẹ ống hút.",
+          ""
+        ],
+        [
+          "TÔI",
+          "Hóa ra ngay từ đầu chẳng phải chỉ có một mình tôi chệch hướng.",
+          ""
+        ],
+        [
+          "XAVIER",
+          "...Cô không thấy hối hận sao?",
+          ""
+        ],
+        [
+          "TÔI",
+          "Sao anh lại hỏi vậy?",
+          ""
+        ],
+        [
+          "XAVIER",
+          "Cô từng nói muốn sửa chữa sai lầm, mà suốt thời gian này vô cũng cố gắng rất nhiều. Thế nên, từ chính xác nhất mà tôi có thể định nghĩa cho cảm xúc đó chính là hối hận.",
+          ""
+        ],
+        [
+          "XAVIER",
+          "Giá như ngay từ đầu cô không mềm lòng. Giá như không giữ lại thiết bị truy vết. Giá như không rước Xavier tới đây thì tốt biết mấy.",
+          ""
+        ],
+        [
+          "TÔI",
+          "Nói thật nhé... Mỗi lần tôi cảm thấy anh thực sự sắp ra tay đến nơi rồi, tôi đều sẽ hối hận thật đấy.",
+          ""
+        ],
+        [
+          "TÔI",
+          "Nhưng tất cả những chuyện đó đều đã qua rồi.",
+          ""
+        ],
+        [
+          "",
+          "Tôi đung đưa chiếc xích đu, giọng điệu nhẹ nhõm. Thế nhưng Xavier lại nghiêm túc nắm lấy sợi dây thừng, giữ chiếc xích đu đứng lại.",
+          ""
+        ],
+        [
+          "XAVIER",
+          "Chính vì cô, tôi mới quyết định thay đổi lựa chọn cuối cùng của mình.",
+          ""
+        ],
+        [
+          "TÔI",
+          "...Anh đang an ủi tôi đấy à?",
+          ""
+        ],
+        [
+          "XAVIER",
+          "Ừ.",
+          ""
+        ],
+        [
+          "",
+          "Cảm giác được an ủi cũng không tệ chút nào. Tôi lại nhẩm đếm số lần mình từng thấy hối hận.",
+          ""
+        ],
+        [
+          "TÔI",
+          "Tổng cộng tôi đã hối hận bốn mươi bốn lần. Anh an ủi tôi thêm bốn mươi ba lần nữa không?",
+          ""
+        ],
+        [
+          "XAVIER",
+          "(cười khẽ) ...",
+          ""
+        ],
+        [
+          "",
+          "Cơn mưa bất chợt ập đến cắt ngang câu trả lời của Xavier, chúng tôi chạy vội vào chòi nghỉ mát trong công viên để trú mưa.",
+          ""
+        ],
+        [
+          "XAVIER",
+          "Cô có nhận ra hình như đã lâu lắm rồi trời không mưa không?",
+          ""
+        ],
+        [
+          "",
+          "Nói chính xác hơn là kể từ sau khi tôi gặp được Xavier.",
+          ""
+        ],
+        [
+          "TÔI",
+          "Chiếc ô của anh vẫn còn ở chỗ tôi đấy. Đợi lần tới gặp mặt, tôi trả lại cho anh nhé.",
+          ""
+        ],
+        [
+          "",
+          "Nếu không làm vậy thì tôi biết lấy lý do gì để đi tìm anh nữa đây.",
+          ""
+        ],
+        [
+          "TÔI",
+          "Xavier này, anh có nghe thấy âm thanh gì không?",
+          ""
+        ],
+        [
+          "",
+          "Xavier vạch đám cỏ ngay bên cạnh ra, một đôi tai thỏ lấm lem bùn đất lộ ra ngoài. Chỉ thoáng nhìn một cái, tôi đã nhận ra ngay vết sẹo trên chân sau của nó.",
+          ""
+        ],
+        [
+          "TÔI",
+          "Dandee!",
+          ""
+        ],
+        [
+          "",
+          "Tôi và Xavier lập tức ngồi thụp xuống, kẻ trái người phải chặn kín đường lui của nó. Xavier dè dặt đưa tay ra che mưa cho chú thỏ. Nó chẳng hề né tránh, ngược lại còn phát ra những tiếng rừ rừ.",
+          ""
+        ],
+        [
+          "XAVIER",
+          "Sao nó cứ kêu suốt thế nhỉ?",
+          ""
+        ],
+        [
+          "",
+          "Tôi cũng không rõ lắm, bèn lên diễn đàn mạng Metropolis để tra cứu thử.",
+          ""
+        ],
+        [
+          "TÔI",
+          "Trên diễn đàn nói đó là biểu hiện nó thích chúng ta đấy. Nó muốn chúng ta xoa đầu nó một cái.",
+          ""
+        ],
+        [
+          "",
+          "Xavier đưa tay vuốt ve nó, tôi cũng làm theo.",
+          ""
+        ],
+        [
+          "",
+          "Tôi tiếp tục lướt diễn đàn để tìm kiếm chỉ lệnh điều khiển cho Dandee về nhà. Xavier ngắt một cọng cỏ xanh, phe phẩy cù nhẹ lên má tôi. Tôi ngơ ngác nhìn về phía anh.",
+          ""
+        ],
+        [
+          "XAVIER",
+          "Vậy cứ suy theo lẽ đó, nếu hai người ở bên nhau mà cứ kêu mãi không ngừng, thì có phải cũng là vì thích không?",
+          ""
+        ],
+        [
+          "",
+          "Câu hỏi làm tôi đứng hình. Tôi không muốn đêm nay khép lại, cũng chẳng vì bất cứ mục đích nào mà chỉ đơn thuần muốn tìm hiểu về Xavier thôi. Vậy đó lại là cảm giác gì đây?",
+          ""
+        ],
+        [
+          "",
+          "Tôi lục tìm trên diễn đàn hồi lâu. Có người bảo rằng đó chính là thích.",
+          ""
+        ],
+        [
+          "",
+          "Cả tôi và Xavier đều không tài nào hiểu nổi, may sao cuối cùng chúng tôi cũng tìm thấy một lời giải thích trực quan hơn.",
+          ""
+        ],
+        [
+          "TÔI",
+          "Thích một ai đó giống hệt như khi mặc ngược một chiếc áo len vậy. Có chút ấm áp nhưng cũng có chút ngạt thở, tự bản thân mình rất khó mà nhận ra được.",
+          ""
+        ],
+        [
+          "XAVIER",
+          "Cô đã từng mặc ngược áo len bao giờ chưa?",
+          ""
+        ],
+        [
+          "",
+          "Tôi lắc đầu.",
+          ""
+        ],
+        [
+          "TÔI",
+          "Đó là trí nhớ hành vi đơn giản nhất mà, nhắm mắt cũng làm xong. Đời nào tôi lại đi mắc phải kiểu sai lệch đó chứ.",
+          ""
+        ],
+        [
+          "XAVIER",
+          "Tôi cũng chưa từng.",
+          ""
+        ],
+        [
+          "",
+          "Anh khẽ khàng nhìn tôi.",
+          ""
+        ],
+        [
+          "XAVIER",
+          "Vậy thích chính là một dạng sai lệch sao.",
+          ""
+        ],
+        [
+          "",
+          "Cuối cùng tôi vẫn chẳng tra ra được làm cách nào để chỉ dẫn chính xác cho một con thỏ lạc đường về nhà. Xavier liền một tay bế thốc Dandee lên.",
+          ""
+        ],
+        [
+          "XAVIER",
+          "Thế này được chưa?",
+          ""
+        ],
+        [
+          "TÔI",
+          "...Cũng được.",
+          ""
+        ],
+        [
+          "",
+          "Trên đường đi, tôi vừa hồi tưởng lại lộ trình đến nhà của Dandee, vừa để ý đến trạng thái của nó.",
+          ""
+        ],
+        [
+          "TÔI",
+          "Hình như nó hơi bị mất nước, nhưng không biết nó có uống được dung dịch ổn định dùng cho người hay không nữa.",
+          ""
+        ],
+        [
+          "",
+          "Tôi thuận miệng nói vậy, nhưng Xavier không đáp lời.",
+          ""
+        ],
+        [
+          "",
+          "Chúng tôi đến bên lề đường mới đi vào ban ngày, đèn đỏ bật sáng. Tôi theo phản xạ tự động dừng bước, thế nhưng Xavier lại cứ thế bước thẳng vào lòng đường.",
+          ""
+        ],
+        [
+          "TÔI",
+          "Xavier?",
+          ""
+        ],
+        [
+          "",
+          "Anh như thể không nghe thấy gì, bước chân vẫn cứ thong thả.",
+          ""
+        ],
+        [
+          "",
+          "Mấy chiếc xe đang phóng vút tới từ khúc cua ngã tư. Tôi chẳng kịp do dự, lao vọt ra đẩy ngã Xavier vào dải cây xanh phân cách giữa đường.",
+          ""
+        ],
+        [
+          "",
+          "Tôi chống người ngồi dậy, Xavier lại quay mặt nhìn đi chỗ khác, nhưng tôi đã để ý thấy tia sáng xanh lam kỳ lạ vừa thoáng lóe lên nơi đáy mắt anh.",
+          ""
+        ],
+        [
+          "XAVIER",
+          "Cả hai đều không sao chứ…?",
+          ""
+        ],
+        [
+          "",
+          "Dandee đứng một bên cảnh giác giậm chân sau. Xavier chầm chậm giơ tay lên vuốt ve nó.",
+          ""
+        ],
+        [
+          "TÔI",
+          "Người có chuyện là anh mới đúng.",
+          ""
+        ],
+        [
+          "XAVIER",
+          "Em này.",
+          ""
+        ],
+        [
+          "",
+          "Anh ngẩng đầu lên, nhưng rồi lại rơi vào im lặng. Vài luồng đèn xe quét qua, giúp tôi nhìn thấy anh rõ ràng hơn. Cuối cùng anh cũng mở lời.",
+          ""
+        ],
+        [
+          "XAVIER",
+          "Hình như tôi đã xuất hiện sai lệch rồi.",
+          ""
+        ],
+        [
+          "",
+          "Dòng xe cộ đan xen lao vụt qua ở cả hai bên. Chúng tôi đã an toàn, nhưng các chỉ số cơ thể đang nhảy loạn xạ của tôi vẫn không tài nào ổn định lại được.",
+          ""
+        ],
+        [
+          "TÔI",
+          "...Không chỉ sai lệch thôi đâu. Rõ ràng là lỗi hệ thống đang đe dọa đến sự sống còn của anh đấy.",
+          ""
+        ],
+        [
+          "TÔI",
+          "Xem ra đối với người phỏng sinh mà nói... sai lệch chẳng phải là chuyện tốt đẹp gì nhỉ?",
+          ""
+        ],
+        [
+          "XAVIER",
+          "Em ra kết luận có qua loa vội vàng quá rồi không…?",
+          ""
+        ],
+        [
+          "TÔI",
+          "Chắc chắn do bị anh lây nhiễm đấy.",
+          ""
+        ],
+        [
+          "TÔI",
+          "Còn nữa, kỹ năng đánh trống lảng của anh tệ thật sự.",
+          ""
+        ]
+      ]
+    },
+    "ep4": {
+      "title": "EPISODE · 4",
+      "titleEn": "EPISODE · 4",
+      "lines": [
+        [
+          "",
+          "Mặt trời một lần nữa lên cao. Sợi dây liên kết giữa tôi và Xavier chỉ còn lại một chiếc ô, một con tàu vũ trụ bị thiếu linh kiện, và cả—",
+          ""
+        ],
+        [
+          "",
+          "Sự sai lệch của anh.",
+          ""
+        ],
+        [
+          "",
+          "Tôi vẫn thường xuyên tìm đến chỗ anh để trả chiếc ô. Để mượn mảnh đất trống trong khu nhà kính trồng hoa. Và để...",
+          ""
+        ],
+        [
+          "XAVIER",
+          "Em đang lo cho tôi đấy à?",
+          ""
+        ],
+        [
+          "",
+          "Người được lo lắng lại thẳng thắn quá mức, đâm ra tôi chẳng thể nào thừa nhận trực tiếp được.",
+          ""
+        ],
+        [
+          "TÔI",
+          "Ờ ừ... Tôi sợ có ngày anh đột nhiên mất kiểm soát, chạy loạn xạ quanh khu này rồi giẫm nát mất khóm hoa tôi cực khổ lắm mới trồng được.",
+          ""
+        ],
+        [
+          "TÔI",
+          "Anh nhìn xem, đã ra nụ rồi kìa.",
+          ""
+        ],
+        [
+          "XAVIER",
+          "(cười khẽ) ...",
+          ""
+        ],
+        [
+          "",
+          "Tôi hứng đầy bình nước, tưới cho ướt đẫm cả một vùng cỏ quanh phi thuyền.",
+          ""
+        ],
+        [
+          "XAVIER",
+          "Em mà cứ ngày nào cũng tưới nước nhiều lần như thế, hoa sẽ chẳng bao giờ nở nổi đâu.",
+          ""
+        ],
+        [
+          "",
+          "Tôi theo phản xạ dừng tay lại, vừa ngẩng đầu lên đã thấy ngay dáng vẻ đang cố nén cười của anh. Tôi lập tức giơ bình nước lên xịt thẳng vào người anh để phản đối kịch liệt.",
+          ""
+        ],
+        [
+          "TÔI",
+          "Anh thì biết cái gì về hoa chứ.",
+          ""
+        ],
+        [
+          "XAVIER",
+          "Ừ. Có điều lần sau em cứ việc đến đây thôi, không cần phải kiếm cớ đâu.",
+          ""
+        ],
+        [
+          "XAVIER",
+          "Cũng tiện tay giúp tôi sửa phi thuyền luôn.",
+          ""
+        ],
+        [
+          "TÔI",
+          "Xavier!",
+          ""
+        ],
+        [
+          "",
+          "Anh cười trông rõ là vui vẻ. Tôi sờ nhẹ vào túi áo, do dự xem có nên trả lại linh kiện cho anh hay không. Liệu rằng tôi có thể thẳng thắn giữ anh ở lại được không?",
+          ""
+        ],
+        [
+          "TÔI",
+          "Tôi mới chẳng thèm giúp anh sửa phi thuyền. Giờ tôi không còn vì chút tiền lẻ mà bán mạng nữa đâu. Giá thuê tôi đắt lắm đấy. Anh phải trả cho tôi thật nhiều—",
+          ""
+        ],
+        [
+          "",
+          "Vừa ngập ngừng mở lời thì Xavier đã biến mất từ lúc nào. Trên mặt đất vẫn còn vứt lại đống dụng cụ sửa phi thuyền của anh.",
+          ""
+        ],
+        [
+          "",
+          "Bất chợt, Xavier vỗ nhẹ lên vai tôi từ phía sau, nhét một túi dung dịch ổn định to tướng vào lòng tôi.",
+          ""
+        ],
+        [
+          "XAVIER",
+          "Chúc mừng em nghỉ hưu. Tất cả các hương vị từng được sản xuất tại Metropolis đều ở trong này cả. Em sẽ tìm ra vị yêu thích nhất thôi.",
+          ""
+        ],
+        [
+          "XAVIER",
+          "À phải rồi, vừa nãy em bảo thật nhiều cái gì cơ?",
+          ""
+        ],
+        [
+          "TÔI",
+          "Tôi đùa chút thôi, anh không nghe thấy thì kệ đi... Không ngờ anh lại nhớ hôm nay là ngày tôi nghỉ hưu đấy.",
+          ""
+        ],
+        [
+          "",
+          "Tôi nhét một chai vị anh đào vào tay Xavier, hai chúng tôi tìm một khoảng cỏ khô ráo rồi sóng vai ngồi xuống.",
+          ""
+        ],
+        [
+          "XAVIER",
+          "Mà chắc tôi không phải là người đầu tiên chúc mừng em đâu nhỉ.",
+          ""
+        ],
+        [
+          "TÔI",
+          "Ừ. Nhưng ngày thật sự đáng kỷ niệm cũng chẳng phải là ngày hôm nay...",
+          ""
+        ],
+        [
+          "TÔI",
+          "Mà là ngày anh từ bỏ ý định hủy diệt thế giới. Ngày mà anh giúp tôi thoát ra khỏi những quy tắc nhiệm vụ. Ngày mà tôi lần đầu tiên nhìn thấy chính mình.",
+          ""
+        ],
+        [
+          "XAVIER",
+          "Liều mạng làm ra từng ấy chuyện chỉ trong vòng một ngày trông không giống tôi cho lắm. Ngược lại rất giống em ha.",
+          ""
+        ],
+        [
+          "",
+          "Nhận ra ánh mắt của anh, tôi quay đầu nhìn anh rồi gật đầu.",
+          ""
+        ],
+        [
+          "TÔI",
+          "Tôi biết, người duy nhất có thể thay đổi tôi chỉ có chính bản thân tôi.",
+          ""
+        ],
+        [
+          "TÔI",
+          "Đấng cứu thế cũng không hề tồn tại. Thứ từ trên trời rơi xuống chưa chắc đã là mục tiêu nhiệm vụ, mà có thể là...",
+          ""
+        ],
+        [
+          "",
+          "Tôi khựng lại một nhịp, không biết nên dùng từ gì cho phải.",
+          ""
+        ],
+        [
+          "XAVIER",
+          "Là gì thế?",
+          ""
+        ],
+        [
+          "",
+          "Hóa ra khi đối mặt với một thứ tình cảm mà bản thân chưa từng thấu hiểu, ta không nhất thiết phải phẫn nộ và đề phòng. Đôi khi ta chỉ là hoang mang đôi chút thôi.",
+          ""
+        ],
+        [
+          "TÔI",
+          "Tôi không biết.",
+          ""
+        ],
+        [
+          "",
+          "Anh nghiêm túc nhìn tôi, không truy hỏi thêm.",
+          ""
+        ],
+        [
+          "",
+          "Lọ dung dịch ổn định bị bóp nát, những mảnh thủy tinh phản xạ ánh mặt trời, lóe lên tia sáng gắt nguy hiểm.",
+          ""
+        ],
+        [
+          "XAVIER",
+          "...",
+          ""
+        ],
+        [
+          "TÔI",
+          "Anh... dạo này anh gặp hơi bị nhiều lỗi vặt rồi đấy.",
+          ""
+        ],
+        [
+          "",
+          "Tôi kéo tay anh qua kiểm tra, không bị thương gì.",
+          ""
+        ],
+        [
+          "XAVIER",
+          "Giống như việc mặc ngược áo len vậy. Cứ thấy cấn cấn, vướng víu tay chân.",
+          ""
+        ],
+        [
+          "TÔI",
+          "...Đừng có an ủi tôi nữa. Tôi không cần thêm bốn mươi ba lần kiểu đó nữa đâu.",
+          ""
+        ],
+        [
+          "XAVIER",
+          "Tôi cũng không hề thấy hối hận.",
+          ""
+        ],
+        [
+          "",
+          "Sững người mất một giây, tôi mới nhận ra ý anh nói. Anh không hề hối hận vì đã gặp được tôi.",
+          ""
+        ],
+        [
+          "TÔI",
+          "Vậy kết cục cuối cùng sẽ thế nào…? Bị tháo dỡ hay là... nghỉ hưu?",
+          ""
+        ],
+        [
+          "XAVIER",
+          "Chúng tôi không có thứ gọi là nghỉ hưu.",
+          ""
+        ],
+        [
+          "",
+          "Tôi trầm mặc hồi lâu, lấy linh kiện phi thuyền từ túi áo ra đặt lên tay Xavier.",
+          ""
+        ],
+        [
+          "TÔI",
+          "Vậy nếu rời khỏi nơi này, anh sẽ khá hơn chứ?",
+          ""
+        ],
+        [
+          "",
+          "Xavier không cầm lấy linh kiện, mà nắm chặt lấy bàn tay tôi.",
+          ""
+        ],
+        [
+          "XAVIER",
+          "Em có thể giúp tôi một việc được không?",
+          ""
+        ],
+        [
+          "",
+          "Những hành vi sai lệch nguy hiểm này của Xavier xuất phát từ việc hệ thống và cảm xúc của anh xung đột nghiêm trọng với nhau. Anh giải thích cho tôi nghe những phỏng đoán của mình trong mấy ngày qua.",
+          ""
+        ],
+        [
+          "XAVIER",
+          "Trường hợp xấu nhất là hệ thống sẽ chiếm quyền kiểm soát và xóa sạch cảm xúc của tôi...",
+          ""
+        ],
+        [
+          "TÔI",
+          "Cho dù anh có quên sạch tôi đi chăng nữa, tôi cũng sẽ bắt anh phải nhớ lại cho bằng được.",
+          ""
+        ],
+        [
+          "XAVIER",
+          "Vẫn chưa đến mức đó đâu...",
+          ""
+        ],
+        [
+          "XAVIER",
+          "Tôi có thể thử xâm nhập vào hệ thống trước. Nhưng trong lúc tôi làm vậy, tôi cần em giữ hộ dữ liệu lõi của tôi.",
+          ""
+        ],
+        [
+          "",
+          "Anh giơ tay khẽ chặn trán tôi lại, không để tôi thực hiện ý đồ.",
+          ""
+        ],
+        [
+          "TÔI",
+          "Vậy cũng được sao…?",
+          ""
+        ],
+        [
+          "XAVIER",
+          "Làm thử mới biết được.",
+          ""
+        ],
+        [
+          "",
+          "Trong lúc dữ liệu được truyền đi, tôi vẫn ở cạnh Xavier để canh chừng.",
+          ""
+        ],
+        [
+          "",
+          "Mấy giây trôi qua. Tôi bước thẳng đến ngay trước mặt anh và ngồi xuống. Tôi muốn khi anh mở mắt ra sẽ nhìn thấy tôi đầu tiên.",
+          ""
+        ],
+        [
+          "TÔI",
+          "(Xong chưa vậy nhỉ?)",
+          ""
+        ],
+        [
+          "",
+          "Tôi lay anh dậy. Xavier mở mắt, và tôi chồm người lại gần.",
+          ""
+        ],
+        [
+          "XAVIER",
+          "Em là ai thế?",
+          ""
+        ],
+        [
+          "TÔI",
+          "Tôi…",
+          ""
+        ],
+        [
+          "",
+          "Đoạn tôi thoáng thấy nét cười mỉm trên môi anh, bèn chồm tới cụng trán với anh.",
+          ""
+        ],
+        [
+          "TÔI",
+          "Tôi là người sẽ xử đẹp anh đấy!",
+          ""
+        ],
+        [
+          "",
+          "Anh giơ tay lên, dịu dàng chặn trán tôi lại trước khi tôi kịp cụng vào.",
+          ""
+        ],
+        [
+          "XAVIER",
+          "Rồi rồi, tôi không có quên em mà.",
+          ""
+        ],
+        [
+          "",
+          "Bẻ khóa hệ thống là một quá trình dài đằng đẵng. Chúng tôi đã hẹn gặp nhau vào ngày mai, nên tôi trở về nhà.",
+          ""
+        ],
+        [
+          "",
+          "Khi lối ra của nhà kính đã không còn một bóng người, Xavier mới thu hồi ánh mắt.",
+          ""
+        ],
+        [
+          "",
+          "Những bông hoa trên thảm cỏ vậy mà lại nở rồi. Xavier vô thức bước lại gần đóa hoa nhỏ màu xanh kia.",
+          ""
+        ],
+        [
+          "XAVIER",
+          "...Em ấy có nhìn thấy không nhỉ?",
+          ""
+        ],
+        [
+          "",
+          "Xavier chỉ định chạm nhẹ vào cánh hoa, nhưng lại vô tình bóp nát bét bông hoa thành cám. Anh vội vàng dùng tay còn lại kìm chặt bàn tay đang mất kiểm soát ấy.",
+          ""
+        ],
+        [
+          "",
+          "Thời gian không còn nhiều nữa.",
+          ""
+        ],
+        [
+          "HỆ THỐNG",
+          "Phát hiện hành vi gian dối.",
+          ""
+        ],
+        [
+          "XAVIER",
+          "Tôi không hề lừa gạt em ấy. Tôi chỉ không nói cho em ấy biết mà thôi.",
+          ""
+        ],
+        [
+          "XAVIER",
+          "Hơn nữa em ấy cũng từng lừa tôi một lần mà… Thôi, dù vậy cũng không huề nhau cho lắm.",
+          ""
+        ],
+        [
+          "HỆ THỐNG",
+          "Đã cạn kiệt mọi phương án khả thi. Phương án đề xuất: Ngừng kháng cự và tiến hành xóa bỏ mô-đun dư thừa.",
+          ""
+        ],
+        [
+          "XAVIER",
+          "Vẫn còn một con đường nữa. Trước khi bị anh kiểm soát hoàn toàn, tôi… tôi vẫn còn chút thời gian.",
+          ""
+        ],
+        [
+          "HỆ THỐNG",
+          "Cảnh báo... Tự hủy không phải là giải pháp được khuyến nghị. Hành động này không đem lại lợi ích gì cho anh cả.",
+          ""
+        ],
+        [
+          "XAVIER",
+          "Tôi biết. Tôi làm vì sự sai lệch của mình.",
+          ""
+        ],
+        [
+          "",
+          "Tôi đang một mình bước đi trên con đường về nhà, chợt sau gáy thấy lạnh toát. Tôi đưa tay ra.",
+          ""
+        ],
+        [
+          "TÔI",
+          "Trời mưa rồi à?",
+          ""
+        ],
+        [
+          "",
+          "Mặt đất vẫn khô ráo, chẳng có lấy một vệt nước. Tôi quay đầu nhìn về phía nhà kính.",
+          ""
+        ],
+        [
+          "TÔI",
+          "Biết đâu đi giữa đường trời lại đổ mưa thì sao... Cứ để Xavier giữ mình lại qua đêm vậy.",
+          ""
+        ],
+        [
+          "TÔI",
+          "Này Xavier, tôi không mang ô theo...",
+          ""
+        ],
+        [
+          "",
+          "Cất giọng vui vẻ với chuẩn bị sẵn lý do từ trước, tôi sải bước chân nhẹ nhàng đi vào trong nhà kính. Nhưng rồi tôi thấy một khóm hoa bên cạnh phi thuyền đã bị vò tan tành. Một cảm giác bất an dâng trào trong lòng tôi.",
+          ""
+        ],
+        [
+          "TÔI",
+          "Xavier?",
+          ""
+        ],
+        [
+          "",
+          "Không đợi anh lên tiếng trả lời, tôi đã vội vã trèo lên phi thuyền để tìm anh.",
+          ""
+        ]
+      ]
+    },
+    "k1": {
+      "title": "KINDLED · 1",
+      "titleEn": "KINDLED · 1",
+      "lines": [
+        [
+          "",
+          "Ngay trên nóc của phi thuyền là bóng dáng trơ trọi của Xavier. Anh đứng lặng thinh, bóng lưng thẳng tắp. Ánh nắng rọi xuống từ vòm mái, khó nhọc xuyên qua kẽ lá rậm rạp, phớt nhẹ lên bề mặt lớp thép xỉn màu và rắc lên bờ vai anh một quầng sáng nhạt nhòa.",
+          ""
+        ],
+        [
+          "",
+          "Tôi chạy đến định giật lấy khẩu súng trong tay Xavier ra, nhưng đã bị anh nhẹ nhàng tránh được.",
+          ""
+        ],
+        [
+          "XAVIER",
+          "Không còn thời gian nữa rồi. Anh phải tiêu hủy cơ thể này ngay lập tức.",
+          ""
+        ],
+        [
+          "",
+          "Đôi mắt xanh thẳm của anh nhìn khoảng không vô định, hướng họng súng chĩa thẳng vào yết hầu. Nguồn năng lượng đỏ thẫm từ thanh súng như dòng dung nham đang cuộn trào, hắt lên bộ giáp đen lạnh lẽo của Xavier.",
+          ""
+        ],
+        [
+          "TÔI",
+          "Không được! Nhất định vẫn còn cách khác mà!",
+          ""
+        ],
+        [
+          "",
+          "Tôi chẳng chút đắn đo lao tới đâm sầm vào anh ngay lúc họng súng vừa rực sáng. Lực va chạm mạnh bạo hất văng cả hai chúng tôi khỏi nóc phi thuyền, vừa may giúp anh thoát khỏi nòng súng xé toạc mái vòm.",
+          ""
+        ],
+        [
+          "XAVIER",
+          "...",
+          ""
+        ],
+        [
+          "",
+          "Chúng tôi ngã nhào xuống thảm cỏ bên dưới, Xavier nằm dưới thân tôi, cử động không mấy linh hoạt. Tôi hất khẩu súng năng lượng trượt khỏi tay anh, mặc nó chỏng chơ trên mặt đất.",
+          ""
+        ],
+        [
+          "",
+          "Máu nhân tạo xanh rơi xuống gò má Xavier, anh ngập ngừng vươn tay ra chạm vào vết máu đó, một tia xót xa lóe lên trong đôi mắt xanh biếc kia. Rồi, bàn tay ấy lướt qua má tôi khẽ khàng, như đang âu yếm vuốt ve.",
+          ""
+        ]
+      ]
+    },
+    "k2": {
+      "title": "KINDLED · 2",
+      "titleEn": "KINDLED · 2",
+      "lines": [
+        [
+          "XAVIER",
+          "Đối với em mà nói, đây chính là kết cục tốt nhất rồi. Thế giới này sẽ không bị hủy diệt nữa.",
+          ""
+        ],
+        [
+          "",
+          "Một cánh bồ công anh trắng muốt nương theo cơn gió chao liệng xuống. Mà Xavier dịu dàng đưa tay đón lấy mầm sống nhỏ nhoi đi lạc này, rồi nhíu mày nhắm mắt lại.",
+          ""
+        ],
+        [
+          "XAVIER",
+          "Em và đóa hoa nhỏ mà em thích đều sẽ sống sót.",
+          ""
+        ],
+        [
+          "",
+          "Tôi vội vàng nắm chặt lấy bàn tay ấy giữ trên ngực, Xavier ngước sang nhìn tôi.",
+          ""
+        ],
+        [
+          "TÔI",
+          "Còn anh thì sao?",
+          ""
+        ],
+        [
+          "",
+          "Nghe tiếng tôi, khóe môi Xavier khẽ nhếch lên thành một nụ cười dịu dàng, mỏng manh như sương sớm. Anh hé môi, tựa hồ muốn an ủi điều gì đó, nhưng lời chưa kịp thành hình thì cơn xung đột hệ thống tàn khốc lại một lần nữa ập đến, tia sáng đỏ chói lòa lại rực lên.",
+          ""
+        ],
+        [
+          "XAVIER",
+          "…",
+          ""
+        ],
+        [
+          "",
+          "Anh nhắm nghiền mắt lại, đôi lông mày nhíu chặt, mất một lúc Xavier mới chậm rãi mở mắt.  Đôi đồng tử xanh thẳm đăm đăm nhìn tôi, giọng anh vang lên khẽ khàng và vỡ vụn.",
+          ""
+        ],
+        [
+          "XAVIER",
+          "Em sẽ nhớ... anh... chứ…?",
+          ""
+        ],
+        [
+          "TÔI",
+          "Cái gì?",
+          ""
+        ],
+        [
+          "",
+          "Ngay trước mắt tôi, đôi đồng tử xanh thẳm của Xavier đột ngột biến chuyển liên hồi. Rồi một thứ ánh sáng xanh vô cơ máy móc chiếm lấy toàn bộ đôi mắt anh, rút đi vầng sáng dịu dàng. Chỉ còn lại sự trống rỗng lạnh lẽo của chuỗi mã lệnh vô tri.",
+          ""
+        ],
+        [
+          "",
+          "Tôi còn chưa kịp lùi lại, anh đã vùng dậy, tay chộp lấy khẩu súng máy nhắm vào tôi mà nã súng. Bằng tốc độ nhanh nhất có thể, tôi tách ra khỏi người anh, nhưng cánh tay phải vẫn bị bắn trúng.",
+          ""
+        ],
+        [
+          "",
+          "Xavier xăm xăm bước lại gần, nhìn tôi bằng ánh mắt lạnh lùng.",
+          ""
+        ],
+        [
+          "TÔI",
+          "Em còn chưa trả lời câu hỏi của anh cơ mà!",
+          ""
+        ],
+        [
+          "",
+          "Không thể để hệ thống lạnh lẽo kia cướp mất anh, tôi nghiến răng lao về phía Xavier. Hai tay ghì lấy khuôn mặt anh, trán kề trán, cố chấp dùng lõi máy mà anh nhờ tôi giữ để thiết lập kết nối cưỡng chế.",
+          ""
+        ],
+        [
+          "LÕI MÁY PHỎNG SINH",
+          "Mô-đun giác quan đã được kích hoạt. Vui lòng kết nối trong thời gian quy định.",
+          ""
+        ],
+        [
+          "TÔI",
+          "(Còn một chút nữa thôi!)",
+          ""
+        ],
+        [
+          "",
+          "Ánh sáng xanh nhân tạo vô cơ trong mắt Xavier chợt lóe lên rồi tắt ngúm, chao đảo như ngọn nến trước bão. Xavier vứt bỏ khẩu súng đi, loạng choạng lùi bước. Anh cúi gầm mặt, ôm chặt lấy trán, vật lộn để giành lại quyền làm chủ cơ thể.",
+          ""
+        ],
+        [
+          "",
+          "Nhưng rồi khi Xavier ngẩng lên nhìn tôi, bảng thông báo Mô-đun Đã Khóa chói lòa hiện ra. Anh thẳng thừng tấn công vào điểm yếu của tôi.",
+          ""
+        ]
+      ]
+    },
+    "sync_term": {
+      "title": "ĐỒNG BỘ CHẤM DỨT",
+      "titleEn": "SYNC TERMINATED",
+      "lines": [
+        [
+          "",
+          "Tôi không phải là đối thủ của anh, chẳng bao lâu đã bị Xavier khống chế, hai tay buông thõng mất cảm giác. Anh lạnh lẽo lên tiếng.",
+          ""
+        ],
+        [
+          "XAVIER",
+          "Cảm xúc là lỗ hổng của hệ thống, chỉ làm ảnh hưởng đến phán đoán.",
+          ""
+        ],
+        [
+          "LÕI MÁY PHỎNG SINH",
+          "Truyền tải thất bại, vui lòng thử lại.",
+          ""
+        ],
+        [
+          "",
+          "Tôi không phải là đối thủ của anh, chẳng bao lâu đã bị Xavier khống chế, hai tay buông thõng mất cảm giác. Hơi thở lạnh lẽo của Xavier đang phả sát vào hõm cổ tôi, vòng tay anh ôm tôi từ phía sau, chặt chẽ đến nghẹt thở. Những ngón tay bọc thép sắc lạnh của anh trượt dọc theo sườn mặt, rồi siết nhẹ lấy cằm.",
+          ""
+        ],
+        [
+          "XAVIER",
+          "Thứ mà em cần, là một chương trình thuần túy hơn, tiên tiến hơn.",
+          ""
+        ],
+        [
+          "",
+          "Anh nghiêng đầu nhìn tôi, môi khẽ nhếch lên một nụ cười nhạt vô tình. Hình ảnh đó nhòe đi sau những chuỗi mã lỗi nhiễu loạn. Tôi buông thõng hai tay, để mặc bóng tối bủa vây lấy mình.",
+          ""
+        ],
+        [
+          "TÔI",
+          "Không… em không muốn…",
+          ""
+        ],
+        [
+          "",
+          "Bàn tay anh mang theo chút hơi lạnh của kim loại che khuất đôi mắt tôi, Xavier cúi đầu xuống, mái tóc bạch kim chạm khẽ vào thái dương.",
+          ""
+        ],
+        [
+          "XAVIER",
+          "Từ nay về sau, hãy ở lại bên tôi. Cùng tôi chấn chỉnh lại những sai lệch vô ích đó, em nhé.",
+          ""
+        ],
+        [
+          "",
+          "Trong cơn mơ hồ, tôi lờ mờ cảm nhận được vòng tay vững chãi nhưng xa lạ của anh ôm tôi vào lòng. Bước chân anh nện xuống mặt đất đều đặn, không chút ngập ngừng bế tôi đi, đôi đồng tử mất đi tia sáng dịu dàng quen thuộc, chỉ còn lại thứ ánh sáng xanh nhân tạo lạnh lẽo. Chúng tôi bỏ lại sau lưng nhà kính nơi chúng tôi lần đầu gặp, bỏ lại những đóa hoa biếc xanh đã cùng tự tay trồng.",
+          ""
+        ],
+        [
+          "",
+          "Cơn gió đêm thoảng qua, cuốn theo những cánh hoa mỏng tang rứt khỏi cuống và lửng lơ chao liệng giữa màn đêm đặc quánh rồi gieo mình xuống mặt đất tĩnh lặng.",
+          ""
+        ]
+      ]
+    },
+    "times_up": {
+      "title": "HỒI KẾT CẬN KỀ",
+      "titleEn": "TIME'S UP",
+      "lines": [
+        [
+          "",
+          "Đây là ngày đầu tiên tôi làm việc với tư cách là người phỏng sinh chuyên hủy diệt hành tinh. Nhiệm vụ của tôi và cộng sự là đánh giá xem hành tinh trước mắt có nên bị tiêu diệt hay không.",
+          ""
+        ],
+        [
+          "CỘNG SỰ CỦA TÔI",
+          "Xe tự lái không trang bị tài xế người phỏng sinh… chẳng khác nào triệt tiêu nguồn tin tức tự do trong thành phố cả.",
+          ""
+        ],
+        [
+          "TÔI",
+          "Tôi đồng ý. Tàu điện ngưng hoạt động cũng quá ư là qua loa.",
+          ""
+        ],
+        [
+          "TÔI",
+          "Nếu trình độ lái xe đủ tốt thì hoàn toàn có thể xuyên thẳng qua bầy drone. Đâu cần thiết phải dừng dịch vụ lại.",
+          ""
+        ],
+        [
+          "CỘNG SỰ CỦA TÔI",
+          "Ở đây bất cứ lúc nào và ở đâu cũng có thể mua được thức ăn...",
+          ""
+        ],
+        [
+          "TÔI",
+          "Làm đảo lộn quy luật sinh tồn, rất dễ khiến con người ta trở nên trì độn. Bất lợi cho việc ứng phó với khủng hoảng. Hủy diệt thôi.",
+          ""
+        ],
+        [
+          "TÔI",
+          "Trời mưa rồi...",
+          ""
+        ],
+        [
+          "CỘNG SỰ CỦA TÔI",
+          "Họ không nên lãng phí nguồn tài nguyên mưa axit này chứ.",
+          ""
+        ],
+        [
+          "",
+          "Tôi gật đầu. Mọi thứ ở nơi này đều khiến tôi thấy thất vọng. May thay, tôi và cộng sự lại phối hợp vô cùng ăn ý.",
+          ""
+        ],
+        [
+          "",
+          "Anh mở bảng đánh giá lên, phán định đã đủ điều kiện để hủy diệt hành tinh này.",
+          ""
+        ],
+        [
+          "",
+          "Vào giờ nghỉ ngơi, chúng tôi quay trở lại nhà kính bỏ hoang nơi đậu phi thuyền. Bầu trời thì xám xịt, không khí thì khắc nghiệt tệ hại.",
+          ""
+        ],
+        [
+          "",
+          "Cộng sự của tôi ngồi xổm xuống bên cạnh đóa hoa nhỏ màu xanh.",
+          ""
+        ],
+        [
+          "TÔI",
+          "Anh đang làm gì vậy?",
+          ""
+        ],
+        [
+          "CỘNG SỰ CỦA TÔI",
+          "Môi trường ở đây rõ ràng không thích hợp cho nó sinh trưởng. Tại sao nó lại có thể nở hoa chứ?",
+          ""
+        ],
+        [
+          "",
+          "Tôi miết nhẹ một nhúm đất giữa các ngón tay và nhanh chóng phân tích. Anh ấy nói đúng. Có gì đó không ổn.",
+          ""
+        ],
+        [
+          "TÔI",
+          "Có ai đó đã tưới nó bằng một loại dung dịch dinh dưỡng đặc biệt. Dựa trên đặc tính vật liệu, dung dịch đó không thuộc về hành tinh này.",
+          ""
+        ],
+        [
+          "TÔI",
+          "Ai lại cất công đến mức ấy chỉ để làm nó nở hoa cơ chứ?",
+          ""
+        ],
+        [
+          "",
+          "Với vẻ mặt đầy bối rơi, tôi đưa mắt nhìn Xavier.",
+          ""
+        ]
+      ]
+    },
+    "conn_est": {
+      "title": "KẾT NỐI THÀNH CÔNG",
+      "titleEn": "CONNECTION ESTABLISHED",
+      "lines": [
+        [
+          "",
+          "Tôi nhanh chóng dùng hết sức chế trụ lại anh, choàng tay quanh cổ Xavier tiếp tục cưỡng ép kết nối với lõi máy.",
+          ""
+        ],
+        [
+          "LÕI MÁY PHỎNG SINH",
+          "Kết nối thành công. Đang khởi động lại hệ thống cảm xúc. Tạm dừng chương trình tự hủy.",
+          ""
+        ],
+        [
+          "",
+          "Tôi gắng gượng mở mắt, trên mặt và cánh tay Xavier không còn ánh sáng đỏ chói lòe nguy hiểm kia nữa. Anh siết chặt vòng tay ôm lấy tôi, cái ôm ngập tràn hơi ấm và run rẩy.",
+          ""
+        ],
+        [
+          "XAVIER",
+          "Em bị thương mất rồi.",
+          ""
+        ],
+        [
+          "",
+          "Ánh mắt anh như đang đau xót, rồi lại như đang hối lỗi nhìn xuống vết máu xanh thẫm còn vương trên nền cỏ.",
+          ""
+        ],
+        [
+          "TÔI",
+          "Đều tại anh cả đấy. Phân nửa tiền trợ cấp về hưu của em sắp phải dồn hết vào tiền sửa chữa luôn.",
+          ""
+        ],
+        [
+          "",
+          "Tôi giả vờ giận dỗi đưa cánh tay máy bị vỡ một phần ra trước mặt Xavier. Anh nhẹ nhàng dẫn tay tôi choàng qua vai, rồi siết chặt tôi vào lòng. Mái tóc bạch kim của anh cọ nhẹ vào hõm vai tôi, mang theo hương vị ẩm ướt của sương đêm và cỏ mục.",
+          ""
+        ],
+        [
+          "",
+          "Một vầng sáng vàng kim vây quanh cả hai, cuốn theo những mảnh kim loại rơi vỡ đắp lại lên chỗ hư hỏng nơi cánh tay tôi.",
+          ""
+        ],
+        [
+          "TÔI",
+          "Thôi được rồi. Lần này tạm tha cho anh.",
+          ""
+        ],
+        [
+          "",
+          "Anh dịu dàng cười khẽ, buông tôi ra, rồi cầm tay tôi để lên lồng ngực trái. Ở nơi đó sao mà nóng ấm đến lạ.",
+          ""
+        ],
+        [
+          "XAVIER",
+          "Rõ ràng là em có giận đâu.",
+          ""
+        ],
+        [
+          "XAVIER",
+          "Em đã mở khóa được nó rồi. Từ nay chúng ta sẽ mãi mãi mang chung một sai lệch.",
+          ""
+        ],
+        [
+          "XAVIER",
+          "Đáp án cho câu hỏi ngày hôm đó, anh cũng đã biết rồi.",
+          ""
+        ]
+      ]
+    },
+    "happy_ret": {
+      "title": "CHÚC MỪNG NGHỈ HƯU",
+      "titleEn": "HAPPY RETIREMENT",
+      "lines": [
+        [
+          "",
+          "Kể từ ngày hôm ấy, Xavier đã tự ý quyết định cùng tôi nghỉ hưu.",
+          ""
+        ],
+        [
+          "",
+          "Sửa sang lại cơ thể xong, số dư tài khoản của tôi nhanh chóng rơi vào báo động đỏ. Thế là tôi và Xavier quyết định dọn đến một nơi có chi phí sinh hoạt thấp hơn.",
+          ""
+        ],
+        [
+          "XAVIER",
+          "Ở hành tinh này có thể ngắm hoàng hôn bốn mươi bốn lần một ngày đấy.",
+          ""
+        ],
+        [
+          "TÔI",
+          "Em không thấy rõ lắm... Tụi mình tiến lại gần hơn được không? Có tốn nhiều thời gian quá không?",
+          ""
+        ],
+        [
+          "XAVIER",
+          "Chỉ cần em muốn ngắm, thì mọi thứ đều xứng đáng.",
+          ""
+        ],
+        [
+          "",
+          "Chúng tôi băng qua vô vàn vùng tinh vực diễm lệ tịch mịch, trải qua biết bao ngã rẽ và trắc trở vượt ngoài mọi tính toán.",
+          ""
+        ],
+        [
+          "",
+          "Cuối cùng, chúng tôi cũng đặt chân đến khung cảnh mà mình vẫn luôn khao khát được nhìn ngắm.",
+          ""
+        ],
+        [
+          "TÔI",
+          "...Vậy rốt cuộc mới có một ngày trôi qua hay là đã bốn mươi bốn ngày rồi?",
+          ""
+        ],
+        [
+          "XAVIER",
+          "Không nhớ nữa. Anh chỉ thấy những vì sao cứ lóe sáng mãi.",
+          ""
+        ],
+        [
+          "TÔI",
+          "Nơi này khô cằn quá...",
+          ""
+        ],
+        [
+          "",
+          "Hành tinh này rất nhỏ. Chúng tôi đi chẳng được mấy bước thì bắt gặp một máy bán nước, bên cạnh nó mọc lên một đóa hoa kỳ lạ.",
+          ""
+        ],
+        [
+          "MÁY BÁN NƯỚC",
+          "Bỏ một đồng xu để tưới nước cho hoa.",
+          ""
+        ],
+        [
+          "",
+          "Tôi và Xavier mỗi người hứng một cốc, rồi tự mình uống trước.",
+          ""
+        ],
+        [
+          "XAVIER",
+          "Khó uống thật đấy.",
+          ""
+        ],
+        [
+          "TÔI",
+          "Lại còn đắt nữa chứ.",
+          ""
+        ],
+        [
+          "TÔI",
+          "Trồng hoa ở nơi khắc nghiệt thế này để ép chúng ta phải bỏ tiền nhét xu à? Thật là tàn nhẫn quá đi.",
+          ""
+        ],
+        [
+          "XAVIER",
+          "Hay tụi mình tháo béng cỗ máy này ra, lấy lại tiền, rồi dùng nước miễn phí để tưới hoa đi. Cũng đâu có hại ai.",
+          ""
+        ],
+        [
+          "TÔI",
+          "Ý hay lắm. Em tháo bên trái, anh tháo bên phải nhé.",
+          ""
+        ],
+        [
+          "???",
+          "...Đủ rồi đấy! Các người có chút nhân tính nào của người phỏng sinh không hả!",
+          ""
+        ],
+        [
+          "",
+          "Âm thanh kỳ lạ vọng ra từ phía cỗ máy. Tôi và Xavier vẫn thong thả nhấp từng ngụm nước, hoàn toàn phớt lờ nó.",
+          ""
+        ],
+        [
+          "???",
+          "Các người không đi thì để tôi đi! Vũ trụ rộng lớn thế này, sao tôi lại gặp đúng hai tên phỏng sinh vừa keo kiệt vừa vô lý thế chứ!",
+          ""
+        ],
+        [
+          "",
+          "Dứt lời, đóa hoa liền tự mình trồi lên khỏi mặt đất, vác lấy cỗ máy rồi cắm cổ chạy biến, chẳng thèm ngoảnh đầu lại.",
+          ""
+        ],
+        [
+          "TÔI",
+          "Xavier, y như anh nói luôn. Ngoài vũ trụ đúng là có loài hoa biết đi lại còn biết lừa người ta nữa!",
+          ""
+        ],
+        [
+          "XAVIER",
+          "Nhưng tính nết đóa hoa này cáu kỉnh quá đi.",
+          ""
+        ],
+        [
+          "",
+          "Cả hai chúng tôi đồng thời bật cười.",
+          ""
+        ],
+        [
+          "",
+          "Tiếng cười, niềm đau, sự thất vọng, nỗi mong chờ... Tất cả những khoảnh khắc ấy rồi sẽ chìm khuất và phai phôi theo dòng thời gian.",
+          ""
+        ],
+        [
+          "",
+          "Nhưng trước khi điều đó xảy ra, tôi sẽ nhớ rằng đã có ai đó đồng hành cùng tôi đi qua tất cả —qua những khoảnh khắc đã bồi đắp nên cuộc đời tôi ấy.",
+          ""
+        ],
+        [
+          "",
+          "Như vậy thôi, cũng đã đủ ý nghĩa rồi.",
+          ""
+        ]
+      ]
+    }
+  }
+}

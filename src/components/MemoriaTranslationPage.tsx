@@ -10,6 +10,7 @@ export const MEDIA_BASE = 'https://res.cloudinary.com/trangsoidamtruong/image/up
 export interface MemoriaMapNode {
   id: string;
   title: string;
+  titleEn?: string;
   next?: string[];
   x?: number;
   y?: number;
@@ -23,6 +24,7 @@ export interface MemoriaMapNode {
 
 export interface MemoriaChapterContent {
   title: string;
+  titleEn?: string;
   lines: Array<[string, string, string]>;
 }
 
@@ -373,7 +375,9 @@ export const MemoriaTranslationPage: React.FC<MemoriaTranslationPageProps> = ({
     ? `https://i.ytimg.com/vi/${youtubeId}/hqdefault.jpg`
     : bgImageUrl;
   const primaryPosterUrl = resolveMediaUrl(data?.poster, youtubeThumbUrl);
-  const activePosterUrl = posterUseFallback ? bgImageUrl : primaryPosterUrl;
+  const activePosterUrl = posterUseFallback
+    ? youtubeThumbUrl || bgImageUrl
+    : primaryPosterUrl;
   const progressPct = Math.min(
     100,
     Math.round(((currentIdx + 1) / Math.max(1, totalChapters)) * 100)
@@ -541,21 +545,12 @@ export const MemoriaTranslationPage: React.FC<MemoriaTranslationPageProps> = ({
                   {/* Chỉ gắn iframe YouTube khi người xem bấm phát (isPlaying === true) */}
                   <div className={`player${youtubeId ? ' has-iframe' : ''}`}>
                     {isPlaying && youtubeId ? (
-                      <>
-                        <iframe
-                          src={`https://www.youtube-nocookie.com/embed/${youtubeId}?autoplay=1&rel=0&playsinline=1`}
-                          title={cardDisplayTitle}
-                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                          allowFullScreen
-                        />
-                        <button
-                          type="button"
-                          className="btn stop-floating"
-                          onClick={() => setIsPlaying(false)}
-                        >
-                          {lang === 'VI' ? 'QUAY LẠI ẢNH BÌA' : 'BACK TO COVER'}
-                        </button>
-                      </>
+                      <iframe
+                        src={`https://www.youtube-nocookie.com/embed/${youtubeId}?autoplay=1&rel=0&playsinline=1`}
+                        title={cardDisplayTitle}
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowFullScreen
+                      />
                     ) : (
                       <>
                         <div className="a">
@@ -588,14 +583,6 @@ export const MemoriaTranslationPage: React.FC<MemoriaTranslationPageProps> = ({
                             </>
                           )}
                         </div>
-                        <button
-                          type="button"
-                          className="btn"
-                          style={{ fontSize: 11 }}
-                          onClick={() => setIsPlaying(false)}
-                        >
-                          {lang === 'VI' ? 'QUAY LẠI ẢNH BÌA' : 'BACK TO COVER'}
-                        </button>
                       </>
                     )}
                   </div>
@@ -603,10 +590,6 @@ export const MemoriaTranslationPage: React.FC<MemoriaTranslationPageProps> = ({
                   <div className="scan" />
                   <div className="hud tl">
                     <i>●</i> REC
-                  </div>
-                  <div className="hud bt">
-                    <span>00:00</span>
-                    <span>09:16</span>
                   </div>
                   <div className="corner a" />
                   <div className="corner b" />
@@ -624,7 +607,9 @@ export const MemoriaTranslationPage: React.FC<MemoriaTranslationPageProps> = ({
 
                 <div className="text-head">
                   <div className="chap" id="md-chapTitle">
-                    {currentChapter?.title || currentChapterId.toUpperCase()}
+                    {lang === 'EN' && currentChapter?.titleEn
+                      ? currentChapter.titleEn
+                      : currentChapter?.title || currentChapterId.toUpperCase()}
                   </div>
                 </div>
 
@@ -663,6 +648,15 @@ export const MemoriaTranslationPage: React.FC<MemoriaTranslationPageProps> = ({
                       else if (upperWho === 'CHÀNG TRAI') speakerLabel = 'YOUNG MAN';
                       else if (upperWho === 'CHÚ CỪU NHỎ') speakerLabel = 'LITTLE LAMB';
                       else if (upperWho === 'NGƯỜI ĐÀN ÔNG') speakerLabel = 'MAN';
+                      else if (upperWho === 'CÔN ĐỒ ĐƯỜNG PHỐ') speakerLabel = 'STREET THUG';
+                      else if (upperWho === 'ĐỒNG NGHIỆP A') speakerLabel = 'COLLEAGUE A';
+                      else if (upperWho === 'TRỢ LÝ AI') speakerLabel = 'AI ASSISTANT';
+                      else if (upperWho === 'LOA PHÁT THANH TÀU ĐIỆN') speakerLabel = 'TRAIN PA';
+                      else if (upperWho === 'CÔ BÉ') speakerLabel = 'LITTLE GIRL';
+                      else if (upperWho === 'HỆ THỐNG') speakerLabel = 'SYSTEM';
+                      else if (upperWho === 'LÕI MÁY PHỎNG SINH') speakerLabel = 'BIONIC CORE';
+                      else if (upperWho === 'CỘNG SỰ CỦA TÔI') speakerLabel = 'MY PARTNER';
+                      else if (upperWho === 'MÁY BÁN NƯỚC') speakerLabel = 'VENDING MACHINE';
                     }
 
                     const whoClass = isXavier ? 'x' : isPlayer ? 'y' : 'npc';
@@ -802,7 +796,7 @@ export const MemoriaTranslationPage: React.FC<MemoriaTranslationPageProps> = ({
                     if (!isLocked) goToChapter(n.id);
                   }}
                 >
-                  <span>{n.title}</span>
+                  <span>{lang === 'EN' && n.titleEn ? n.titleEn : n.title}</span>
                 </button>
               );
             })}

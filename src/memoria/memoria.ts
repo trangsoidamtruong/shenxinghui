@@ -56,11 +56,59 @@ export function mountMemoria(
   let list: MemoriaCard[] = [];
   let cur = 0;
 
+  function optimizeCloudinaryVideoUrl(url: string): string {
+    if (!url) return "";
+    return url.replace(
+      /\/video\/upload\/(v\d+\/)/,
+      "/video/upload/f_auto,q_auto,vc_auto,ac_none,w_720/$1"
+    );
+  }
+
+  function deriveCloudinaryPosterUrl(
+    videoUrl: string,
+    existingImg?: string
+  ): string {
+    if (existingImg) return existingImg;
+    if (!videoUrl || !videoUrl.includes("/video/upload/")) return "";
+    return videoUrl
+      .replace(
+        /\/video\/upload\/(?:[^/]+\/)?(v\d+\/)/,
+        "/video/upload/so_0,f_webp,q_auto,w_720/$1"
+      )
+      .replace(/\.(mp4|webm|mov)$/i, ".webp");
+  }
+
+  // Tải trước ảnh bìa và mồi luồng video cho các thẻ 5★ ngay khi vào trang Memoria
+  cards.forEach((c) => {
+    const posterUrl = deriveCloudinaryPosterUrl(c.src, c.img);
+    if (posterUrl) {
+      const img = new Image();
+      img.decoding = "async";
+      img.src = posterUrl;
+    }
+    if (c.type === "video" && c.src && typeof document !== "undefined") {
+      const vUrl = optimizeCloudinaryVideoUrl(c.src);
+      if (!document.head.querySelector(`link[data-vid-preload="${vUrl}"]`)) {
+        const link = document.createElement("link");
+        link.rel = "preload";
+        link.as = "video";
+        link.href = vUrl;
+        link.crossOrigin = "anonymous";
+        link.setAttribute("data-vid-preload", vUrl);
+        document.head.appendChild(link);
+      }
+    }
+  });
+
   function art(c: MemoriaCard): string {
-    if (c.src)
-      return c.type === "video"
-        ? `<video src="${c.src}" muted loop playsinline autoplay preload="metadata" poster="${c.img || ""}"></video>`
-        : `<img src="${c.src}" alt="" decoding="async">`;
+    if (c.src) {
+      if (c.type === "video") {
+        const vSrc = optimizeCloudinaryVideoUrl(c.src);
+        const posterSrc = deriveCloudinaryPosterUrl(c.src, c.img);
+        return `<video src="${vSrc}" muted loop playsinline autoplay preload="auto" crossorigin="anonymous" poster="${posterSrc}"></video>`;
+      }
+      return `<img src="${c.src}" alt="" decoding="async">`;
+    }
     if (c.img) return `<img src="${c.img}" alt="" decoding="async">`;
     const h = 258 + ((c.id * 7) % 15),
       mx = 25 + ((c.id * 29) % 50),
@@ -138,6 +186,13 @@ export function mountMemoria(
   <div class="txt"><h2>${primaryTitle}</h2>${englishSubLine}
   <dl class="meta"><dt>Trạng thái</dt><dd>${c.done ? "Đã dịch" : "Chưa dịch"}</dd><dt>Độ hiếm</dt><dd>${c.type === "video" ? "5★" : "4★"}</dd></dl>
   <p>${c.desc}</p><button class="go" ${c.done ? "" : "disabled"}>${c.done ? "[ ĐỌC THẺ ]" : "[ CHƯA CÓ BẢN DỊCH ]"}</button></div></div>`;
+    const vid = v.querySelector<HTMLVideoElement>("video");
+    if (vid) {
+      vid.muted = true;
+      vid.loop = true;
+      vid.playsInline = true;
+      vid.play().catch(() => {});
+    }
     const b = v.querySelector<HTMLButtonElement>(".go");
     if (c.done && b) b.onclick = open;
   }

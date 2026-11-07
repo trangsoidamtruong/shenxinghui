@@ -4466,6 +4466,7 @@
   flex: 0 0 116px;
   font-family: var(--mono);
   font-size: 11px;
+  line-height: 1.4;
   letter-spacing: 0.12em;
   font-weight: 700;
   text-shadow: 0 2px 8px rgba(4, 3, 12, 0.98), 0 0 12px rgba(4, 3, 12, 0.9);
@@ -4611,12 +4612,13 @@
   align-items: center;
   justify-content: center;
   gap: 8px;
-  padding: 0 10px;
+  padding: 2px 8px;
   color: #efeaff;
   border: 1px solid #2e2761;
   background: rgba(12, 10, 29, 0.9);
   font-family: var(--mono);
   font-size: 11px;
+  line-height: 1.25;
   letter-spacing: 0.06em;
   text-align: center;
   cursor: pointer;
