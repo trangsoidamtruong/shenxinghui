@@ -1,14 +1,3 @@
-/**
- * DỮ LIỆU TRANG LIÊN LẠC (CONTACT)
- * ---------------------------------------------------------------------------
- * Bạn chỉ cần sửa file này để thêm/sửa/xoá các bài đăng, tin nhắn, cuộc gọi...
- * - Số lượng trên badge (màn hình chính) và pill (trang danh sách) tự động đếm từ `items.length`.
- * - Mọi trường văn bản (`title`, `meta`, `account`, `text`) đều hỗ trợ:
- *     + Chuỗi đơn giản: `"Tiêu đề bài viết"` (dùng chung cho cả VI & EN)
- *     + Hoặc song ngữ: `{ vi: "Tiêu đề tiếng Việt", en: "English Title" }`
- * - Route tự động tạo theo dạng: `/contact/[app.id]/[item.id]`
- *   (ví dụ: `/contact/public-account/pub-01`, `/contact/sns/sns-01`, v.v.)
- */
 
 export type LocalizedText = string | { vi: string; en: string };
 export type LocalizedParagraphs = string[] | { vi: string[]; en: string[] };
@@ -29,42 +18,25 @@ export interface ContactComment {
 }
 
 export interface ContactItem {
-  /** Slug định danh duy nhất trong ứng dụng (vd: 'pub-01', 'sns-01', 'msg-01'...) */
   id: string;
-  /** Tiêu đề bài đăng / tên mẩu */
   title: LocalizedText;
-  /** Ngày hiển thị (vd: '12.2025') */
   date: string;
-  /** Thông tin phụ (SNS: lượt thích, Message: số dòng, Video/Phone: thời lượng) */
   meta?: LocalizedText;
 
-  // ── Các trường dành riêng cho PUBLIC ACCOUNT ──────────────────────────────
-  /** Tên tài khoản đăng bài */
   account?: LocalizedText;
-  /** Đường dẫn ảnh avatar (nếu để trống sẽ tự lấy chữ cái đầu của tên tài khoản) */
   avatar?: string;
-  /** Đường dẫn ảnh banner của bài đăng */
   banner?: string;
-  /** Đánh dấu bài chưa đọc (hiện chấm vuông màu hổ phách ở góc dưới phải banner) */
   unread?: boolean;
-  /** Danh sách các đoạn văn của bài đăng */
   body?: LocalizedParagraphs;
-  /** Danh sách bình luận nổi bật dưới bài đăng */
   comments?: ContactComment[];
 }
 
 export interface ContactAppConfig {
-  /** Slug trên URL: /contact/[id] */
   id: ContactAppId;
-  /** Tên ứng dụng (giữ chữ hoa tiếng Anh ở cả hai ngôn ngữ) */
   name: string;
-  /** Mã ngắn của ứng dụng */
   key: ContactAppKey;
-  /** Loại icon SVG */
   icon: ContactIconType;
-  /** Tạm khoá ứng dụng (không cho bấm vào) */
   disabled?: boolean;
-  /** Danh sách các mẩu trong ứng dụng */
   items: ContactItem[];
 }
 
@@ -86,11 +58,6 @@ export function resolveLocalizedParagraphs(
   return lang === 'EN' ? value.en : value.vi;
 }
 
-/**
- * 5 ứng dụng theo đúng thứ tự bắt buộc:
- * PUBLIC ACCOUNT, SNS, MESSAGE, VIDEO CALL, PHONE CALL
- * (Dữ liệu bên dưới là dữ liệu mẫu mock để hiển thị giao diện)
- */
 export const CONTACT_APPS: ContactAppConfig[] = [
   {
     id: 'public-account',

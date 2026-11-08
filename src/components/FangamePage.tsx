@@ -135,7 +135,6 @@ export const FangamePage: React.FC<FangamePageProps> = ({
       }, 2200);
     };
 
-    // Khởi tạo danh sách chip dữ liệu trong giá chip
     rack.innerHTML = '';
     const slots: HTMLDivElement[] = FANGAME_LIST.map((g, i) => {
       const s = document.createElement('div');
@@ -297,7 +296,6 @@ export const FangamePage: React.FC<FangamePageProps> = ({
       playBtn?.addEventListener('click', (e) => {
         const targetUrl = (g.url || '').trim();
         if (/^https?:\/\//i.test(targetUrl)) {
-          // Mở đường dẫn game ngoài trong tab mới (hoặc chuyển hướng)
           return;
         }
         e.preventDefault();
@@ -313,7 +311,6 @@ export const FangamePage: React.FC<FangamePageProps> = ({
       slots.forEach((s, i) => {
         const hit = !k || (s.dataset.q || '').includes(k);
         if (hit) n++;
-        // Nếu đang nạp một game mà lọc làm game đó không khớp thì slot của chip đó vẫn giữ để khi tháo chip bay về đúng chỗ
         s.hidden = !(hit || i === cur);
       });
       cl.textContent = k

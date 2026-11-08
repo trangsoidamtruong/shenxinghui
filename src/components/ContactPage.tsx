@@ -529,7 +529,6 @@ export const ContactPage: React.FC<ContactPageProps> = ({
       ref={scrollContainerRef}
       className="cyber-events-scroll relative z-20 flex h-full w-full flex-col overflow-y-auto overflow-x-hidden"
     >
-      {/* 0. NGUYÊN TẮC SỐ MỘT: DÙNG LẠI THANH ĐIỀU HƯỚNG (<SiteHeader />) CỦA WEB */}
       <SiteHeader
         breadcrumbs={breadcrumbs}
         langLabel={onToggleLang ? lang : undefined}
@@ -538,9 +537,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({
         onToggleLang={onToggleLang}
       />
 
-      {/* NỘI DUNG TRANG CONTACT */}
       <main className="wrap ct-wrap flex-1">
-        {/* Trạng thái bị từ chối sau khi bấm HUỶ hoặc Esc trên màn khoá */}
         {lockState === 'denied' && (
           <div id="denied">
             <h1 className="ct-t">{T.pageTitle}</h1>
@@ -559,17 +556,14 @@ export const ContactPage: React.FC<ContactPageProps> = ({
           </div>
         )}
 
-        {/* Nội dung chính chỉ hiện sau khi đã mở khoá */}
         {lockState === 'unlocked' && (
           <div id="con" className="ct-con">
-            {/* Mặt trăng dither bên phải, nằm dưới nội dung, không chặn click */}
             <div className="ct-wpm" aria-hidden="true" />
 
             <h1 className="ct-t">{T.pageTitle}</h1>
 
             <div id="sc">
               {isBootingDevice ? (
-                /* 3. KHỞI ĐỘNG THIẾT BỊ (3 dòng mono cách nhau 300ms, chỉ chạy 1 lần ngay sau khi mở khoá) */
                 <div className="ct-bt" id="bt" aria-live="polite">
                   {T.bootLines.slice(0, visibleBootCount).map((line, i) => (
                     <React.Fragment key={i}>
@@ -579,7 +573,6 @@ export const ContactPage: React.FC<ContactPageProps> = ({
                   ))}
                 </div>
               ) : !currentApp ? (
-                /* TẦNG 1 (/contact): MÀN HÌNH CHÍNH 5 ỨNG DỤNG */
                 <>
                   <div className="ct-hn">{T.homeHint}</div>
                   <div className="ct-apps">
@@ -614,7 +607,6 @@ export const ContactPage: React.FC<ContactPageProps> = ({
                   </div>
                 </>
               ) : !currentItem ? (
-                /* TẦNG 2 (/contact/[app]): DANH SÁCH CÁC MẨU CỦA MỘT ỨNG DỤNG */
                 <>
                   <div className="ct-ab">
                     <b>{currentApp.name}</b>
@@ -622,7 +614,6 @@ export const ContactPage: React.FC<ContactPageProps> = ({
                   </div>
 
                   {currentApp.key === 'PUB' ? (
-                    /* 4A) PUBLIC ACCOUNT: Danh sách bài đăng với avatar, tên tài khoản, ngày, banner 21:8 */
                     <div className="ct-ls0">
                       {currentApp.items.map((item) => {
                         const titleText = resolveLocalizedText(item.title, lang);
@@ -726,10 +717,8 @@ export const ContactPage: React.FC<ContactPageProps> = ({
                   )}
                 </>
               ) : (
-                /* TẦNG 3 (/contact/[app]/[id]): TRANG CHI TIẾT / TÁI HIỆN */
                 <>
                   {currentApp.key === 'PUB' ? (
-                    /* 6A) PUBLIC ACCOUNT CHI TIẾT */
                     (() => {
                       const titleText = resolveLocalizedText(currentItem.title, lang);
                       const accountName = resolveLocalizedText(currentItem.account, lang);
@@ -779,7 +768,6 @@ export const ContactPage: React.FC<ContactPageProps> = ({
                       );
                     })()
                   ) : (
-                    /* 6B) SNS, MESSAGE, VIDEO CALL, PHONE CALL (KHUNG GIỮ CHỖ TRANG TÁI HIỆN) */
                     (() => {
                       const titleText = resolveLocalizedText(currentItem.title, lang);
                       const metaText = resolveLocalizedText(currentItem.meta, lang);
@@ -808,10 +796,8 @@ export const ContactPage: React.FC<ContactPageProps> = ({
         )}
       </main>
 
-      {/* 2. MÀN KHOÁ CHỮ S (phủ toàn màn hình kể cả header khi chưa mở khoá) */}
       {lockState === 'locking' && (
         <div className="ct-ov" id="ov" role="dialog" aria-modal="true" aria-labelledby="ct-lock-title">
-          {/* 4 dòng log góc trên trái (ẩn trên mobile) */}
           <div className="ct-lg" id="lg" aria-hidden="true">
             {T.lockLogs.slice(0, visibleLogCount).map((line, idx) => (
               <React.Fragment key={idx}>
@@ -831,7 +817,6 @@ export const ContactPage: React.FC<ContactPageProps> = ({
               <span id="ct-lock-title">{T.lockTitleBar}</span>
             </div>
 
-            {/* Lưới 3x3 nút 56x56px */}
             <div
               ref={padRef}
               className="ct-pad"
@@ -893,7 +878,6 @@ export const ContactPage: React.FC<ContactPageProps> = ({
               })}
             </div>
 
-            {/* Dòng trạng thái dưới lưới */}
             <div className="ct-st" id="st" aria-live="polite">
               {statusText}
             </div>
@@ -907,7 +891,6 @@ export const ContactPage: React.FC<ContactPageProps> = ({
               {T.cancelBtn}
             </button>
 
-            {/* Cửa sổ nhỏ màu hổ phách chồng lên mép phải khi xác thực thành công */}
             <div className="ct-pop" role="status" aria-live="assertive">
               <div className="ct-tb">
                 <span>{T.popTitle}</span>

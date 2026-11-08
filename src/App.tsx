@@ -904,14 +904,6 @@ export default function App() {
             />
           )}
 
-          {/* =================================================================
-              LAYER 3: .grade 5-LAYER COLOR GRADING OVERLAY
-              1) Phủ tím nhẹ (tint)
-              2) Vignette (tối dần ra bốn góc, tâm 65% 45%)
-              3) Dải tối bên trái (cho chữ menu; điện thoại đổi thành dải dọc)
-              4) Dải tối bên phải (cho menu phụ; điện thoại ẩn)
-              5) Scanline (chu kỳ 3px)
-              ================================================================= */}
           <div className="grade" aria-hidden="true">
             <div className="grade-tint" />
             <div className="grade-vignette" />

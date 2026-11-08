@@ -191,13 +191,11 @@ function mountExhibitionTerminal(
       }
   }
 
-  // Giữ tham chiếu các hàm tiện ích vẽ gốc
   void str;
   void box;
   void ell;
   void fil;
 
-  // mặt trăng ASCII xoay
   const LX = -0.55;
   const LY = -0.3;
   const LZ = 0.78;
@@ -327,7 +325,6 @@ function mountExhibitionTerminal(
   let dt: number | undefined;
   let inView = true;
 
-  // vẽ + chuyển hình
   const pre = $('#pre');
   const capEl = $('#cap');
   const descEl = $('#desc');
@@ -424,7 +421,6 @@ function mountExhibitionTerminal(
     morph = { t0: performance.now(), from: f, d: d };
   })();
 
-  // (3e) Đợi font IBM Plex Mono trước khi dựng atlas canvas
   function atl(): HTMLCanvasElement {
     if (atlas) return atlas;
     atlas = document.createElement('canvas');
@@ -636,7 +632,6 @@ function mountExhibitionTerminal(
     }
   }
 
-  // (3e) + (3h): Đợi font IBM Plex Mono và lazy-fetch artdata ~200KB không chặn hiển thị ban đầu
   const fontReadyPromise =
     typeof document !== 'undefined' && document.fonts && document.fonts.load
       ? document.fonts.load('400 15px "IBM Plex Mono"').catch(function () {})
@@ -645,7 +640,7 @@ function mountExhibitionTerminal(
   Promise.all([fontReadyPromise, fetchArtDataLazy()]).then(function (results) {
     if (unmounted) return;
     const DATA = results[1];
-    atlas = null; // đảm bảo atlas dựng bằng IBM Plex Mono đã tải xong
+    atlas = null;
     if (!DATA) return;
 
     container.querySelectorAll<HTMLElement>('.fa').forEach(function (boxEl) {
@@ -680,7 +675,6 @@ function mountExhibitionTerminal(
     }
   });
 
-  // (3d) Danh sách: dùng <a class="it" href="..."> giữ nguyên style, hỗ trợ Ctrl/Cmd+Click mở tab mới
   I.forEach(function (o, i) {
     const li = document.createElement('li');
     const b = document.createElement('a');
@@ -842,7 +836,6 @@ function mountExhibitionTerminal(
     cli.scrollTop = cli.scrollHeight;
   }
 
-  // (3a) Listener bàn phím toàn cục được cô lập theo focus trong .xt-root và trạng thái hiển thị
   function onWindowKeyDown(e: KeyboardEvent) {
     if (!ready) return;
     const active = document.activeElement;
@@ -883,7 +876,6 @@ function mountExhibitionTerminal(
   }
   window.addEventListener('keydown', onWindowKeyDown);
 
-  // (3c) Đồng bộ ngôn ngữ hai chiều với web (không ghi đè localStorage hay document.documentElement.lang)
   function setLang(l: TermLang, fromExternal?: boolean) {
     const changed = lang !== l;
     lang = l;
@@ -917,7 +909,6 @@ function mountExhibitionTerminal(
 
   setLang(lang, true);
 
-  // (3b) Tạm dừng vòng lặp draw khi tab ẩn hoặc .term ra khỏi viewport
   function onVisibilityChange() {
     if (document.hidden) {
       stopDraw();
@@ -943,7 +934,6 @@ function mountExhibitionTerminal(
     intersectionObs.observe(termEl);
   }
 
-  // (3g) Đồng bộ chiều cao thực tế của header vào biến --header-h
   let resizeObs: ResizeObserver | null = null;
   if (typeof ResizeObserver !== 'undefined' && headerEl) {
     resizeObs = new ResizeObserver(function () {
@@ -970,7 +960,6 @@ function mountExhibitionTerminal(
     }
   }
 
-  // khởi động: gõ "ls /archive", danh sách hiện lần lượt (hoặc hiện ngay nếu skipBoot / reducedMotion)
   (function bootSequence() {
     const s = 'ls /archive';
     const el = $('#cmd0');
@@ -1130,14 +1119,12 @@ export const GalleryPage: React.FC<GalleryPageProps> = ({
     };
   }, []);
 
-  // Đồng bộ khi ngôn ngữ của web thay đổi từ bên ngoài
   useEffect(() => {
     const instance = terminalRef.current;
     if (!instance) return;
     instance.setLang(lang === 'EN' ? 'en' : 'vi', true);
   }, [lang]);
 
-  // Đồng bộ khi mục con trong Gallery thay đổi qua URL / Back / Forward
   useEffect(() => {
     const instance = terminalRef.current;
     if (!instance) return;
@@ -1146,7 +1133,6 @@ export const GalleryPage: React.FC<GalleryPageProps> = ({
 
   return (
     <div id="page-gallery" ref={rootRef} className="xt-root">
-      {/* (3i) Tiêu đề trang ẩn trực quan cho SEO / trình đọc màn hình */}
       <h1 className="sr-only">{lang === 'VI' ? 'Triển lãm' : 'Exhibition'}</h1>
 
       <SiteHeader

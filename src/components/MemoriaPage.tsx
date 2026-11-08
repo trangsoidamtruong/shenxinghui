@@ -70,7 +70,6 @@ export const MemoriaPage: React.FC<MemoriaPageProps> = ({
       id="page-dating-memoria"
       className="cyber-events-scroll relative z-20 flex h-full w-full flex-col overflow-y-auto min-[821px]:overflow-y-hidden overflow-x-hidden bg-[var(--void)]"
     >
-      {/* Header dùng chung (.site-header) */}
       <SiteHeader
         breadcrumbs={[
           {
@@ -97,7 +96,6 @@ export const MemoriaPage: React.FC<MemoriaPageProps> = ({
         onToggleLang={onToggleLang}
       />
 
-      {/* Vùng chứa .memoria có chiều cao xác định trên PC (màn hình trừ header 56px), trên điện thoại tự cao theo nội dung */}
       <div className="min-[821px]:flex-1 min-[821px]:min-h-0 min-[821px]:h-[calc(100dvh-56px)] max-[820px]:h-auto max-[820px]:flex-none">
         <div ref={memoriaRef} className="memoria"></div>
       </div>

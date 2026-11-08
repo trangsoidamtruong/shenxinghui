@@ -79,7 +79,6 @@ export const SITE_TITLE_EN = 'Moonstride';
  * - `hasTransition` controls whether the route plays its transition effect on menu click / direct entry.
  */
 export const SLUG_MAP: Record<string, RouteConfigEntry> = {
-  // ── 00. TRANG CHỦ ──────────────────────────────────────────────────────────
   home: {
     slug: 'home',
     domId: 'page-home',
@@ -91,7 +90,6 @@ export const SLUG_MAP: Record<string, RouteConfigEntry> = {
     titleEN: SITE_TITLE_EN,
   },
 
-  // ── 01-03 & 07-09. CÁC MỤC TRÊN TRANG CHỦ / TRANG RIÊNG ────────────────────
   profile: {
     slug: 'profile',
     domId: 'page-modal-profile',
@@ -158,7 +156,6 @@ export const SLUG_MAP: Record<string, RouteConfigEntry> = {
     titleEN: `About | ${SITE_TITLE_EN}`,
   },
 
-  // ── 04. HẸN HÒ (DATING) & CÁC TAB CON / GIAI THOẠI ────────────────────────
   dating: {
     slug: 'dating',
     domId: 'page-dating',
@@ -171,7 +168,6 @@ export const SLUG_MAP: Record<string, RouteConfigEntry> = {
     titleEN: `Dating | ${SITE_TITLE_EN}`,
   },
 
-  // Tab 1: Kề bên người (By Your Side)
   'dating/by-your-side': {
     slug: 'dating/by-your-side',
     domId: 'page-dating-by-your-side',
@@ -208,7 +204,6 @@ export const SLUG_MAP: Record<string, RouteConfigEntry> = {
     titleEN: `Tender Moments · By Your Side | ${SITE_TITLE_EN}`,
   },
 
-  // Tab 2: Ước hẹn rung động (Falling For You) & Memoria
   'dating/falling-for-you': {
     slug: 'dating/falling-for-you',
     domId: 'page-dating-falling-for-you',
@@ -335,7 +330,6 @@ export const SLUG_MAP: Record<string, RouteConfigEntry> = {
     titleEN: `Myth · Falling For You | ${SITE_TITLE_EN}`,
   },
 
-  // Tab 3: Giai thoại (Anecdotes) & 4 Giai thoại con (hasTransition: false)
   'dating/anecdotes': {
     slug: 'dating/anecdotes',
     domId: 'page-dating-anecdotes',
@@ -396,7 +390,6 @@ export const SLUG_MAP: Record<string, RouteConfigEntry> = {
     titleEN: `Echoes from Ruins · Anecdotes | ${SITE_TITLE_EN}`,
   },
 
-  // Tab 4: Sổ tay (Journal)
   'dating/journal': {
     slug: 'dating/journal',
     domId: 'page-dating-journal',
@@ -433,7 +426,6 @@ export const SLUG_MAP: Record<string, RouteConfigEntry> = {
     titleEN: `Your DIY · Journal | ${SITE_TITLE_EN}`,
   },
 
-  // Tab 5: Dạo chơi (Playtime)
   'dating/playtime': {
     slug: 'dating/playtime',
     domId: 'page-dating-playtime',
@@ -470,7 +462,6 @@ export const SLUG_MAP: Record<string, RouteConfigEntry> = {
     titleEN: `Kitty Cards · Playtime | ${SITE_TITLE_EN}`,
   },
 
-  // Tab 6: Chụp ảnh (Photo Studio)
   'dating/photo-studio': {
     slug: 'dating/photo-studio',
     domId: 'page-dating-photo-studio',
@@ -531,7 +522,6 @@ export const SLUG_MAP: Record<string, RouteConfigEntry> = {
     titleEN: `Portrait Log · Photo Studio | ${SITE_TITLE_EN}`,
   },
 
-  // ── 05. TRIỂN LÃM (GALLERY / EXHIBITION) ───────────────────────────────────
   gallery: {
     slug: 'gallery',
     domId: 'page-gallery',
@@ -607,7 +597,6 @@ export const SLUG_MAP: Record<string, RouteConfigEntry> = {
     titleEN: `Profile Design · Gallery | ${SITE_TITLE_EN}`,
   },
 
-  // ── 06. SỰ KIỆN (EVENTS) & CÁC NĂM 2024 / 2025 / 2026 ─────────────────────
   events: {
     slug: 'events',
     domId: 'page-events',
@@ -794,7 +783,6 @@ export const SLUG_ALIASES: Record<string, string> = {
   'memoria/mem6': 'dating/falling-for-you/memoria/mem6',
 };
 
-// ── 07. LIÊN LẠC (CONTACT): TỰ ĐỘNG TẠO ROUTE 3 TẦNG TỪ DỮ LIỆU ──────────────
 CONTACT_APPS.forEach((app) => {
   const appSlug = `contact/${app.id}`;
   SLUG_MAP[appSlug] = {
@@ -842,7 +830,6 @@ CONTACT_APPS.forEach((app) => {
   });
 });
 
-// ── 08. FANFIC: TỰ ĐỘNG TẠO ROUTE ĐỌC TRUYỆN TỪ DỮ LIỆU FANFIC_LIST ──────────
 FANFIC_LIST.forEach((story, idx) => {
   const cleanUrl = story.url.replace(/^[#/]+|[#/]+$/g, '').toLowerCase();
   const leafId = cleanUrl.replace(/^fanfic\//, '') || `truyen-${idx + 1}`;
@@ -870,7 +857,6 @@ FANFIC_LIST.forEach((story, idx) => {
   SLUG_ALIASES[`gallery/fanfic/${num2}`] = canonicalSlug;
 });
 
-// ── 09. MEMORIA & TRANG BẢN DỊCH (/memoria/mem_XX/dich): TỰ ĐỘNG TẠO TỪ MEMORIA_CARDS ──
 MEMORIA_CARDS.forEach((card) => {
   const num1 = String(card.id);
   const num2 = num1.padStart(2, '0');
@@ -902,7 +888,6 @@ MEMORIA_CARDS.forEach((card) => {
   SLUG_ALIASES[`memoria/mem${num1}`] = cardSlug;
   SLUG_ALIASES[`memoria/mem${num2}`] = cardSlug;
 
-  // Route trang bản dịch (/memoria/mem_01/dich) — chỉ mở cho thẻ đã dịch (card.done === true)
   if (card.done) {
     const dichSlug = `memoria/mem_${num2}/dich`;
     SLUG_MAP[dichSlug] = {

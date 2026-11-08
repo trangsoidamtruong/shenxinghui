@@ -1,13 +1,3 @@
-/* DỮ LIỆU THẺ – sửa file này để thêm/sửa thẻ
-   id      : số thứ tự (hiện dạng 01, 02...)
-   title   : tên thẻ (tiếng Việt)
-   titleEn : tên thẻ (tiếng Anh – hiển thị dòng phụ bên dưới tên tiếng Việt)
-   type    : "video" = thẻ 5★ (có video) | "image" = thẻ 4★ (chỉ ảnh)
-   done    : true = đã có bản dịch (nút "[ ĐỌC THẺ ]" bấm được) | false = chưa dịch
-   img     : ảnh bìa (bắt buộc với thẻ ảnh; với thẻ video dùng làm poster)
-   src     : file video (.webm/.mp4) – chỉ cho thẻ type:"video", để "" nếu chưa có
-   desc    : 1 dòng mô tả
-   url     : trang bản dịch sẽ mở khi bấm "[ ĐỌC THẺ ]" (dạng /memoria/mem_01/dich) */
 
 export interface MemoriaCard {
   id: number;

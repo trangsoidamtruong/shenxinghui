@@ -316,7 +316,6 @@
   background-color: var(--void);
 }
 
-/* Overlay chàm đậm #1a1233, opacity 15%, mix-blend-mode: multiply */
 .site-media-frame::before,
 .anecdote-card-tint,
 .events-img-multiply {
@@ -331,7 +330,6 @@
   transition: opacity 0.4s ease;
 }
 
-/* Gradient ở đáy mỗi ảnh: từ trong suốt xuống #07060f, phủ ~55% chiều cao ảnh */
 .site-media-frame::after,
 .anecdote-card-gradient,
 .events-img-scanlines {
@@ -349,7 +347,6 @@
   transition: opacity 0.4s ease;
 }
 
-/* Ảnh giữ màu gốc, dịu xuống để chìm vào nền tối */
 .site-media-frame > img,
 .anecdote-card-img,
 .site-card-img {
@@ -361,14 +358,12 @@
     opacity 0.4s ease;
 }
 
-/* Bỏ lớp phủ scanline mặc định trên mọi ảnh đã mở */
 .anecdote-card-scanlines {
   background: none;
   opacity: 0;
   transition: opacity 0.4s ease;
 }
 
-/* Hover / Focus trên thẻ ảnh: filter về none, overlay chàm giảm còn 3%, transition 0.4s ease */
 .group:hover .site-media-frame > img,
 .group:focus-visible .site-media-frame > img,
 .group:hover .anecdote-card-img,
@@ -391,8 +386,6 @@
   opacity: 0.03;
 }
 
-/* Trạng thái "Khóa / Chưa giải mã" (.is-locked):
-   CHỈ trạng thái này mới có scanline + tint tím; khi hover hoặc mở sẽ hiện màu thật */
 .is-locked .anecdote-card-img,
 .is-locked .site-card-img,
 .is-locked .site-media-frame > img {
@@ -663,7 +656,6 @@
   outline-offset: 2px;
 }
 
-/* Bỏ scanline mặc định trên cảnh tàu Events */
 .events-hero-scanlines {
   background: none;
   opacity: 0;
@@ -894,14 +886,12 @@
   inset: 0;
 }
 
-/* 1) Overlay rất nhẹ màu chàm đậm #1a1233, giảm opacity để không làm tối video */
 .grade-tint {
   background: #1a1233;
   opacity: 0.06;
   mix-blend-mode: multiply;
 }
 
-/* 2) Gradient đáy dịu nhẹ + Vignette thoáng hơn để giữ độ sáng cho nhân vật */
 .grade-vignette {
   background:
     linear-gradient(
@@ -917,7 +907,6 @@
     );
 }
 
-/* 3) Dải tối bên trái (vừa đủ tương phản cho chữ menu) */
 .grade-left {
   background: linear-gradient(
     90deg,
@@ -927,7 +916,6 @@
   );
 }
 
-/* 4) Dải tối bên phải (nhẹ nhàng cho nút menu phụ) */
 .grade-right {
   background: linear-gradient(
     270deg,
@@ -936,7 +924,6 @@
   );
 }
 
-/* 5) Bỏ scanline mặc định trên trang chủ */
 .grade-scanline {
   display: none;
 }
@@ -1043,7 +1030,6 @@
   user-select: none;
 }
 
-/* 1) Ảnh căn phòng & vật phẩm: filter brightness(0.82) saturate(0.88) contrast(1.05) */
 .room-img-filter {
   filter: brightness(0.82) saturate(0.88) contrast(1.05);
   transition: filter 0.4s ease, transform 0.4s ease;
@@ -1053,7 +1039,6 @@
   filter: brightness(1) saturate(1) contrast(1) drop-shadow(0 0 14px rgba(169, 100, 247, 0.45));
 }
 
-/* 2) Overlay chàm đậm #1a1233 nhẹ (16% multiply) + khoét vùng cửa sổ sao */
 .room-layer-night {
   position: absolute;
   inset: 0;
@@ -1064,7 +1049,6 @@
   mask-image: radial-gradient(36% 74% at 15.5% 43%, rgba(0, 0, 0, 0.05) 0%, rgba(0, 0, 0, 0.4) 55%, rgba(0, 0, 0, 1) 82%);
 }
 
-/* 3) Ánh sáng cửa sổ dịu nhẹ */
 .room-layer-window-light {
   position: absolute;
   inset: 0;
@@ -1073,7 +1057,6 @@
   mix-blend-mode: screen;
 }
 
-/* 4) Gradient ở đáy (55% chiều cao xuống #07060f) + Vignette */
 .room-layer-vignette {
   position: absolute;
   inset: 0;
@@ -1088,12 +1071,10 @@
     radial-gradient(120% 90% at 55% 50%, transparent 48%, rgba(7, 6, 15, 0.76) 100%);
 }
 
-/* 5) Bỏ scanline mặc định trên ảnh căn phòng */
 .room-layer-scanline {
   display: none;
 }
 
-/* Cửa sổ thông tin hiện vật .win */
 .win {
   position: relative;
   width: 100%;
@@ -1229,9 +1210,6 @@
   }
 }
 
-/* ==========================================================================
-   EXHIBITION TERMINAL (.xt-root) — Scoped 1:1 from Triển lãm · Terminal
-   ========================================================================== */
 .xt-root {
   --void: #07060f;
   --deep: #0e0b1c;
@@ -2149,7 +2127,6 @@
   white-space: nowrap;
 }
 
-/* Mục 7: Xử lý ảnh chuẩn của Contact (banner & avatar nếu có ảnh) */
 #page-contact .ct-pb,
 #page-contact .ct-av.has-img {
   position: relative;
@@ -2226,7 +2203,6 @@
   background: var(--violet);
 }
 
-/* Trang bài đăng Public Account */
 #page-contact .ct-pst {
   max-width: 820px;
   margin-top: 44px;
@@ -2316,7 +2292,6 @@
   color: var(--ct-text);
 }
 
-/* Màn khoá chữ S (.ct-ov) — phủ cả header */
 #page-contact .ct-ov {
   position: fixed;
   inset: 0;
@@ -3548,7 +3523,6 @@
   color: var(--silver);
 }
 
-/* Cơ chế tự co hộp thông tin game fit() (.t1 -> .t6) để nút CHƠI & THÁO CHIP không bao giờ bị che */
 .fangame-page .gi.t1 h2 {
   margin-bottom: 4px;
 }
@@ -3580,7 +3554,6 @@
   display: none;
 }
 
-/* BOTTOM CHIP RACK (GIÁ CHIP) */
 .fangame-page .tray {
   padding: 2px 5vw 12px;
   position: relative;
@@ -3757,7 +3730,6 @@
   pointer-events: none;
 }
 
-/* Bản sao chip bay (position: absolute theo .fangame-page, z-index: 2 < reader z-index: 3 để chìm sau thân máy và cuộn cùng máy đọc trên điện thoại) */
 .fangame-page .chip.fly {
   position: absolute;
   left: 0;
@@ -3784,7 +3756,6 @@
   z-index: 90;
 }
 
-/* ĐIỆN THOẠI & KHUNG PHONE: xếp dọc (cột trái trên đầu -> máy đọc ở giữa -> giá chip bên dưới), trang cuộn dọc bình thường */
 @media (max-width: 700px) {
   .fangame-page {
     overflow-y: auto;
@@ -3960,7 +3931,6 @@
   box-sizing: border-box;
 }
 
-/* Lớp nền nghệ thuật (bound-by-starlight.webp) hòa trộn theo concept tím vũ trụ của web */
 .memoria-dich-page .md-bg-stage {
   position: absolute;
   inset: 0;
@@ -4019,7 +3989,6 @@
   transition: width 0.25s ease;
 }
 
-/* Vùng cuộn chính dưới thanh điều hướng */
 .memoria-dich-page .md-scroll {
   position: relative;
   z-index: 2;
@@ -4127,7 +4096,6 @@
   margin: 0;
 }
 
-/* Thân trang: Video dọc cố định bên trái + chữ bên phải */
 .memoria-dich-page .main {
   position: relative;
   z-index: 2;
@@ -4407,23 +4375,15 @@
   color: var(--muted);
 }
 
-/* Cột chữ bên phải: khung HUD trong suốt vừa phải để thấy rõ ảnh nền Bound By Starlight cố định phía dưới khi cuộn chữ */
 .memoria-dich-page .text-col {
   position: relative;
   flex: 999 1 420px;
   min-width: 0;
   max-width: 760px;
-  background: linear-gradient(
-    180deg,
-    rgba(10, 8, 24, 0.44) 0%,
-    rgba(14, 10, 34, 0.38) 50%,
-    rgba(10, 8, 24, 0.48) 100%
-  );
-  border: 1px solid rgba(157, 123, 255, 0.48);
-  padding: 26px 30px 30px;
-  box-shadow:
-    0 18px 44px rgba(0, 0, 0, 0.45),
-    0 0 24px rgba(157, 123, 255, 0.14);
+  background: none;
+  border: 0;
+  padding: 6px 0 24px;
+  box-shadow: none;
 }
 
 .memoria-dich-page .text-head {
@@ -4527,7 +4487,6 @@
   border-color: var(--accent);
 }
 
-/* Mục lục (Story Map) */
 .memoria-dich-page .scrim {
   position: fixed;
   inset: 0;
@@ -4694,7 +4653,6 @@
   color: var(--dim);
 }
 
-/* Điện thoại: video ở trên, chữ ở dưới, mục lục hiện dạng bottom sheet từ dưới lên */
 @media (max-width: 760px) {
   .memoria-dich-page .head,
   .memoria-dich-page .main {
@@ -4722,7 +4680,7 @@
   }
 
   .memoria-dich-page .text-col {
-    padding: 18px 16px 22px;
+    padding: 12px 0 22px;
   }
 
   .memoria-dich-page .drawer {
@@ -4768,7 +4726,7 @@
 }
 
 .is-phone-frame .memoria-dich-page .text-col {
-  padding: 18px 16px 22px;
+  padding: 12px 0 22px;
 }
 
 .is-phone-frame .memoria-dich-page .drawer {

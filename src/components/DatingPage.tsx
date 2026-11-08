@@ -784,7 +784,6 @@ export const DatingPage: React.FC<DatingPageProps> = ({
 
                   {/* Bottom Info Area: shrink-0 so text & bottom border are never clipped */}
                   <div className="flex shrink-0 w-full flex-col justify-between gap-1.5 border-t border-[var(--line)] bg-[var(--void)] px-3 py-2.5 sm:px-2.5 sm:py-2 md:px-3 md:py-2.5 lg:px-4 lg:py-3">
-                    {/* Top Info Row: ANECDOTE // 01 (or GIAI THOẠI // 01) + bordered OPEN / MỞ label */}
                     <div className="flex items-center justify-between gap-1.5 lg:gap-2">
                       <span className="truncate font-[var(--font-mono)] text-[9px] md:text-[10px] lg:text-[11px] uppercase tracking-[0.12em] lg:tracking-[0.18em] text-[var(--text-2)]">
                         {lang === 'VI' ? card.chapterCodeVI : card.chapterCodeEN}

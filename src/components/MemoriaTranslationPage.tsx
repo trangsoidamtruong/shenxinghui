@@ -1,10 +1,6 @@
 import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
 import { SiteHeader } from './SiteHeader';
 
-/**
- * Biến MEDIA_BASE trỏ tới Cloudinary của web.
- * Mọi đường dẫn tương đối dạng "memoria/mem_01/..." sẽ tự động nối với MEDIA_BASE.
- */
 export const MEDIA_BASE = 'https://res.cloudinary.com/trangsoidamtruong/image/upload';
 
 export interface MemoriaMapNode {
@@ -80,10 +76,6 @@ interface ComputedNode extends MemoriaMapNode {
   h: number;
 }
 
-/**
- * Tự động tính toán tọa độ các nút (nếu file JSON không ghi sẵn x, y, w, h)
- * và tạo đường nối SVG từ mảng nhánh `next` của từng chương.
- */
 function buildStoryMapGeometry(nodes: MemoriaMapNode[]): {
   computedNodes: ComputedNode[];
   svgPaths: string[];
@@ -177,7 +169,6 @@ export const MemoriaTranslationPage: React.FC<MemoriaTranslationPageProps> = ({
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [posterUseFallback, setPosterUseFallback] = useState<boolean>(false);
 
-  // Tải trạng thái "đã đọc" của thẻ từ localStorage (bọc try/catch)
   useEffect(() => {
     try {
       const raw = window.localStorage.getItem(storageKey);
@@ -189,7 +180,6 @@ export const MemoriaTranslationPage: React.FC<MemoriaTranslationPageProps> = ({
         }
       }
     } catch {
-      // Trình duyệt chặn localStorage -> dùng state tạm
     }
     setVisited({ ep1: true });
   }, [storageKey]);
@@ -201,7 +191,6 @@ export const MemoriaTranslationPage: React.FC<MemoriaTranslationPageProps> = ({
         try {
           window.localStorage.setItem(storageKey, JSON.stringify(next));
         } catch {
-          // Bỏ qua nếu trình duyệt chặn localStorage
         }
         return next;
       });
@@ -209,7 +198,6 @@ export const MemoriaTranslationPage: React.FC<MemoriaTranslationPageProps> = ({
     [storageKey]
   );
 
-  // Chỉ tải đúng file JSON của thẻ đang xem (/data/memoria/mem_01.json)
   useEffect(() => {
     let cancelled = false;
     setLoading(true);
@@ -246,7 +234,6 @@ export const MemoriaTranslationPage: React.FC<MemoriaTranslationPageProps> = ({
     };
   }, [cardKey, markVisited]);
 
-  // Danh sách các chương đã có bản dịch theo thứ tự trong nodes
   const translatedOrder = useMemo(() => {
     if (!data) return [];
     const fromNodes = data.nodes
@@ -280,7 +267,6 @@ export const MemoriaTranslationPage: React.FC<MemoriaTranslationPageProps> = ({
     [data, markVisited]
   );
 
-  // Phím tắt: M (bật/tắt mục lục), Esc (đóng mục lục hoặc quay lại Memoria), mũi tên trái/phải (chuyển chương)
   useEffect(() => {
     const onKeyDown = (e: KeyboardEvent) => {
       const target = e.target as HTMLElement | null;
@@ -394,7 +380,6 @@ export const MemoriaTranslationPage: React.FC<MemoriaTranslationPageProps> = ({
         } as React.CSSProperties
       }
     >
-      {/* Ảnh nền nghệ thuật (bound-by-starlight.webp) phủ toàn trang theo concept tím ngân hà */}
       <div className="md-bg-stage" aria-hidden="true">
         {bgImageUrl && (
           <img
@@ -409,7 +394,6 @@ export const MemoriaTranslationPage: React.FC<MemoriaTranslationPageProps> = ({
         <div className="md-bg-scan" />
       </div>
 
-      {/* Header dùng chung của web (chứa breadcrumb & nút đổi ngôn ngữ VI/EN ở góc phải trên) */}
       <SiteHeader
         breadcrumbs={breadcrumbs}
         langLabel={lang}
@@ -418,7 +402,6 @@ export const MemoriaTranslationPage: React.FC<MemoriaTranslationPageProps> = ({
         onToggleLang={onToggleLang}
       />
 
-      {/* Thanh tiến độ chương */}
       <div className="progress" aria-hidden="true">
         <i id="md-bar" style={{ width: `${progressPct}%` }} />
       </div>
@@ -497,7 +480,6 @@ export const MemoriaTranslationPage: React.FC<MemoriaTranslationPageProps> = ({
             </section>
 
             <main className="main">
-              {/* Cột trái: Video dọc 9:16 cố định khi cuộn chữ (YouTube Facade) */}
               <div className="video-col">
                 <div className="halo" />
                 <div
@@ -542,7 +524,6 @@ export const MemoriaTranslationPage: React.FC<MemoriaTranslationPageProps> = ({
                     </div>
                   </div>
 
-                  {/* Chỉ gắn iframe YouTube khi người xem bấm phát (isPlaying === true) */}
                   <div className={`player${youtubeId ? ' has-iframe' : ''}`}>
                     {isPlaying && youtubeId ? (
                       <iframe
@@ -598,13 +579,7 @@ export const MemoriaTranslationPage: React.FC<MemoriaTranslationPageProps> = ({
                 </div>
               </div>
 
-              {/* Cột phải: Nội dung bản dịch từng chương chạy trực tiếp trên nền ảnh Bound By Starlight */}
               <div className="text-col">
-                <div className="corner a" aria-hidden="true" />
-                <div className="corner b" aria-hidden="true" />
-                <div className="corner c" aria-hidden="true" />
-                <div className="corner d" aria-hidden="true" />
-
                 <div className="text-head">
                   <div className="chap" id="md-chapTitle">
                     {lang === 'EN' && currentChapter?.titleEn
@@ -619,7 +594,6 @@ export const MemoriaTranslationPage: React.FC<MemoriaTranslationPageProps> = ({
                     const upperWho = rawWho.toUpperCase();
                     const lineText = lang === 'VI' ? vi : en || vi;
 
-                    // Dòng dẫn truyện hoặc chú thích (*) không có tên người nói
                     if (!rawWho) {
                       const isNote = lineText.trim().startsWith('(*)');
                       return (
@@ -706,7 +680,6 @@ export const MemoriaTranslationPage: React.FC<MemoriaTranslationPageProps> = ({
         )}
       </div>
 
-      {/* Mục lục (Story Map): Drawer bên phải trên PC, Bottom Sheet trên điện thoại */}
       <div
         className="scrim"
         id="md-scrim"

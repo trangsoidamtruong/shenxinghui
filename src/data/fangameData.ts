@@ -1,23 +1,13 @@
 export interface FangameItem {
-  /** Tên game */
   n: string;
-  /** Mảng thể loại */
   g: string[];
-  /** Màu nhấn của chip (mã hex) */
   c: string;
-  /** Đường dẫn ảnh xem trước (WebP tỉ lệ 3:4); để rỗng "" nếu dùng hình vẽ tạm */
   img: string;
-  /** Nền tảng */
   plat: string;
-  /** Phiên bản */
   v: string;
-  /** Độ khó từ 1 đến 3 (hiển thị 3 vầng trăng ● / ○) */
   lv: 1 | 2 | 3;
-  /** Mô tả ngắn */
   d: string;
-  /** Trạng thái (giữ trong dữ liệu, không hiển thị trên giao diện) */
   st: 'Đang phát triển' | 'Bản thử' | 'Hoàn thành';
-  /** Đích của nút "> CHƠI" */
   url: string;
 }
 

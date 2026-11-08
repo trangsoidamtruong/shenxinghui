@@ -1,26 +1,14 @@
 export interface FanficItem {
-  /** Tên truyện */
   t: string;
-  /** Phụ đề (nếu có) */
   sub?: string;
-  /** Màu nhấn của gáy (mã hex) */
   c: string;
-  /** true = hoàn, false = đang viết (gáy có chấm nháy) */
   done: boolean;
-  /** Số chương (quyết định độ dày gáy và số nhỏ ở đáy gáy) */
   ch: number;
-  /** Tác giả */
   au?: string;
-  /** Đường dẫn ảnh bìa (tỉ lệ 3:5); nếu chưa có sẽ dùng bìa SVG dự phòng */
   img?: string;
-  /** Đường dẫn trang đọc truyện */
   url: string;
 }
 
-/**
- * Danh sách fanfic trên kệ sách.
- * Để thêm fanfic mới, chỉ cần thêm 1 dòng object vào mảng FANFIC_LIST bên dưới.
- */
 export const FANFIC_LIST: FanficItem[] = [
   {
     t: 'Đêm trăng',

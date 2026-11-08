@@ -140,8 +140,6 @@ export const FanficPage: React.FC<FanficPageProps> = ({
     const stageEl = stageRef.current;
     if (!rootEl || !stageEl) return;
 
-    // Phần kệ (padding-top 46px + --h) + floor (2px) + info (78px) = --h + 126px
-    // Tính toán --h theo không gian thực tế còn lại dưới thanh điều hướng để không cuộn trang
     const availStageH = stageEl.clientHeight;
     const maxFromStage = availStageH - 134;
     const halfViewport = window.innerHeight * 0.5;
@@ -184,7 +182,6 @@ export const FanficPage: React.FC<FanficPageProps> = ({
     };
   }, [measure, updateArrows, activeStory]);
 
-  // Mở sẵn cuốn đầu tiên ("Đêm trăng") lúc mới vào kệ để thấy hiệu ứng, giống demo
   useEffect(() => {
     if (activeStory) return;
     const reduce =
@@ -201,7 +198,6 @@ export const FanficPage: React.FC<FanficPageProps> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeStory]);
 
-  // Esc hoặc bấm ra ngoài kệ/info thì cất sách lại
   useEffect(() => {
     if (activeStory) return;
 

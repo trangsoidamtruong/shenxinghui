@@ -1,5 +1,3 @@
-/* MEMORIA – thư mục ký ức. Cần: memoria.css, data/cards.ts và 1 thẻ <div class="memoria"></div>.
-   Toàn bộ HTML bên trong được tạo tự động. */
 
 import { MEMORIA_CARDS, type MemoriaCard } from "./data/cards";
 
@@ -78,7 +76,6 @@ export function mountMemoria(
       .replace(/\.(mp4|webm|mov)$/i, ".webp");
   }
 
-  // Tải trước ảnh bìa và mồi luồng video cho các thẻ 5★ ngay khi vào trang Memoria
   cards.forEach((c) => {
     const posterUrl = deriveCloudinaryPosterUrl(c.src, c.img);
     if (posterUrl) {
@@ -223,7 +220,6 @@ export function mountMemoria(
     }, 2200);
   }
 
-  // ---- Điều khiển ----
   const listEl = $("#list");
   const onListClick = (e: MouseEvent) => {
     const target = e.target as HTMLElement | null;
@@ -281,7 +277,6 @@ export function mountMemoria(
     $("#chips").appendChild(b);
   });
 
-  // ---- Mở đầu: log khởi động (một lần) ----
   renderList();
 
   if (options.initialCardId) {

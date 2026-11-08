@@ -8,7 +8,6 @@ import {
 import { soundFx } from '../utils/soundFx';
 import { SiteHeader } from './SiteHeader';
 
-// ═══ TIMING CONSTANTS (Hằng số thời gian hiệu ứng) ═══
 const TYPEWRITER_CHAR_DELAY_MS = 32;
 const CARD_REVEAL_DURATION_MS = 300;
 const YEAR_CARD_STAGGER_MS = 90;
@@ -20,12 +19,10 @@ const GLITCH_PHASE_END_MS = 700;
 const LOCK_COORD_DURATION_MS = 800;
 const TIMELINE_REVEAL_MS = 1500; // GLITCH_PHASE_END_MS (700) + LOCK_COORD_DURATION_MS (800)
 
-// Hằng số thời gian khi bật prefers-reduced-motion
 const REDUCED_FADE_DURATION_MS = 150;
 const REDUCED_LOCK_DURATION_MS = 400;
 const REDUCED_TIMELINE_REVEAL_MS = 550; // 150 + 400
 
-// Chỉ gõ dòng "> Adjust your radar..." đúng MỘT lần mỗi lần tải trang
 let hasRadarTypedOnPageLoad = false;
 
 interface EventsPageProps {
@@ -682,7 +679,6 @@ export const EventsPage: React.FC<EventsPageProps> = ({
     rowTriggerYs: number[];
   } | null>(null);
 
-  // Refs quản lý bộ đếm thời gian & khoá tương tác cho hiệu ứng A và B
   const isTransitioningRef = useRef<boolean>(false);
   const typewriterIntervalRef = useRef<number | null>(null);
   const cardRevealSettleTimerRef = useRef<number | null>(null);
@@ -702,7 +698,6 @@ export const EventsPage: React.FC<EventsPageProps> = ({
 
   // Selected year ('2024' | '2025' | '2026' | null) when user clicks one of the 3 year cards
   const [selectedYear, setSelectedYear] = useState<EventYear | null>(null);
-  // Chuỗi trạng thái chuyển cảnh: 'idle' -> 'glitching' -> 'locking' -> 'timeline'
   const [transitionPhase, setTransitionPhase] = useState<YearTransitionPhase>('idle');
   // Selected event index inside activeYearData.events for the Event Dossier Modal
   const [selectedEventIndex, setSelectedEventIndex] = useState<number | null>(null);
@@ -711,10 +706,8 @@ export const EventsPage: React.FC<EventsPageProps> = ({
   const [orbitShipEntering, setOrbitShipEntering] = useState<boolean>(false);
   // Tracks which event rows Traceback II has reached along the vertical axis
   const [reachedEventMap, setReachedEventMap] = useState<Record<number, boolean>>({});
-  // Bật hiệu ứng trượt lên lần lượt cho các thẻ sự kiện đang trong khung nhìn khi timeline vừa mở
   const [timelineEventsStaggering, setTimelineEventsStaggering] = useState<boolean>(false);
 
-  // Trạng thái gõ máy cho dòng "> Adjust your radar..." (Mục A)
   const radarBodyText =
     lang === 'VI'
       ? 'Hãy điều chỉnh radar và chọn tọa độ để đáp xuống.'
@@ -780,7 +773,6 @@ export const EventsPage: React.FC<EventsPageProps> = ({
     }
   }, []);
 
-  // Dọn toàn bộ timers & mở khóa cuộn khi rời trang (unmount)
   useEffect(() => {
     return () => {
       clearAllTransitionTimers();
@@ -798,14 +790,12 @@ export const EventsPage: React.FC<EventsPageProps> = ({
     };
   }, [clearAllTransitionTimers, clearTypewriterTimers, unlockPageScroll]);
 
-  // Nếu người dùng đổi ngôn ngữ sau khi đã gõ xong thì cập nhật độ dài chữ đầy đủ ngay
   useEffect(() => {
     if (isRadarTypedDone || hasRadarTypedOnPageLoad) {
       setTypedCharCount(radarBodyText.length);
     }
   }, [lang, radarBodyText.length, isRadarTypedDone]);
 
-  // Mục A: IntersectionObserver (threshold 0.25) kích hoạt gõ chữ đúng MỘT lần mỗi lần tải trang
   useEffect(() => {
     const sectionEl = yearSectionRef.current;
     if (!sectionEl) return;
@@ -925,7 +915,6 @@ export const EventsPage: React.FC<EventsPageProps> = ({
     return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
   }, []);
 
-  // Đặt lại sạch sẽ vị trí cuộn, tàu Traceback II và các lớp mây mỗi khi vào lại trang Sự kiện
   useEffect(() => {
     targetScrollTopRef.current = 0;
     smoothScrollTopRef.current = 0;
@@ -1020,7 +1009,6 @@ export const EventsPage: React.FC<EventsPageProps> = ({
       const rawOrbitY = anchorY - trackTopInContainer;
       const maxOrbitY = Math.max(0, trackHeight - shipH);
 
-      // Khởi động ở đỉnh trục (y = 0, "ALT 00.0") khi ở đầu khu timeline, sau đó bám theo scroll
       const timelineScrollDelta = Math.max(0, scrollTop - sectionTop);
       const rampRatio = Math.min(1, timelineScrollDelta / Math.max(1, viewportH * 0.25));
       const clampedOrbitY = Math.max(0, Math.min(maxOrbitY, rawOrbitY * rampRatio));
@@ -1162,7 +1150,6 @@ export const EventsPage: React.FC<EventsPageProps> = ({
     [computeAndSyncOrbit, isReducedMotionPreferred, syncSection1DomNodes]
   );
 
-  // Mục C: Quay lại màn chọn năm (nút "[ ▲ ORBIT ]") hoặc huỷ giữa chừng
   const scrollToTopSection = useCallback(() => {
     soundFx.playSelect();
     clearAllTransitionTimers();
@@ -1170,14 +1157,12 @@ export const EventsPage: React.FC<EventsPageProps> = ({
     unlockPageScroll();
     isTransitioningRef.current = false;
 
-    // Đảm bảo dòng "> Adjust your radar..." hiện đủ chữ ngay, KHÔNG gõ lại
     hasRadarTypedOnPageLoad = true;
     setTypedCharCount(radarBodyTextRef.current.length);
     setIsRadarTypedDone(true);
     setYearCardsRevealStage('settled');
     setTimelineEventsStaggering(false);
 
-    // Ẩn timeline, gỡ class glitch, ẩn dòng "Locking coordinate", hiện lại 3 thẻ năm
     setTransitionPhase('idle');
     setSelectedYear(null);
     setSelectedEventIndex(null);
@@ -1196,10 +1181,8 @@ export const EventsPage: React.FC<EventsPageProps> = ({
     }
   }, [clearAllTransitionTimers, clearTypewriterTimers, onNavigate, unlockPageScroll]);
 
-  // Mục B: Chuỗi chuyển cảnh 3 bước sau khi bấm một thẻ năm (0 -> 700ms -> 1500ms)
   const handleSelectYearCard = useCallback(
     (yr: EventYear, updateUrl = true) => {
-      // Ngay khi bấm (t = 0): Khoá mọi tương tác, bỏ qua bấm thêm
       if (isTransitioningRef.current || transitionPhase !== 'idle') {
         return;
       }
@@ -1215,13 +1198,11 @@ export const EventsPage: React.FC<EventsPageProps> = ({
       clearAllTransitionTimers();
       clearTypewriterTimers();
 
-      // Hoàn tất ngay dòng radar nếu người dùng bấm thẻ trước khi gõ xong
       hasRadarTypedOnPageLoad = true;
       setTypedCharCount(radarBodyTextRef.current.length);
       setIsRadarTypedDone(true);
       setYearCardsRevealStage('settled');
 
-      // Lưu năm đã chọn vào selectedYear & khoá cuộn trang
       setSelectedYear(yr);
       setSelectedEventIndex(null);
       eventRowRefs.current = [];
@@ -1236,16 +1217,13 @@ export const EventsPage: React.FC<EventsPageProps> = ({
       const glitchPhaseEnd = reduced ? REDUCED_FADE_DURATION_MS : GLITCH_PHASE_END_MS;
       const timelineRevealAt = reduced ? REDUCED_TIMELINE_REVEAL_MS : TIMELINE_REVEAL_MS;
 
-      // Bước 1 (t = 0 -> 700ms): Cả 3 thẻ tan bằng glitch (hoặc mờ dần 150ms khi reduced motion)
       setTransitionPhase('glitching');
 
-      // Bước 2 (t = 700ms -> 1500ms): Ẩn hẳn lưới thẻ (display:none), hiện dòng "> Locking coordinate // YYYY ..."
       glitchPhaseTimerRef.current = window.setTimeout(() => {
         glitchPhaseTimerRef.current = null;
         setTransitionPhase('locking');
       }, glitchPhaseEnd);
 
-      // Bước 3 (t = 1500ms): Hiện khu timeline, cuộn tức thì tới đầu khu nội dung, mở khoá cuộn & focus tiêu đề
       revealTimelineTimerRef.current = window.setTimeout(() => {
         revealTimelineTimerRef.current = null;
         unlockPageScroll();
@@ -1299,7 +1277,6 @@ export const EventsPage: React.FC<EventsPageProps> = ({
     ]
   );
 
-  // Chuyển nhanh năm hoặc quay về màn chọn năm từ thanh sub-tab bên trong Timeline (hoặc từ popstate/hash)
   const handleSelectYearTab = useCallback(
     (yr: EventYear | null, updateUrl = true) => {
       if (updateUrl) {
@@ -1373,7 +1350,6 @@ export const EventsPage: React.FC<EventsPageProps> = ({
     ]
   );
 
-  // Đồng bộ năm và sự kiện con từ URL hash / nút Back-Forward trình duyệt
   useEffect(() => {
     if (externalYear !== selectedYear) {
       if (externalYear === null) {
@@ -1478,7 +1454,6 @@ export const EventsPage: React.FC<EventsPageProps> = ({
     return () => window.removeEventListener('keydown', handleModalKeyDown, { capture: true });
   }, [selectedEventIndex, activeYearData, clickableEventIndices, handleCloseEventModal]);
 
-  // Nội dung câu đầy đủ cho aria-label & khung giữ chỗ (không nhảy bố cục)
   const fullRadarPromptText = `> ${radarBodyText}`;
   const visibleRadarBodySlice = isRadarTypedDone
     ? radarBodyText
@@ -1849,7 +1824,6 @@ export const EventsPage: React.FC<EventsPageProps> = ({
           className="relative z-40 flex w-full flex-col bg-[var(--void)] pb-10 sm:pb-14"
         >
           <div className="wrap flex flex-col pt-5 sm:pt-8">
-            {/* Left-Aligned Section Title & Subtitle (Mục A & Bước 3) */}
             <div className="mb-6 sm:mb-8 lg:mb-10">
               {isTimelineVisible && activeYearData ? (
                 <>
@@ -1889,10 +1863,6 @@ export const EventsPage: React.FC<EventsPageProps> = ({
                     {lang === 'VI' ? 'Tọa độ' : 'Coordinates'}
                   </h1>
 
-                  {/* Mục A: Dòng "> Adjust your radar..."
-                      - Font thân, 17px, màu theo bộ token tím của web (--text-2 / --violet)
-                      - Giữ chỗ bằng bản đầy đủ visibility:hidden để mobile xuống dòng không làm nhảy bố cục
-                      - Ký tự "> " hiện sẵn; phần sau gõ 32ms/ký tự; con trỏ đặc 8x15px var(--violet) nhấp nháy cứng */}
                   <p
                     aria-label={fullRadarPromptText}
                     className="relative mt-3 sm:mt-3.5 text-[17px] leading-[1.5] text-[var(--text-2)]"
@@ -1924,7 +1894,6 @@ export const EventsPage: React.FC<EventsPageProps> = ({
                ================================================================= */}
             {!isTimelineVisible ? (
               <>
-                {/* Lưới 3 thẻ năm (Ẩn bằng display:none ở Bước 2 t = 700ms -> 1500ms) */}
                 <div
                   style={{
                     display: transitionPhase === 'locking' ? 'none' : undefined,
@@ -2043,7 +2012,6 @@ export const EventsPage: React.FC<EventsPageProps> = ({
                   })}
                 </div>
 
-                {/* Bước 2 (t = 700ms -> 1500ms): Dòng khoá tọa độ ở gần vị trí thẻ cũ (cách tiêu đề ~90px) */}
                 {transitionPhase === 'locking' && selectedYear && (
                   <div
                     role="status"

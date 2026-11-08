@@ -188,7 +188,6 @@ export const GameModals: React.FC<GameModalsProps> = ({
           </button>
         </div>
 
-        {/* 1. HỒ SƠ */}
         {activeModal === 'home' && (
           <div className="space-y-4">
             <div className="border border-[var(--line)] bg-[var(--void)]/65 p-5">
@@ -205,7 +204,6 @@ export const GameModals: React.FC<GameModalsProps> = ({
           </div>
         )}
 
-        {/* 2. CHIẾN ĐẤU */}
         {activeModal === 'combat' && (
           <div className="space-y-4">
             <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
@@ -238,7 +236,6 @@ export const GameModals: React.FC<GameModalsProps> = ({
           </div>
         )}
 
-        {/* 3. CỐT TRUYỆN */}
         {activeModal === 'story' && (
           <div className="space-y-5">
             <div className="border border-[var(--line)] bg-[var(--void)]/65 p-5">
@@ -277,7 +274,6 @@ export const GameModals: React.FC<GameModalsProps> = ({
           </div>
         )}
 
-        {/* 4. HẸN HÒ */}
         {activeModal === 'dating' && (
           <div className="space-y-4">
             <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
@@ -307,7 +303,6 @@ export const GameModals: React.FC<GameModalsProps> = ({
           </div>
         )}
 
-        {/* 5. TRIỂN LÃM */}
         {activeModal === 'gallery' && (
           <div className="space-y-4">
             <div className="grid grid-cols-1 gap-2 sm:grid-cols-3">
@@ -343,7 +338,6 @@ export const GameModals: React.FC<GameModalsProps> = ({
           </div>
         )}
 
-        {/* 6. SỰ KIỆN */}
         {activeModal === 'events' && (
           <div className="space-y-3.5">
             {EVENT_ITEMS.map((ev) => (
@@ -362,7 +356,6 @@ export const GameModals: React.FC<GameModalsProps> = ({
           </div>
         )}
 
-        {/* 7. LIÊN LẠC */}
         {activeModal === 'contact' && (
           <div className="space-y-3.5">
             {CONTACT_MESSAGES.map((msg) => (
@@ -380,7 +373,6 @@ export const GameModals: React.FC<GameModalsProps> = ({
           </div>
         )}
 
-        {/* 8. TƯƠNG TÁC */}
         {activeModal === 'interact' && (
           <div className="space-y-4">
             <div className="border border-[var(--line)] bg-[var(--void)]/65 p-5 text-center">
@@ -408,7 +400,6 @@ export const GameModals: React.FC<GameModalsProps> = ({
           </div>
         )}
 
-        {/* 9. GIỚI THIỆU */}
         {activeModal === 'about' && (
           <div className="space-y-4">
             <div className="border border-[var(--line)] bg-[var(--void)]/65 p-5">
