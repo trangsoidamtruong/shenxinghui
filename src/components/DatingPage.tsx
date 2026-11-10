@@ -78,8 +78,6 @@ interface AnecdoteCard {
   image: string;
   titleVI: string;
   titleEN: string;
-  chapterCodeVI: string;
-  chapterCodeEN: string;
   summaryVI: string;
   summaryEN: string;
   disabled?: boolean;
@@ -91,8 +89,6 @@ const ANECDOTE_CARDS: AnecdoteCard[] = [
     image: '/assets/aistudio/anec1_1db1b7ec.webp',
     titleVI: 'Kỳ Nghỉ Đặc Biệt',
     titleEN: 'A Special Vacation',
-    chapterCodeVI: 'GIAI THOẠI // 01',
-    chapterCodeEN: 'ANECDOTE // 01',
     summaryVI:
       'Một kỳ nghỉ hiếm hoi giữa nhịp sống hối hả của thành phố, nơi những khoảnh khắc bình yên bất ngờ mở ra góc nhìn mới về người đồng hành trầm lặng.',
     summaryEN:
@@ -104,8 +100,6 @@ const ANECDOTE_CARDS: AnecdoteCard[] = [
     image: '/assets/aistudio/anec2_f9b49633.webp',
     titleVI: 'Thoáng Qua',
     titleEN: 'Passing By',
-    chapterCodeVI: 'GIAI THOẠI // 02',
-    chapterCodeEN: 'ANECDOTE // 02',
     summaryVI:
       'Những cuộc lướt qua tưởng chừng tình cờ dưới hàng cây rợp bóng, nhưng lại là sự dõi theo âm thầm qua biết bao mùa nắng gió.',
     summaryEN:
@@ -117,8 +111,6 @@ const ANECDOTE_CARDS: AnecdoteCard[] = [
     image: '/assets/aistudio/anec3_e3831a87.webp',
     titleVI: 'Khi Sao Băng Rơi',
     titleEN: 'When Shooting Stars Fall',
-    chapterCodeVI: 'GIAI THOẠI // 03',
-    chapterCodeEN: 'ANECDOTE // 03',
     summaryVI:
       'Thời niên thiếu dưới mái trường và lời hứa thầm lặng khi ngước nhìn cơn mưa sao băng đầu tiên xé ngang bầu trời đêm.',
     summaryEN:
@@ -130,8 +122,6 @@ const ANECDOTE_CARDS: AnecdoteCard[] = [
     image: '/assets/aistudio/anec4_54b2635d.webp',
     titleVI: 'Tiếng Vọng từ Tàn Tích',
     titleEN: 'Echoes of the Ruins',
-    chapterCodeVI: 'GIAI THOẠI // 04',
-    chapterCodeEN: 'ANECDOTE // 04',
     summaryVI:
       'Dư âm vọng về từ tàn tích cổ xưa, nơi chiếc mặt nạ bạc và lưỡi kiếm ánh sáng khắc ghi sứ mệnh vượt qua hàng vạn năm ánh sáng.',
     summaryEN:
@@ -146,8 +136,6 @@ const BY_YOUR_SIDE_CARDS: AnecdoteCard[] = [
     image: '/assets/aistudio/byyourside1_d43f3af9.webp',
     titleVI: 'Phút Giây Bí Mật',
     titleEN: 'Secret Times',
-    chapterCodeVI: 'KỀ BÊN NGƯỜI // 01',
-    chapterCodeEN: 'BY YOUR SIDE // 01',
     summaryVI:
       'Những giây phút riêng tư tĩnh lặng dưới ánh đèn ấm áp, nơi hơi ấm từ bàn tay đan chặt và nhịp thở dịu dàng xua tan mọi khoảng cách.',
     summaryEN:
@@ -159,8 +147,6 @@ const BY_YOUR_SIDE_CARDS: AnecdoteCard[] = [
     image: '/assets/aistudio/byyourside2_a0e2baeb.webp',
     titleVI: 'Khoảnh Khắc Dịu Dàng',
     titleEN: 'Tender Moments',
-    chapterCodeVI: 'KỀ BÊN NGƯỜI // 02',
-    chapterCodeEN: 'BY YOUR SIDE // 02',
     summaryVI:
       'Buổi chiều nắng nhẹ bên trang sách mở và giai điệu êm đềm qua chiếc tai nghe, lưu giữ ánh nhìn dịu dàng chỉ dành riêng cho bạn.',
     summaryEN:
@@ -175,8 +161,6 @@ const FALLING_FOR_YOU_CARDS: AnecdoteCard[] = [
     image: '/assets/aistudio/fallingforyou1_2766b618.webp',
     titleVI: 'Gắn Bó',
     titleEN: 'Bond',
-    chapterCodeVI: 'ƯỚC HẸN RUNG ĐỘNG // 01',
-    chapterCodeEN: 'FALLING FOR YOU // 01',
     summaryVI:
       'Sợi dây gắn kết vô hình được dệt nên từ sự tin tưởng và những khoảnh khắc đời thường bình dị nhưng sâu sắc bên nhau.',
     summaryEN:
@@ -188,8 +172,6 @@ const FALLING_FOR_YOU_CARDS: AnecdoteCard[] = [
     image: '/assets/aistudio/fallingforyou2_359eb888.webp',
     titleVI: 'Tư Niệm',
     titleEN: 'Memoria',
-    chapterCodeVI: 'ƯỚC HẸN RUNG ĐỘNG // 02',
-    chapterCodeEN: 'FALLING FOR YOU // 02',
     summaryVI:
       'Không gian ngập tràn ánh nắng ban mai, nơi từng mảnh ký ức dịu dàng được lưu giữ nguyên vẹn theo năm tháng.',
     summaryEN:
@@ -201,8 +183,6 @@ const FALLING_FOR_YOU_CARDS: AnecdoteCard[] = [
     image: '/assets/aistudio/fallingforyou3_8f1d3a70.webp',
     titleVI: 'Truyền Thuyết',
     titleEN: 'Myths',
-    chapterCodeVI: 'ƯỚC HẸN RUNG ĐỘNG // 03',
-    chapterCodeEN: 'FALLING FOR YOU // 03',
     summaryVI:
       'Thánh đường cổ kính dưới ánh trăng bạc, nơi huyền thoại vượt qua hàng vạn năm ánh sáng bắt đầu và khắc ghi lời thề vĩnh cửu.',
     summaryEN:
@@ -217,8 +197,6 @@ const PHOTO_STUDIO_CARDS: AnecdoteCard[] = [
     image: '/assets/aistudio/photo1_bd8c8fe9.webp',
     titleVI: 'Bộ Sưu Tập',
     titleEN: 'Outfit Collection',
-    chapterCodeVI: 'CHỤP ẢNH // 01',
-    chapterCodeEN: 'PHOTO STUDIO // 01',
     summaryVI:
       'Bộ sưu tập trang phục chiến đấu và thường phục tinh xảo, tôn lên phong thái thanh lịch trong từng khung hình kỷ niệm.',
     summaryEN:
@@ -230,8 +208,6 @@ const PHOTO_STUDIO_CARDS: AnecdoteCard[] = [
     image: '/assets/aistudio/photo2_82afac44.webp',
     titleVI: 'Phông Nền',
     titleEN: 'Backgrounds',
-    chapterCodeVI: 'CHỤP ẢNH // 02',
-    chapterCodeEN: 'PHOTO STUDIO // 02',
     summaryVI:
       'Đa dạng phông nền nghệ thuật từ sảnh đường ngập nắng đến bầu trời đêm huyền ảo đượm sắc tím ngân hà.',
     summaryEN:
@@ -243,8 +219,6 @@ const PHOTO_STUDIO_CARDS: AnecdoteCard[] = [
     image: '/assets/aistudio/photo3_b824d30d.webp',
     titleVI: 'Pô Ảnh',
     titleEN: 'Poses',
-    chapterCodeVI: 'CHỤP ẢNH // 03',
-    chapterCodeEN: 'PHOTO STUDIO // 03',
     summaryVI:
       'Những dáng chụp độc đáo từ khoảnh khắc trầm tư giữa dải ngân hà đến cử chỉ ăn ý khi sánh bước bên nhau.',
     summaryEN:
@@ -256,8 +230,6 @@ const PHOTO_STUDIO_CARDS: AnecdoteCard[] = [
     image: '/assets/aistudio/photo4_04a87982.webp',
     titleVI: 'Mẫu Ảnh',
     titleEN: 'Templates',
-    chapterCodeVI: 'CHỤP ẢNH // 04',
-    chapterCodeEN: 'PHOTO STUDIO // 04',
     summaryVI:
       'Những mẫu thiết kế khung hình và phụ kiện nghệ thuật có sẵn, giúp tái hiện trọn vẹn thần thái điện ảnh chỉ trong một chạm.',
     summaryEN:
@@ -272,8 +244,6 @@ const JOURNAL_CARDS: AnecdoteCard[] = [
     image: '/assets/aistudio/journal1_40ca89cb.webp',
     titleVI: 'Lưu Trữ',
     titleEN: 'Archive',
-    chapterCodeVI: 'SỔ TAY // 01',
-    chapterCodeEN: 'JOURNAL // 01',
     summaryVI:
       'Kho lưu trữ những dấu ấn, bức vẽ và kỷ vật đặc biệt khắc ghi lời hứa vĩnh cửu qua từng chặng đường bên nhau.',
     summaryEN:
@@ -285,8 +255,6 @@ const JOURNAL_CARDS: AnecdoteCard[] = [
     image: '/assets/aistudio/journal2_bbfb2f85.webp',
     titleVI: 'Góc DIY',
     titleEN: 'Your DIY',
-    chapterCodeVI: 'SỔ TAY // 02',
-    chapterCodeEN: 'JOURNAL // 02',
     summaryVI:
       'Không gian sáng tạo mang đậm dấu ấn cá nhân, nơi từng trang sổ tay được trang trí bằng sticker, ruy băng và những món quà kỷ niệm đáng yêu.',
     summaryEN:
@@ -301,8 +269,6 @@ const PLAYTIME_CARDS: AnecdoteCard[] = [
     image: '/assets/aistudio/playtime1_35dbcaeb.webp',
     titleVI: 'Máy Gắp Thú',
     titleEN: 'Claw Machine',
-    chapterCodeVI: 'DẠO CHƠI // 01',
-    chapterCodeEN: 'PLAYTIME // 01',
     summaryVI:
       'Những giờ phút vui nhộn bên máy gắp thú bông, cùng nhau mang về bộ sưu tập thú nhồi bông đáng yêu.',
     summaryEN:
@@ -314,8 +280,6 @@ const PLAYTIME_CARDS: AnecdoteCard[] = [
     image: '/assets/aistudio/playtime2_4c251c41.webp',
     titleVI: 'Bài Mèo',
     titleEN: 'Kitty Cards',
-    chapterCodeVI: 'DẠO CHƠI // 02',
-    chapterCodeEN: 'PLAYTIME // 02',
     summaryVI:
       'Những ván Bài Mèo đầy kịch tính nhưng không kém phần đáng yêu bên tách trà chiều ấm áp.',
     summaryEN:
@@ -783,20 +747,13 @@ export const DatingPage: React.FC<DatingPageProps> = ({
                   </div>
 
                   {/* Bottom Info Area: shrink-0 so text & bottom border are never clipped */}
-                  <div className="flex shrink-0 w-full flex-col justify-between gap-1.5 border-t border-[var(--line)] bg-[var(--void)] px-3 py-2.5 sm:px-2.5 sm:py-2 md:px-3 md:py-2.5 lg:px-4 lg:py-3">
-                    <div className="flex items-center justify-between gap-1.5 lg:gap-2">
-                      <span className="truncate font-[var(--font-mono)] text-[9px] md:text-[10px] lg:text-[11px] uppercase tracking-[0.12em] lg:tracking-[0.18em] text-[var(--text-2)]">
-                        {lang === 'VI' ? card.chapterCodeVI : card.chapterCodeEN}
-                      </span>
-                      <span className="site-badge shrink-0 rounded-none px-1.5 py-0.5 lg:px-2 font-[var(--font-mono)] text-[9px] lg:text-[10px] uppercase tracking-[0.12em] lg:tracking-[0.14em]">
-                        {lang === 'VI' ? 'MỞ' : 'OPEN'}
-                      </span>
-                    </div>
-
-                    {/* Bottom Info Row: Anecdote Title in clean sans-serif, --text-1, medium-bold */}
+                  <div className="flex shrink-0 w-full items-center justify-between gap-2 border-t border-[var(--line)] bg-[var(--void)] px-3 py-2.5 sm:px-2.5 sm:py-2 md:px-3 md:py-2.5 lg:px-4 lg:py-3">
                     <div className="truncate font-[var(--font-sans)] text-[13px] sm:text-[12px] md:text-[13px] lg:text-[15px] font-semibold text-[var(--text-1)]">
                       {cardTitle}
                     </div>
+                    <span className="site-badge shrink-0 rounded-none px-1.5 py-0.5 lg:px-2 font-[var(--font-mono)] text-[9px] lg:text-[10px] uppercase tracking-[0.12em] lg:tracking-[0.14em]">
+                      {lang === 'VI' ? 'MỞ' : 'OPEN'}
+                    </span>
                   </div>
                 </button>
               );
@@ -846,9 +803,6 @@ export const DatingPage: React.FC<DatingPageProps> = ({
             </div>
 
             <div className="flex flex-col justify-center pr-4">
-              <div className="mb-1.5 font-[var(--font-mono)] text-[10px] sm:text-[11px] uppercase tracking-[0.18em] text-[var(--lilac)]">
-                {lang === 'VI' ? selectedCard.chapterCodeVI : selectedCard.chapterCodeEN}
-              </div>
               <h3 className="mb-2.5 font-[var(--font-sans)] text-lg font-semibold text-[var(--text-1)]">
                 {lang === 'VI' ? selectedCard.titleVI : selectedCard.titleEN}
               </h3>

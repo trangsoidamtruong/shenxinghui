@@ -1,9 +1,9 @@
 import type { MenuActionId } from '../components/GameModals';
 import {
-  CONTACT_APPS,
+  CONTACT_ROUTE_APPS,
   resolveLocalizedText,
   type ContactAppId,
-} from '../data/contactData';
+} from '../data/contactRouteMeta';
 import { FANFIC_LIST } from '../data/fanficData';
 import { MEMORIA_CARDS } from '../memoria/data/cards';
 
@@ -23,7 +23,8 @@ export type MainPageId =
   | 'contact'
   | 'fanfic'
   | 'fangame'
-  | 'memoria-dich';
+  | 'memoria-dich'
+  | 'about';
 
 export interface RouteConfigEntry {
   /** Canonical slug (lowercase, no accents, no spaces, '/' for hierarchy) */
@@ -146,9 +147,8 @@ export const SLUG_MAP: Record<string, RouteConfigEntry> = {
   },
   about: {
     slug: 'about',
-    domId: 'page-modal-about',
-    page: 'home',
-    modal: 'about',
+    domId: 'page-about',
+    page: 'about',
     parentSlug: 'home',
     hasTransition: true,
     transitionDurationMs: 360,
@@ -659,6 +659,9 @@ export const SLUG_MAP: Record<string, RouteConfigEntry> = {
  * Ensures both `#dating/anecdotes/anec1` and `#dating/anecdotes/1` (or `#exhibition`) resolve cleanly.
  */
 export const SLUG_ALIASES: Record<string, string> = {
+  'gioi-thieu': 'about',
+  'gioi-thieu.html': 'about',
+  'about.html': 'about',
   // Exhibition alias -> gallery
   exhibition: 'gallery',
   'exhibition/fanart': 'gallery/fanart',
@@ -783,7 +786,7 @@ export const SLUG_ALIASES: Record<string, string> = {
   'memoria/mem6': 'dating/falling-for-you/memoria/mem6',
 };
 
-CONTACT_APPS.forEach((app) => {
+CONTACT_ROUTE_APPS.forEach((app) => {
   const appSlug = `contact/${app.id}`;
   SLUG_MAP[appSlug] = {
     slug: appSlug,
@@ -979,7 +982,6 @@ const TEMPORARILY_DISABLED_SLUGS = new Set([
   'combat',
   'story',
   'interact',
-  'about',
 ]);
 
 const TEMPORARILY_DISABLED_DATING_CARDS = new Set([
@@ -1042,7 +1044,7 @@ export function resolveHashRoute(
 
   const candidateEntry = SLUG_MAP[canonicalCandidate];
   if (candidateEntry?.contactApp) {
-    const appCfg = CONTACT_APPS.find((a) => a.id === candidateEntry.contactApp);
+    const appCfg = CONTACT_ROUTE_APPS.find((a) => a.id === candidateEntry.contactApp);
     if (appCfg?.disabled) {
       return {
         entry: SLUG_MAP.contact,

@@ -24,6 +24,7 @@ const loadContactPage = () => import('./components/ContactPage');
 const loadFanficPage = () => import('./components/FanficPage');
 const loadFangamePage = () => import('./components/FangamePage');
 const loadMemoriaTranslationPage = () => import('./components/MemoriaTranslationPage');
+const loadAboutPage = () => import('./components/AboutPage');
 
 const GameModals = lazy(() =>
   loadGameModals().then((m) => ({ default: m.GameModals }))
@@ -48,6 +49,9 @@ const FangamePage = lazy(() =>
 );
 const MemoriaTranslationPage = lazy(() =>
   loadMemoriaTranslationPage().then((m) => ({ default: m.MemoriaTranslationPage }))
+);
+const AboutPage = lazy(() =>
+  loadAboutPage().then((m) => ({ default: m.AboutPage }))
 );
 
 const prefetchedAssets = new Set<string>();
@@ -86,7 +90,7 @@ const SUB_MENU_ITEMS: MenuItem[] = [
   { id: 'events', slug: 'events', code: '06', labelVI: 'SỰ KIỆN', labelEN: 'EVENTS', disabled: false },
   { id: 'contact', slug: 'contact', code: '07', labelVI: 'LIÊN LẠC', labelEN: 'CONTACT', disabled: false },
   { id: 'interact', slug: 'interact', code: '08', labelVI: 'TƯƠNG TÁC', labelEN: 'INTERACTIONS', disabled: true },
-  { id: 'about', slug: 'about', code: '09', labelVI: 'GIỚI THIỆU', labelEN: 'ABOUT', disabled: true },
+  { id: 'about', slug: 'about', code: '09', labelVI: 'GIỚI THIỆU', labelEN: 'ABOUT', disabled: false },
 ];
 
 const BOOT_LINES_VI = [
@@ -162,6 +166,7 @@ export default function App() {
     | 'fanfic'
     | 'fangame'
     | 'memoria-dich'
+    | 'about'
   >(() => (reducedMotion ? activeRoute.page : 'home'));
   const [activeModal, setActiveModal] = useState<MenuActionId>(() =>
     reducedMotion ? activeRoute.modal ?? null : null
@@ -377,7 +382,8 @@ export default function App() {
       currentPage === 'contact' ||
       currentPage === 'fanfic' ||
       currentPage === 'fangame' ||
-      currentPage === 'memoria-dich';
+      currentPage === 'memoria-dich' ||
+      currentPage === 'about';
 
     if (isSubPage || document.hidden) {
       vid.pause();
@@ -490,6 +496,8 @@ export default function App() {
         loadFangamePage();
       } else if (entry.page === 'memoria-dich') {
         loadMemoriaTranslationPage();
+      } else if (entry.page === 'about') {
+        loadAboutPage();
       } else if (entry.modal) {
         loadGameModals();
       }
@@ -604,6 +612,8 @@ export default function App() {
       loadFangamePage();
     } else if (initialResolved.entry.page === 'memoria-dich') {
       loadMemoriaTranslationPage();
+    } else if (initialResolved.entry.page === 'about') {
+      loadAboutPage();
     } else if (initialResolved.entry.modal) {
       loadGameModals();
     }
@@ -730,7 +740,11 @@ export default function App() {
       setClickedSubIndex(index);
       setClickedIndex(null);
       soundFx.playSelect();
-      if (item.slug === 'events' || item.slug === 'contact') {
+      if (
+        item.slug === 'events' ||
+        item.slug === 'contact' ||
+        item.slug === 'about'
+      ) {
         setSubMenuOpen(false);
       }
       navigateTo(item.slug);
@@ -763,7 +777,8 @@ export default function App() {
         currentPage === 'contact' ||
         currentPage === 'fanfic' ||
         currentPage === 'fangame' ||
-        currentPage === 'memoria-dich'
+        currentPage === 'memoria-dich' ||
+        currentPage === 'about'
       ) {
         return;
       }
@@ -859,7 +874,8 @@ export default function App() {
             currentPage === 'contact' ||
             currentPage === 'fanfic' ||
             currentPage === 'fangame' ||
-            currentPage === 'memoria-dich'
+            currentPage === 'memoria-dich' ||
+            currentPage === 'about'
               ? 'hidden'
               : ''
           }`}
@@ -1069,6 +1085,16 @@ export default function App() {
                 lang={lang}
                 cardId={activeRoute.memoriaCardId ?? 1}
                 onNavigate={(slug) => navigateTo(slug)}
+                onToggleLang={() => setLang((prev) => (prev === 'VI' ? 'EN' : 'VI'))}
+                onBackHome={() => navigateTo('home')}
+              />
+            </Suspense>
+          ) : currentPage === 'about' ? (
+            <Suspense fallback={<div className="relative z-20 h-full w-full bg-[var(--void)]" />}>
+              <AboutPage
+                lang={lang}
+                isPhone={isPhoneDevice}
+                skipBoot={skipChildTransition}
                 onToggleLang={() => setLang((prev) => (prev === 'VI' ? 'EN' : 'VI'))}
                 onBackHome={() => navigateTo('home')}
               />
@@ -1343,6 +1369,9 @@ export default function App() {
                                 ]);
                               } else if (subItem.id === 'contact') {
                                 loadContactPage();
+                              } else if (subItem.id === 'about') {
+                                loadAboutPage();
+                                prefetchAssets(['/assets/aistudio/wallpaper-xavier.webp']);
                               }
                             }}
                             onClick={() => handleTriggerSubMenu(subItem, idx)}

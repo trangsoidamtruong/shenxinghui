@@ -1,13 +1,12 @@
 
-export type LocalizedText = string | { vi: string; en: string };
-export type LocalizedParagraphs = string[] | { vi: string[]; en: string[] };
+import {
+  resolveLocalizedText,
+  type ContactAppId,
+  type LocalizedText,
+} from './contactRouteMeta';
 
-export type ContactAppId =
-  | 'public-account'
-  | 'sns'
-  | 'message'
-  | 'video-call'
-  | 'phone-call';
+export { resolveLocalizedText, type ContactAppId, type LocalizedText };
+export type LocalizedParagraphs = string[] | { vi: string[]; en: string[] };
 
 export type ContactAppKey = 'PUB' | 'SNS' | 'MSG' | 'VID' | 'TEL';
 export type ContactIconType = 'pub' | 'sns' | 'msg' | 'vid' | 'tel';
@@ -38,15 +37,6 @@ export interface ContactAppConfig {
   icon: ContactIconType;
   disabled?: boolean;
   items: ContactItem[];
-}
-
-export function resolveLocalizedText(
-  value: LocalizedText | undefined,
-  lang: 'VI' | 'EN'
-): string {
-  if (!value) return '';
-  if (typeof value === 'string') return value;
-  return lang === 'EN' ? value.en : value.vi;
 }
 
 export function resolveLocalizedParagraphs(
