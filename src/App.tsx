@@ -1371,7 +1371,11 @@ export default function App() {
                                 loadContactPage();
                               } else if (subItem.id === 'about') {
                                 loadAboutPage();
-                                prefetchAssets(['/assets/aistudio/wallpaper-xavier.webp']);
+                                prefetchAssets([
+                                  '/assets/aistudio/wallpaper-xavier.webp',
+                                  '/assets/aistudio/Moonstrider_b7751767.webp',
+                                  '/assets/aistudio/Amber_2f5e0e50.webp',
+                                ]);
                               }
                             }}
                             onClick={() => handleTriggerSubMenu(subItem, idx)}

@@ -53,7 +53,7 @@ function getCreditAvatarBg(item: CreditTuple, index: number): string {
 }
 
 const HOST_AVATAR_BG =
-  'url("/assets/aistudio/Moonstrider_b7751767.png") center/contain no-repeat, radial-gradient(circle at 50% 50%, #1c163c 0%, #0d0a22 100%)';
+  'url("/assets/aistudio/Moonstrider_b7751767.webp") center/contain no-repeat, radial-gradient(circle at 50% 50%, #1c163c 0%, #0d0a22 100%)';
 const WALLPAPER_SRC = '/assets/aistudio/wallpaper-xavier.webp';
 
 const I18N = {
@@ -532,28 +532,6 @@ export const AboutPage: React.FC<AboutPageProps> = ({
     });
   }, [activeDossierIndex]);
 
-  const toggleCollapseWindow = useCallback((id: WindowId) => {
-    soundFx.playSelect();
-    setWindows((prev) => ({
-      ...prev,
-      [id]: {
-        ...prev[id],
-        collapsed: !prev[id].collapsed,
-      },
-    }));
-  }, []);
-
-  const toggleMaximizeWindow = useCallback((id: WindowId) => {
-    soundFx.playSelect();
-    setWindows((prev) => ({
-      ...prev,
-      [id]: {
-        ...prev[id],
-        maximized: !prev[id].maximized,
-      },
-    }));
-  }, []);
-
   const handleOpenDossier = useCallback(
     (index: number, el: HTMLElement | null) => {
       setActiveDossierIndex(index);
@@ -561,6 +539,10 @@ export const AboutPage: React.FC<AboutPageProps> = ({
     },
     [openWindow]
   );
+
+  const hasAnyWindowOpen = WINDOW_IDS.some((id) => windows[id].open);
+  const isCompactWindowOpenRef = useRef<boolean>(false);
+  isCompactWindowOpenRef.current = isCompactLayout && hasAnyWindowOpen;
 
   useEffect(() => {
     const onKeyDown = (e: KeyboardEvent) => {
@@ -623,10 +605,34 @@ export const AboutPage: React.FC<AboutPageProps> = ({
     }
 
     const MATRIX_CHARS = '0101792468013579ABCDEF01';
+    const ALPHA_BUCKETS = 16;
+    const HEAD_STYLES = Array.from({ length: ALPHA_BUCKETS }, (_, b) => {
+      const a = ((b + 1) / ALPHA_BUCKETS) * 0.92;
+      return `rgba(226, 224, 248, ${a.toFixed(2)})`;
+    });
+    const MID_STYLES = Array.from({ length: ALPHA_BUCKETS }, (_, b) => {
+      const a = ((b + 1) / ALPHA_BUCKETS) * 0.86;
+      return `rgba(182, 176, 226, ${a.toFixed(2)})`;
+    });
+    const TAIL_STYLES = Array.from({ length: ALPHA_BUCKETS }, (_, b) => {
+      const a = ((b + 1) / ALPHA_BUCKETS) * 0.76;
+      return `rgba(124, 118, 182, ${a.toFixed(2)})`;
+    });
+
     let matrixCols: MatrixCol[] = [];
     let glitchSlices: GlitchSlice[] = [];
     let glitchTimer = 0;
     let nextGlitchWait = 1.1;
+
+    let cachedLeftGrad: CanvasGradient | null = null;
+    let cachedRightGrad: CanvasGradient | null = null;
+    let cachedTopGrad: CanvasGradient | null = null;
+    let cachedLeftFadeEnd = 0;
+    let cachedRightFadeStart = 0;
+    let cachedTopFadeEnd = 0;
+    let cachedFont = '';
+    let cachedCellH = 11;
+    let cachedMaxRow = 60;
 
     const spawnGlitchSlices = () => {
       const count = 2 + Math.floor(Math.random() * 3);
@@ -656,10 +662,13 @@ export const AboutPage: React.FC<AboutPageProps> = ({
       cv.width = W;
       cv.height = H;
 
+      cachedCellH = Math.max(10, Math.round(11 * D));
+      cachedMaxRow = Math.ceil(H / cachedCellH) + 28;
+      cachedFont = `600 ${Math.round(10.5 * D)}px "JetBrains Mono", monospace`;
+
       const stepX = Math.max(8, Math.round(10 * D));
       const numCols = Math.ceil(W / stepX);
-      const cellH = Math.max(10, Math.round(11 * D));
-      const rows = Math.ceil(H / cellH) + 32;
+      const rows = cachedMaxRow + 4;
       const streams: MatrixCol[] = [];
       for (let i = 0; i < numCols; i++) {
         const x = i * stepX + Math.round(stepX * 0.5);
@@ -681,12 +690,61 @@ export const AboutPage: React.FC<AboutPageProps> = ({
         });
       }
       matrixCols = streams;
+
+      if (iw > 0 && ih > 0) {
+        const m = window.innerWidth < 900 || isPhone;
+        const baseScale = m
+          ? Math.max(W / iw, (H / ih) * 0.88)
+          : Math.min(W / iw, H / ih);
+        const dw0 = iw * baseScale;
+        const dh0 = ih * baseScale;
+        const ox0 = (W - dw0) * 0.5;
+        const oy0 = (H - dh0) * (m ? 0.92 : 1.0);
+        const fadeW = Math.max(48 * D, dw0 * 0.14);
+
+        cachedLeftFadeEnd = ox0 + fadeW;
+        cachedLeftGrad = g.createLinearGradient(ox0 - 12 * D, 0, cachedLeftFadeEnd, 0);
+        cachedLeftGrad.addColorStop(0, '#05040f');
+        cachedLeftGrad.addColorStop(0.28, '#05040f');
+        cachedLeftGrad.addColorStop(1, 'rgba(5, 4, 15, 0)');
+
+        cachedRightFadeStart = ox0 + dw0 - fadeW;
+        cachedRightGrad = g.createLinearGradient(
+          cachedRightFadeStart,
+          0,
+          ox0 + dw0 + 12 * D,
+          0
+        );
+        cachedRightGrad.addColorStop(0, 'rgba(5, 4, 15, 0)');
+        cachedRightGrad.addColorStop(0.72, '#05040f');
+        cachedRightGrad.addColorStop(1, '#05040f');
+
+        if (oy0 > 0) {
+          const topFadeH = Math.max(28 * D, dh0 * 0.08);
+          cachedTopFadeEnd = oy0 + topFadeH;
+          cachedTopGrad = g.createLinearGradient(0, oy0 - 4 * D, 0, cachedTopFadeEnd);
+          cachedTopGrad.addColorStop(0, '#05040f');
+          cachedTopGrad.addColorStop(1, 'rgba(5, 4, 15, 0)');
+        } else {
+          cachedTopGrad = null;
+          cachedTopFadeEnd = 0;
+        }
+      }
     };
 
     const frame = (tNow: number) => {
       if (!mounted) return;
       rafId = window.requestAnimationFrame(frame);
-      if (document.hidden || W === 0 || H === 0 || iw === 0 || ih === 0) return;
+      if (
+        document.hidden ||
+        isCompactWindowOpenRef.current ||
+        W === 0 ||
+        H === 0 ||
+        iw === 0 ||
+        ih === 0
+      ) {
+        return;
+      }
       if (tNow - last < 33) return;
       const dt = Math.min(0.1, (tNow - last) / 1000);
       last = tNow;
@@ -773,39 +831,21 @@ export const AboutPage: React.FC<AboutPageProps> = ({
       g.globalCompositeOperation = 'source-over';
       g.globalAlpha = 1;
 
-      const fadeW = Math.max(48 * D, dw * 0.14);
-      const leftGrad = g.createLinearGradient(ox - 12 * D, 0, ox + fadeW, 0);
-      leftGrad.addColorStop(0, '#05040f');
-      leftGrad.addColorStop(0.28, '#05040f');
-      leftGrad.addColorStop(1, 'rgba(5, 4, 15, 0)');
-      g.fillStyle = leftGrad;
-      g.fillRect(0, 0, ox + fadeW, H);
-
-      const rightGrad = g.createLinearGradient(
-        ox + dw - fadeW,
-        0,
-        ox + dw + 12 * D,
-        0
-      );
-      rightGrad.addColorStop(0, 'rgba(5, 4, 15, 0)');
-      rightGrad.addColorStop(0.72, '#05040f');
-      rightGrad.addColorStop(1, '#05040f');
-      g.fillStyle = rightGrad;
-      g.fillRect(ox + dw - fadeW, 0, W - (ox + dw - fadeW), H);
-
-      if (oy > 0) {
-        const topFadeH = Math.max(28 * D, dh * 0.08);
-        const topGrad = g.createLinearGradient(0, oy - 4 * D, 0, oy + topFadeH);
-        topGrad.addColorStop(0, '#05040f');
-        topGrad.addColorStop(1, 'rgba(5, 4, 15, 0)');
-        g.fillStyle = topGrad;
-        g.fillRect(0, 0, W, oy + topFadeH);
+      if (cachedLeftGrad) {
+        g.fillStyle = cachedLeftGrad;
+        g.fillRect(0, 0, cachedLeftFadeEnd, H);
+      }
+      if (cachedRightGrad) {
+        g.fillStyle = cachedRightGrad;
+        g.fillRect(cachedRightFadeStart, 0, W - cachedRightFadeStart, H);
+      }
+      if (cachedTopGrad && cachedTopFadeEnd > 0) {
+        g.fillStyle = cachedTopGrad;
+        g.fillRect(0, 0, W, cachedTopFadeEnd);
       }
 
-      const cellH = Math.max(10, Math.round(11 * D));
-      const maxRow = Math.ceil(H / cellH) + 28;
       const tick = Math.floor(s * 12);
-      g.font = `600 ${Math.round(10.5 * D)}px "JetBrains Mono", monospace`;
+      g.font = cachedFont;
       g.textAlign = 'center';
 
       const imgLeftEdge = ox + dw * 0.14;
@@ -816,7 +856,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({
       for (let i = 0; i < matrixCols.length; i++) {
         const col = matrixCols[i];
         col.headY += col.speed * dt;
-        if (col.headY - col.len > maxRow) {
+        if (col.headY - col.len > cachedMaxRow) {
           col.headY = -2 - ((col.seed + tick) % 10);
         }
 
@@ -834,12 +874,17 @@ export const AboutPage: React.FC<AboutPageProps> = ({
         const headRow = Math.floor(col.headY);
         for (let k = 0; k < col.len; k++) {
           const row = headRow - k;
-          const py = row * cellH;
-          if (py < -cellH || py > H + cellH) continue;
+          const py = row * cachedCellH;
+          if (py < -cachedCellH || py > H + cachedCellH) continue;
 
           const falloff = 1 - k / col.len;
-          const alpha = Math.pow(falloff, 1.45) * zoneWeight * 0.86;
-          if (alpha < 0.025) continue;
+          const alpha = Math.pow(falloff, 1.45) * zoneWeight;
+          if (alpha < 0.03) continue;
+
+          const bucket = Math.min(
+            ALPHA_BUCKETS - 1,
+            Math.max(0, Math.floor(alpha * ALPHA_BUCKETS))
+          );
 
           const charIdx =
             Math.abs(col.seed + row * 13 + (k === 0 ? tick : Math.floor(tick / 4))) %
@@ -847,11 +892,11 @@ export const AboutPage: React.FC<AboutPageProps> = ({
           const ch = MATRIX_CHARS[charIdx];
 
           if (k === 0) {
-            g.fillStyle = `rgba(226, 224, 248, ${Math.min(0.92, alpha * 1.3)})`;
+            g.fillStyle = HEAD_STYLES[bucket];
           } else if (k < 4) {
-            g.fillStyle = `rgba(182, 176, 226, ${alpha})`;
+            g.fillStyle = MID_STYLES[bucket];
           } else {
-            g.fillStyle = `rgba(124, 118, 182, ${alpha * 0.88})`;
+            g.fillStyle = TAIL_STYLES[bucket];
           }
           g.fillText(ch, col.x, py);
         }
@@ -998,7 +1043,6 @@ export const AboutPage: React.FC<AboutPageProps> = ({
     }
   };
 
-  const hasAnyWindowOpen = WINDOW_IDS.some((id) => windows[id].open);
   const activeDossier: CreditTuple = CREDITS[activeDossierIndex] ?? CREDITS[0];
   const activeDossierRole =
     lang === 'EN' ? activeDossier[7] || activeDossier[3] : activeDossier[3];

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Kể bên người</title>
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;700&family=IBM+Plex+Mono:wght@400;500&family=Be+Vietnam+Pro:wght@300;400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<!-- HEADER MẪU: thay bằng header dùng chung của site (xem PROMPT.md) -->
+<header class="top"><div class="wrap"><div class="crumb"><span>Trăng soi dặm trường</span><i>›</i><b>Hẹn hò</b></div><button class="lang" type="button">VI</button></div></header>
+
+<main class="stage" id="stage">
+ <div class="bgw"><img class="bg" id="bgimg" src="assets/byyourside.jpg" alt=""><i class="g tint"></i><i class="g left"></i><i class="g wash"></i><i class="g vig"></i><i class="g pulse" id="pulse"></i><i class="g scan"></i><i class="g noise"></i></div>
+ <div class="sweep" id="sweep"></div>
+ <div class="wrap ui">
+  <section class="panel">
+   <div class="lst">
+    <div class="lh"><h1 data-ui="title">Kể bên người</h1><input class="srch" id="q" type="text" placeholder="> tìm đoạn..." data-ph="search" autocomplete="off" aria-label="Tìm đoạn" data-al="searchAl"></div>
+    <div class="rows" id="rows"></div>
+   </div>
+   <div class="now">
+    
+    <h2 id="ntitle"></h2>
+    
+    
+   </div>
+  </section>
+  <div class="script" id="sbody" aria-label="Script" data-al="scriptBox"></div>
+  <div class="dock">
+  <section class="bar" id="bar">
+   <div class="ctl">
+    <button class="ib" id="bprev" type="button" aria-label="Đoạn trước" data-al="prev"><svg viewBox="0 0 24 24"><path d="M6 5h2v14H6zM20 5v14L9 12z"/></svg></button>
+    <button class="ib big" id="bplay" type="button" aria-label="Phát / dừng" data-al="play"></button>
+    <button class="ib" id="bnext" type="button" aria-label="Đoạn sau" data-al="next"><svg viewBox="0 0 24 24"><path d="M16 5h2v14h-2zM4 5v14l11-7z"/></svg></button>
+   </div>
+   <div class="seek"><span class="mono" id="tcur">00:00</span><div class="track" id="seek"><i id="fill"></i><b id="knob"></b></div><span class="mono" id="tdur">00:00</span></div>
+   <div class="opt"><button class="chip ico" id="bscript" type="button" aria-pressed="false" aria-label="Xem toàn bộ script" data-al="scriptAl" title="Script" data-ti="script"><svg viewBox="0 0 24 24"><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg></button><button class="chip ico" id="back" type="button" aria-label="Về danh sách" data-al="listAl" title="Danh sách" data-ti="list"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button><button class="chip ico" id="brand" type="button" aria-label="Phát ngẫu nhiên đoạn khác" data-al="randAl" title="Phát ngẫu nhiên" data-ti="rand"><svg viewBox="0 0 24 24"><path d="M16 3h5v5M4 20 21 3M21 16v5h-5M15 15l6 6M4 4l5 5"/></svg></button></div>
+  </section>
+  </div>
+ </div>
+</main>
+<audio id="au" preload="none"></audio>
+<script src="script.js"></script>
+</body>
+</html>

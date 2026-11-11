@@ -25,7 +25,7 @@ export const CREDITS: CreditTuple[] = [
     'trans',
     'Dịch thuật',
     'Dịch cốt truyện và thoại nhân vật sang tiếng Việt.',
-    '/assets/aistudio/Amber_2f5e0e50.jpg',
+    '/assets/aistudio/Amber_2f5e0e50.webp',
     '#',
     'Translation',
     'Translated storylines and character voice lines into Vietnamese.',
