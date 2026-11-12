@@ -375,15 +375,7 @@ export default function App() {
   useEffect(() => {
     const vid = bgVideoRef.current;
     if (!vid || videoFailed) return;
-    const isSubPage =
-      currentPage === 'dating' ||
-      currentPage === 'events' ||
-      currentPage === 'gallery' ||
-      currentPage === 'contact' ||
-      currentPage === 'fanfic' ||
-      currentPage === 'fangame' ||
-      currentPage === 'memoria-dich' ||
-      currentPage === 'about';
+    const isSubPage = currentPage !== 'home';
 
     if (isSubPage || document.hidden) {
       vid.pause();
@@ -1013,6 +1005,7 @@ export default function App() {
                 activeSubTab={activeRoute.datingSubTab ?? 'FALLING FOR YOU'}
                 activeCardId={activeRoute.datingCardId ?? null}
                 isMemoriaOpen={Boolean(activeRoute.memoriaOpen)}
+                isTenderMomentsOpen={Boolean(activeRoute.tenderMomentsOpen)}
                 activeMemoriaCardId={activeRoute.memoriaCardId ?? null}
                 skipTransition={skipChildTransition}
                 onNavigate={(slug) => navigateTo(slug)}

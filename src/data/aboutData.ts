@@ -34,6 +34,34 @@ export const CREDITS: CreditTuple[] = [
       { label: 'Website', href: '#' },
     ],
   ],
+  [
+    'HT-BMKT',
+    'Bánh Mì Kẹp Thỏ',
+    'img',
+    'HỖ TRỢ',
+    'Đóng góp tư liệu hình ảnh & video để làm tài nguyên minigame, tương tác.',
+    '/assets/aistudio/image-1651479609961606_f67bedab.jpg',
+    '#',
+    'SUPPORT',
+    'Contributed image & video materials for minigame and interactive resources.',
+    [
+      { label: 'Facebook', href: '#' },
+    ],
+  ],
+  [
+    'BI-LHDQ',
+    'Bi',
+    'data',
+    'KỸ THUẬT',
+    'Cố vấn kỹ thuật và giúp phát triển lập trình, rất nghiêm túc lắng nghe và cùng giải quyết vấn đề web gặp phải.',
+    '/assets/aistudio/71489498_376483293241450_6352408105690595328_n_340f2f07.jpg',
+    '#',
+    'TECHNICAL',
+    'Technical advisor and programming contributor, attentively listening and working together to solve web issues.',
+    [
+      { label: 'ẨN DANH', href: '#' },
+    ],
+  ],
 ];
 
 export interface AboutSocialLink {

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Kể bên người</title>
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;700&family=IBM+Plex+Mono:wght@400;500&family=Be+Vietnam+Pro:wght@300;400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="site-header" style="position:sticky;top:0;z-index:100;width:100%;height:var(--header-h);background:rgba(7,6,15,.88);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--line);display:flex;align-items:center"><div class="wrap" style="display:flex;align-items:center;justify-content:space-between;gap:16px;height:100%"><nav aria-label="Breadcrumb" style="display:flex;align-items:center;min-width:0;flex:1 1 auto;overflow:hidden;white-space:nowrap;font:400 12px/1.2 'JetBrains Mono','IBM Plex Mono',monospace;text-transform:uppercase;letter-spacing:.2em;color:var(--text2)"><a href="/" style="color:inherit;text-decoration:none">TSDT</a><span style="color:var(--violet);margin:0 10px" aria-hidden="true">&gt;</span><a href="/dating/by-your-side" style="color:inherit;text-decoration:none">HẸN HÒ</a><span style="color:var(--violet);margin:0 10px" aria-hidden="true">&gt;</span><span aria-current="page" style="font-weight:700;color:#fff">KỂ BÊN NGƯỜI</span></nav><button type="button" onclick="var h=document.documentElement;var n=h.lang==='en'?'vi':'en';h.lang=n;this.textContent=n.toUpperCase();document.dispatchEvent(new Event('langchange'))" style="height:32px;min-width:44px;padding:0 12px;background:rgba(14,11,28,.85);border:1px solid var(--line);color:var(--lilac);font:500 11px 'IBM Plex Mono',monospace;letter-spacing:.14em;cursor:pointer">VI</button></div></header>
+
+<main class="stage" id="stage">
+ <div class="bgw"><img class="bg" id="bgimg" src="assets/byyourside.jpg" alt=""><i class="g tint"></i><i class="g left"></i><i class="g wash"></i><i class="g vig"></i><i class="g pulse" id="pulse"></i><i class="g scan"></i><i class="g noise"></i></div>
+ <div class="sweep" id="sweep"></div>
+ <div class="wrap ui">
+  <section class="panel">
+   <div class="lst">
+    <div class="lh"><h1 data-ui="title">Kể bên người</h1><input class="srch" id="q" type="text" placeholder="> tìm đoạn..." data-ph="search" autocomplete="off" aria-label="Tìm đoạn" data-al="searchAl"></div>
+    <div class="rows" id="rows"></div>
+   </div>
+   <div class="now">
+    
+    <h2 id="ntitle"></h2>
+    
+    
+   </div>
+  </section>
+  <div class="script" id="sbody" aria-label="Script" data-al="scriptBox"></div>
+  <div class="dock">
+  <section class="bar" id="bar">
+   <div class="ctl">
+    <button class="ib" id="bprev" type="button" aria-label="Đoạn trước" data-al="prev"><svg viewBox="0 0 24 24"><path d="M6 5h2v14H6zM20 5v14L9 12z"/></svg></button>
+    <button class="ib big" id="bplay" type="button" aria-label="Phát / dừng" data-al="play"></button>
+    <button class="ib" id="bnext" type="button" aria-label="Đoạn sau" data-al="next"><svg viewBox="0 0 24 24"><path d="M16 5h2v14h-2zM4 5v14l11-7z"/></svg></button>
+   </div>
+   <div class="seek"><span class="mono" id="tcur">00:00</span><div class="track" id="seek"><i id="fill"></i><b id="knob"></b></div><span class="mono" id="tdur">00:00</span></div>
+   <div class="opt"><button class="chip ico" id="bscript" type="button" aria-pressed="false" aria-label="Xem toàn bộ script" data-al="scriptAl" title="Script" data-ti="script"><svg viewBox="0 0 24 24"><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg></button><button class="chip ico" id="back" type="button" aria-label="Về danh sách" data-al="listAl" title="Danh sách" data-ti="list"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button><button class="chip ico" id="brand" type="button" aria-label="Phát ngẫu nhiên đoạn khác" data-al="randAl" title="Phát ngẫu nhiên" data-ti="rand"><svg viewBox="0 0 24 24"><path d="M16 3h5v5M4 20 21 3M21 16v5h-5M15 15l6 6M4 4l5 5"/></svg></button></div>
+  </section>
+  </div>
+ </div>
+</main>
+<audio id="au" preload="auto" playsinline></audio>
+<script src="script.js"></script>
+</body>
+</html>

@@ -41,6 +41,8 @@ export interface RouteConfigEntry {
   datingCardId?: string;
   /** Whether Memoria sub-page inside DatingPage is open */
   memoriaOpen?: boolean;
+  /** Whether Kể bên người (By your side / Tender Moments) sub-page inside DatingPage is open */
+  tenderMomentsOpen?: boolean;
   /** Specific Memoria card ID (1..6) */
   memoriaCardId?: number;
   /** Selected year in EventsPage ('2024' | '2025' | '2026') */
@@ -193,15 +195,15 @@ export const SLUG_MAP: Record<string, RouteConfigEntry> = {
   },
   'dating/by-your-side/bys2': {
     slug: 'dating/by-your-side/bys2',
-    domId: 'view-dating-bys2',
+    domId: 'page-dating-bys',
     page: 'dating',
     datingSubTab: 'BY YOUR SIDE',
-    datingCardId: 'bys-2',
+    tenderMomentsOpen: true,
     parentSlug: 'dating/by-your-side',
-    hasTransition: false,
-    transitionDurationMs: 0,
-    titleVI: `Dịu Dàng · Kề bên người | ${SITE_TITLE_VI}`,
-    titleEN: `Tender Moments · By Your Side | ${SITE_TITLE_EN}`,
+    hasTransition: true,
+    transitionDurationMs: 360,
+    titleVI: `Kể bên người · Hẹn hò | ${SITE_TITLE_VI}`,
+    titleEN: `By your side · Dating | ${SITE_TITLE_EN}`,
   },
 
   'dating/falling-for-you': {
@@ -719,6 +721,13 @@ export const SLUG_ALIASES: Record<string, string> = {
   'dating/by-your-side/2': 'dating/by-your-side/bys2',
   'dating/by-your-side/02': 'dating/by-your-side/bys2',
   'dating/by-your-side/bys-2': 'dating/by-your-side/bys2',
+  'dating/by-your-side/tender-moments': 'dating/by-your-side/bys2',
+  'dating/by-your-side/ke-ben-nguoi': 'dating/by-your-side/bys2',
+  'ke-ben-nguoi': 'dating/by-your-side/bys2',
+  'by-your-side': 'dating/by-your-side/bys2',
+  'tender-moments': 'dating/by-your-side/bys2',
+  'dating/tender-moments': 'dating/by-your-side/bys2',
+  'dating/ke-ben-nguoi': 'dating/by-your-side/bys2',
 
   // Falling For You aliases
   'dating/falling-for-you/1': 'dating/falling-for-you/ffy1',
@@ -986,7 +995,6 @@ const TEMPORARILY_DISABLED_SLUGS = new Set([
 
 const TEMPORARILY_DISABLED_DATING_CARDS = new Set([
   'dating/by-your-side/bys1',
-  'dating/by-your-side/bys2',
   'dating/falling-for-you/ffy1',
   'dating/falling-for-you/ffy3',
   'dating/anecdotes/anec1',
@@ -1134,4 +1142,5 @@ export function syncDocumentTitle(
   if (typeof document === 'undefined') return;
   document.title = lang === 'VI' ? entry.titleVI : entry.titleEN;
   document.documentElement.lang = lang === 'VI' ? 'vi' : 'en';
+  document.dispatchEvent(new Event('langchange'));
 }

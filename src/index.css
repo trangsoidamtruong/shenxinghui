@@ -33,6 +33,9 @@
     background-color: var(--void);
     color: var(--text-1);
     overflow: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
   }
 }
 

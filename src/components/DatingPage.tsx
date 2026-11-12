@@ -13,12 +13,18 @@ const MemoriaPage = lazy(() =>
   loadMemoriaPage().then((m) => ({ default: m.MemoriaPage }))
 );
 
+const loadByYourSidePage = () => import('./ByYourSidePage');
+const ByYourSidePage = lazy(() =>
+  loadByYourSidePage().then((m) => ({ default: m.ByYourSidePage }))
+);
+
 interface DatingPageProps {
   lang: 'VI' | 'EN';
   isPhone?: boolean;
   activeSubTab?: DatingSubTabId;
   activeCardId?: string | null;
   isMemoriaOpen?: boolean;
+  isTenderMomentsOpen?: boolean;
   activeMemoriaCardId?: number | null;
   skipTransition?: boolean;
   onNavigate?: (slug: string) => void;
@@ -151,7 +157,7 @@ const BY_YOUR_SIDE_CARDS: AnecdoteCard[] = [
       'Buổi chiều nắng nhẹ bên trang sách mở và giai điệu êm đềm qua chiếc tai nghe, lưu giữ ánh nhìn dịu dàng chỉ dành riêng cho bạn.',
     summaryEN:
       'A sunlit afternoon beside an open book and soft melodies through headphones, capturing a tender gaze meant only for you.',
-    disabled: true,
+    disabled: false,
   },
 ];
 
@@ -450,6 +456,7 @@ export const DatingPage: React.FC<DatingPageProps> = ({
   activeSubTab: externalSubTab,
   activeCardId: externalCardId,
   isMemoriaOpen: externalMemoriaOpen,
+  isTenderMomentsOpen: externalTenderMomentsOpen,
   activeMemoriaCardId = null,
   skipTransition = false,
   onNavigate,
@@ -465,12 +472,19 @@ export const DatingPage: React.FC<DatingPageProps> = ({
   const [internalMemoriaOpen, setInternalMemoriaOpen] = useState<boolean>(
     Boolean(externalMemoriaOpen)
   );
+  const [internalTenderMomentsOpen, setInternalTenderMomentsOpen] = useState<boolean>(
+    Boolean(externalTenderMomentsOpen)
+  );
 
   const activeSubTab: DatingSubTab = externalSubTab ?? internalSubTab;
   const currentCardId: string | null =
     externalCardId !== undefined ? externalCardId : internalCardId;
   const isMemoriaGalleryOpen: boolean =
     externalMemoriaOpen !== undefined ? externalMemoriaOpen : internalMemoriaOpen;
+  const isTenderMomentsPageOpen: boolean =
+    externalTenderMomentsOpen !== undefined
+      ? externalTenderMomentsOpen
+      : internalTenderMomentsOpen;
 
   const selectedCard: AnecdoteCard | null = currentCardId
     ? ALL_DATING_CARDS.find((c) => c.id === currentCardId) ?? null
@@ -482,6 +496,7 @@ export const DatingPage: React.FC<DatingPageProps> = ({
       setInternalSubTab(nextTab);
       setInternalCardId(null);
       setInternalMemoriaOpen(false);
+      setInternalTenderMomentsOpen(false);
       if (onNavigate) {
         onNavigate(DATING_SUBTAB_TO_SLUG[nextTab]);
       }
@@ -562,6 +577,34 @@ export const DatingPage: React.FC<DatingPageProps> = ({
     lang === 'VI' ? activeTabObj.labelVI : activeTabObj.labelEN;
   const activeTabSubtitle =
     lang === 'VI' ? activeTabObj.subtitleVI : activeTabObj.subtitleEN;
+
+  if (isTenderMomentsPageOpen) {
+    return (
+      <div className="relative z-20 h-full w-full overflow-hidden bg-[var(--void)]">
+        <Suspense fallback={<div className="h-full w-full bg-[var(--void)]" />}>
+          <ByYourSidePage
+            lang={lang}
+            isPhone={isPhone}
+            onToggleLang={onToggleLang}
+            onBackHome={onBackHome}
+            onBackToDating={() => {
+              setInternalTenderMomentsOpen(false);
+              setInternalSubTab('BY YOUR SIDE');
+              if (onNavigate) {
+                onNavigate('dating/by-your-side');
+              }
+            }}
+            onClose={() => {
+              setInternalTenderMomentsOpen(false);
+              if (onNavigate) {
+                onNavigate('dating/by-your-side');
+              }
+            }}
+          />
+        </Suspense>
+      </div>
+    );
+  }
 
   if (isMemoriaGalleryOpen) {
     return (
@@ -682,6 +725,18 @@ export const DatingPage: React.FC<DatingPageProps> = ({
                   onClick={() => {
                     if (isCardDisabled) return;
                     soundFx.playSelect();
+                    if (
+                      card.id === 'bys-2' ||
+                      (activeSubTab === 'BY YOUR SIDE' &&
+                        (card.titleEN === 'Tender Moments' ||
+                          card.titleVI === 'Khoảnh Khắc Dịu Dàng'))
+                    ) {
+                      setInternalTenderMomentsOpen(true);
+                      if (onNavigate) {
+                        onNavigate('dating/by-your-side/bys2');
+                      }
+                      return;
+                    }
                     if (
                       card.id === 'ffy-2' ||
                       (activeSubTab === 'FALLING FOR YOU' &&
